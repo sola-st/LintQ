@@ -1,0 +1,25 @@
+# Download the files from github containing the given keywords.
+
+github_token_path: secret/github_access_token.txt
+
+keywords:
+  - import qiskit
+  - from qiskit import
+
+# to query files / actual code snippets
+file_mining:
+  chunk_size: 250  # starting range of bytes per query
+  min_file_size: 0
+  max_file_size: 380000
+  language: python
+  output_folder: data
+
+
+# to query repositories
+repo_mining:
+  language: python
+  # use the format: 2022-10-24 16:46:09
+  start_date: "2010-01-01 00:00:00"
+  # use "NOW" for the current time
+  end_date: "2010-01-10 00:00:00"
+  output_folder: data
