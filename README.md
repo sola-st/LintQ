@@ -10,13 +10,8 @@ Follow this steps:
     ```bash
     codeql pack install
     ```
-4. Move to the `qlint/codeql` directory and run the following command:
-    ```bash
-    codeql test run test/query-tests/Measurement/ --search-path=src
-    ```
     Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
-
-5. From the `qlint/codeql` directory, run the following command including this path:
+4. Move to the `qlint/codeql` directory and run the following command including this path:
     ```bash
     codeql test run test/query-tests/Measurement --additional-packs /home/<username>/.codeql/packages
     ```
