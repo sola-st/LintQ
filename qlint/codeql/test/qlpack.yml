@@ -1,0 +1,5 @@
+name: mattepalte/qlint-tests
+dependencies:
+  mattepalte/qlint: "*"
+extractor: python
+tests: .
