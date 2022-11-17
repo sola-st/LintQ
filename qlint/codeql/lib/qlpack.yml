@@ -1,0 +1,6 @@
+name: mattepalte/qiskit
+version: 0.0.0
+extractor: python
+library: true
+dependencies:
+  codeql/python-all: "*"

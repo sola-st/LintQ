@@ -1,8 +1,14 @@
-/**
- * @description Finds measure_all calls with a classical register initialized.
- * @id QL100
+ /**
+ * @name Measure all abuse.
+ * @description Finds usage of measure_all calls when an initialized classical
+ * register should be used instead.
  * @kind problem
- * @severity medium
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision high
+ * @id QL100-MeasureAll
  */
 
 import python

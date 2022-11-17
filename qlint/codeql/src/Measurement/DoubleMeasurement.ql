@@ -1,8 +1,13 @@
 /**
- * @description Finds whether the same qubit is measured twice in the same circuit.
- * @id QL102
+ * @name Double measurement on the same qubit.
+ * @description two consecutive measurements on the same qubit of a given circuit.
  * @kind problem
- * @severity medium
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision high
+ * @id QL102-DoubleMeasurement
  */
 
 import python
@@ -20,13 +25,8 @@ from
     ExprStmt secondMeasureStmt,
     CallNode firstMeasureCall,
     CallNode secondMeasureCall,
-    SubscriptNode positionAccessFirstMeasurement,
-    SubscriptNode positionAccessSecondMeasurement,
     IntegerLiteral firstMeasuredBit,
-    IntegerLiteral secondMeasuredBit,
-    DataFlow::CallCfgNode quantumReg,
-    DataFlow::ExprNode firstRegisterAccess,
-    DataFlow::ExprNode secondRegisterAccess
+    IntegerLiteral secondMeasuredBit
     // CallNode firstRegisterAccessCall,
     // CallNode secondRegisterAccessCall
 where
@@ -72,32 +72,37 @@ where
     // they use the same register
     and
     (
-        (
-            firstMeasureCall.getArg(0).getAChild() = firstRegisterAccess.getNode()
-            and secondMeasureCall.getArg(0).getAChild() = secondRegisterAccess.getNode()
-            and quantumReg = API::moduleImport("qiskit").getMember("QuantumRegister").getACall()
-            and quantumReg.(DataFlow::LocalSourceNode).flowsTo(firstRegisterAccess)
-            and quantumReg.(DataFlow::LocalSourceNode).flowsTo(secondRegisterAccess)
-            // connect ast call and dataflow of the register access
-            and firstMeasureCall.getArg(0) = positionAccessFirstMeasurement
-            and secondMeasureCall.getArg(0) = positionAccessSecondMeasurement
-            and positionAccessFirstMeasurement.getNode().getIndex() = firstMeasuredBit
-            and positionAccessSecondMeasurement.getNode().getIndex() = secondMeasuredBit
-            and firstMeasuredBit.getValue() = secondMeasuredBit.getValue()
+       exists(
+            DataFlow::CallCfgNode quantumReg,
+            DataFlow::ExprNode firstRegisterAccess,
+            DataFlow::ExprNode secondRegisterAccess,
+            SubscriptNode positionAccessFirstMeasurement,
+            SubscriptNode positionAccessSecondMeasurement |
+                firstMeasureCall.getArg(0).getAChild() = firstRegisterAccess.getNode()
+                and secondMeasureCall.getArg(0).getAChild() = secondRegisterAccess.getNode()
+                and quantumReg = API::moduleImport("qiskit").getMember("QuantumRegister").getACall()
+                and quantumReg.(DataFlow::LocalSourceNode).flowsTo(firstRegisterAccess)
+                and quantumReg.(DataFlow::LocalSourceNode).flowsTo(secondRegisterAccess)
+                // connect ast call and dataflow of the register access
+                and firstMeasureCall.getArg(0) = positionAccessFirstMeasurement
+                and secondMeasureCall.getArg(0) = positionAccessSecondMeasurement
+                and positionAccessFirstMeasurement.getNode().getIndex() = firstMeasuredBit
+                and positionAccessSecondMeasurement.getNode().getIndex() = secondMeasuredBit
+                and firstMeasuredBit.getValue() = secondMeasuredBit.getValue()
         )
 
         // OPTION 2: we have constants
         // qc.measure(0, 2)
         // qc.measure(0, 4)
-        // or
+        or
 
-        // (
-        //     firstMeasureCall.getArg(0).isLiteral()
-        //     and secondMeasureCall.getArg(0).isLiteral()
-        //     and firstMeasureCall.getArg(0).getNode() = firstMeasuredBit
-        //     and secondMeasureCall.getArg(0).getNode() = secondMeasuredBit
-        //     and firstMeasuredBit.getValue() = secondMeasuredBit.getValue()
-        // )
+        (
+            firstMeasureCall.getArg(0).isLiteral()
+            and secondMeasureCall.getArg(0).isLiteral()
+            and firstMeasureCall.getArg(0).getNode() = firstMeasuredBit
+            and secondMeasureCall.getArg(0).getNode() = secondMeasuredBit
+            and firstMeasuredBit.getValue() = secondMeasuredBit.getValue()
+        )
 
     )
 
@@ -107,11 +112,11 @@ select
     secondMeasure, "Second measurement",
     firstMeasureCall, "First call to measure",
     secondMeasureCall, "second call to measure",
-    positionAccessFirstMeasurement, "pos 1",
-    positionAccessSecondMeasurement, "pos 2",
+    // positionAccessFirstMeasurement, "pos 1",
+    // positionAccessSecondMeasurement, "pos 2",
     firstMeasuredBit.getValue(), "index first reg measured",
-    secondMeasuredBit.getValue(), "second first reg measured",
-    positionAccessFirstMeasurement, "first superscript parent node"
+    secondMeasuredBit.getValue(), "second first reg measured"
+    // positionAccessFirstMeasurement, "first superscript parent node"
 
 // IMPROVEMENT POINTS:
 
