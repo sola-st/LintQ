@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.register
+import qiskit.gate
 
 
 class QuantumCircuit extends DataFlow::CallCfgNode {
@@ -49,6 +50,26 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         result = sum(QuantumRegister qntReg, int i |
             qntReg.flowsTo(this.getArg(i)) |
             qntReg.get_num_qubits())
+    }
+
+    Gate get_a_gate() {
+        exists(Gate g | g.get_quantum_circuit() = this |
+            result = g
+        )
+    }
+
+    QuantumRegister get_a_quantum_register() {
+        exists(QuantumRegister qntReg, int i |
+            qntReg.flowsTo(this.getArg(i)) |
+            result = qntReg
+        )
+    }
+
+    ClassicalRegister get_a_classical_register() {
+        exists(ClassicalRegister clsReg, int i |
+            clsReg.flowsTo(this.getArg(i)) |
+            result = clsReg
+        )
     }
 
 }

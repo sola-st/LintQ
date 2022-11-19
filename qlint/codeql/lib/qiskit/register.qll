@@ -16,6 +16,27 @@ class ClassicalRegister extends DataFlow::CallCfgNode {
         )
     }
 
+    // the classical register object can be accessed by the name of the variable
+    // and an index. For example:
+    // creg[0]
+    // creg[1]
+    // creg[2]
+    // we want to a general node representing one of this accesses
+    int get_an_accessed_bit() {
+        exists(
+            DataFlow::Node nd,
+            DataFlow::ExprNode targetSubscript,
+            Subscript subscript,
+            IntegerLiteral bit |
+            this.flowsTo(nd) and
+            nd.asExpr() = targetSubscript.asExpr() and
+            targetSubscript.asExpr() = subscript.getObject() and
+            bit = subscript.getIndex() |
+            result = bit.getValue()
+        )
+    }
+
+
 }
 
 class QuantumRegister extends DataFlow::CallCfgNode {
@@ -30,4 +51,17 @@ class QuantumRegister extends DataFlow::CallCfgNode {
         )
     }
 
+    int get_an_accessed_qubit() {
+        exists(
+            DataFlow::Node nd,
+            DataFlow::ExprNode targetSubscript,
+            Subscript subscript,
+            IntegerLiteral qubit |
+            this.flowsTo(nd) and
+            nd.asExpr() = targetSubscript.asExpr() and
+            targetSubscript.asExpr() = subscript.getObject() and
+            qubit = subscript.getIndex() |
+            result = qubit.getValue()
+        )
+    }
 }
