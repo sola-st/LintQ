@@ -33,14 +33,19 @@ class GateName extends string {
         this = "ryy" or
         this = "rzz" or
         this = "rzx" or
-        this = "rzz"
+        this = "rzz" or
+        this = "measure"
     }
 }
 
+// TODO: improve to support
+// from qiskit import QuantumCircuit
+// qc = QuantumCircuit(2)
+// qc.append(CXGate(), [0, 1])
 
-class Gate extends DataFlow::CallCfgNode {
+class GenericGate extends DataFlow::CallCfgNode {
 
-    Gate() {
+    GenericGate() {
         exists(
             QuantumCircuit circ, GateName a_supported_gate_name|
             this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
@@ -65,6 +70,7 @@ class Gate extends DataFlow::CallCfgNode {
 
 
     int get_a_target_qubit() {
+        // TODO: improve to support sequences of qubits or integers
         exists(
             QuantumCircuit circ, int target_qubit, int i |
             this = circ.getAnAttributeRead().getACall() and
@@ -107,6 +113,68 @@ class Gate extends DataFlow::CallCfgNode {
         )
     }
 
+    predicate follows(GenericGate g) {
+        exists(
+            QuantumCircuit circ |
+                this = circ.getAnAttributeRead().getACall() and
+                g = circ.getAnAttributeRead().getACall() and
+                not this = g and
+                this.get_a_target_qubit() = g.get_a_target_qubit() and
+                this.get_quantum_circuit() = g.get_quantum_circuit() and
+                g.asCfgNode().strictlyReaches(this.asCfgNode())
+        )
+    }
+}
 
 
+class Gate extends GenericGate {
+    Gate() {
+        exists(
+            QuantumCircuit circ, GateName a_supported_gate_name |
+            a_supported_gate_name != "measure" |
+            this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
+        )
+    }
+}
+
+class Measure extends GenericGate {
+    Measure() {
+        exists(
+            QuantumCircuit circ, GateName a_supported_gate_name |
+            a_supported_gate_name = "measure" |
+            this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
+        )
+    }
+
+    override int get_a_target_qubit() {
+        // note that measure gets qubits only in the first position
+        // TODO: improve to support sequences of qubits or integers
+        // e.g. qc.measure([0, 1], [0, 1])
+        // from documentation Parameters
+        // qubit (Union[Qubit, QuantumRegister, int, slice, Sequence[Union[Qubit, int]]]) – qubit to measure.
+        // cbit (Union[Clbit, ClassicalRegister, int, slice, Sequence[Union[Clbit, int]]]) – classical bit to place the measurement in.
+        exists(
+            QuantumCircuit circ, int target_qubit|
+            this = circ.getAnAttributeRead("measure").getACall() and
+            target_qubit = this.getArg(0).asExpr().(IntegerLiteral).getValue()|
+            // return a list with only the target qubit
+            result = target_qubit
+        )
+        or
+        exists(
+            QuantumCircuit circ,
+            QuantumRegister qreg,
+            DataFlow::Node nd,
+            DataFlow::ExprNode targetSubscript,
+            Subscript subscript,
+            IntegerLiteral bit|
+                this = circ.getAnAttributeRead("measure").getACall() and
+                qreg.flowsTo(nd) and
+                nd.asExpr() = targetSubscript.asExpr() and
+                targetSubscript.asExpr() = subscript.getObject() and
+                subscript = this.getArg(0).asExpr() and
+                bit = subscript.getIndex() |
+                result = bit.getValue()
+        )
+    }
 }
