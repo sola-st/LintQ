@@ -58,6 +58,12 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
+    GenericGate get_a_generic_gate() {
+        exists(GenericGate g | g.get_quantum_circuit() = this |
+            result = g
+        )
+    }
+
     QuantumRegister get_a_quantum_register() {
         exists(QuantumRegister qntReg, int i |
             qntReg.flowsTo(this.getArg(i)) |

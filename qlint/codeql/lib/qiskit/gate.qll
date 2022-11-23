@@ -153,6 +153,9 @@ class Measure extends GenericGate {
         // from documentation Parameters
         // qubit (Union[Qubit, QuantumRegister, int, slice, Sequence[Union[Qubit, int]]]) – qubit to measure.
         // cbit (Union[Clbit, ClassicalRegister, int, slice, Sequence[Union[Clbit, int]]]) – classical bit to place the measurement in.
+
+        // TODO: improve to support entire registers
+        // e.g. qc.measure(q, c)
         exists(
             QuantumCircuit circ, int target_qubit|
             this = circ.getAnAttributeRead("measure").getACall() and
@@ -175,6 +178,16 @@ class Measure extends GenericGate {
                 subscript = this.getArg(0).asExpr() and
                 bit = subscript.getIndex() |
                 result = bit.getValue()
+        )
+    }
+}
+
+class MeasureAll extends GenericGate {
+    MeasureAll() {
+        exists(
+            QuantumCircuit circ, GateName a_supported_gate_name |
+            a_supported_gate_name = "measure_all" |
+            this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
         )
     }
 }
