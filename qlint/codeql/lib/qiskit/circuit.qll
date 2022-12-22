@@ -7,7 +7,17 @@ import qiskit.gate
 
 class QuantumCircuit extends DataFlow::CallCfgNode {
     QuantumCircuit() {
+
+        this = API::moduleImport("qiskit").getMember("transpile").getACall()
+        or
         this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
+    }
+
+    string get_name() {
+        exists(AssignStmt a |
+            a.contains(this.getNode().getNode()) and
+            result = a.getATarget().(Name).getId()
+        )
     }
 
     int get_num_qubits() {
@@ -78,4 +88,21 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
+}
+
+class TranspiledCircuit extends QuantumCircuit{
+    TranspiledCircuit () {
+        this = API::moduleImport("qiskit").getMember("transpile").getACall()
+        // exists(
+        //     DataFlow::CallCfgNode transpileCall,
+        //     Assign assignment,
+        //     DataFlow::CallCfgNode leftSide
+        //         |
+        //         transpileCall = API::moduleImport("qiskit").getMember("transpile").getACall() |
+        //         // the transpile call flows in the left-hand side of the assignment
+        //         leftSide.asExpr() = assignment.getATarget() and
+        //         //transpileCall.flowsTo(leftSide) and
+        //         this = leftSide
+        // )
+    }
 }

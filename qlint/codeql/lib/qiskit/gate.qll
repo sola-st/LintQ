@@ -34,7 +34,8 @@ class GateName extends string {
         this = "rzz" or
         this = "rzx" or
         this = "rzz" or
-        this = "measure"
+        this = "measure" or
+        this = "measure_all"
     }
 }
 

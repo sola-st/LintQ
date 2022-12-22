@@ -17,24 +17,10 @@ import semmle.python.ApiGraphs
 import qiskit.circuit
 
 from
-    DataFlow::CallCfgNode transpile,
-    QuantumCircuit circ,
-    QuantumCircuit transpiledCirc,
-    //Assign assign,
+    TranspiledCircuit transpiledCirc,
     GenericGate gate
 where
-    transpile = API::moduleImport("qiskit").getMember("transpile").getACall() and
-    circ = transpile.getArg(0).getALocalSource().(QuantumCircuit) and
-    // check if the transpiled circuit is the target variable of the transpile call
-    //transpiledCirc = transpile.getArgByName("circuits").getALocalSource().(QuantumCircuit) and
-    //assign.getATarget() = transpiledCirc.asExpr() and
-    //assign.getValue() = transpile.asExpr() and
-    //transpiledCirc.flowsTo(gate) and
     transpiledCirc.getScope() = gate.getScope() and
-    transpile.getScope() = gate.getScope() and
-    gate = transpiledCirc.get_a_generic_gate() and
-    transpiledCirc = gate.get_quantum_circuit()
-    // the gate comes at a later line than the transpile call
-    //gate.getLocation().getStartLine() > transpile.getLocation().getStartLine()
+    gate = transpiledCirc.get_a_generic_gate()
 select
-    transpile, gate, "Gates applied to already optimized circuit " + transpiledCirc.toString() + "."
+    gate, "Gate " + gate.get_gate_name() + " applied to transpiled circuit: " + transpiledCirc.get_name() + "."
