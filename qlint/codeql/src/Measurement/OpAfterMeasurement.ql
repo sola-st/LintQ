@@ -22,4 +22,5 @@ from
 where
     gate.follows(measure)
 select
-    gate, "Operation after measurement: " + gate.toString() + " on qubit " + measure.get_a_target_qubit().toString() + "."
+    gate, "Operation '" + gate.get_gate_name() + "' on qubit " + measure.get_a_target_qubit().toString() + " after measurement " +
+    "at location: (" + gate.getLocation().getStartLine() + ", " + gate.getLocation().getStartColumn() + ")."

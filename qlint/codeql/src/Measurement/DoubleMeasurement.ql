@@ -13,6 +13,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
+import qiskit.circuit
 
 
 from
@@ -20,7 +21,7 @@ from
     ControlFlowNode secondMeasure,
     Expr firstMeasureCallExpr,
     Expr secondMeasureCallExpr,
-    DataFlow::CallCfgNode quantumCirc,
+    QuantumCircuit quantumCirc,
     ExprStmt firstMeasureStmt,
     ExprStmt secondMeasureStmt,
     CallNode firstMeasureCall,
@@ -29,6 +30,7 @@ from
     IntegerLiteral secondMeasuredBit
     // CallNode firstRegisterAccessCall,
     // CallNode secondRegisterAccessCall
+
 where
     // make sure the two measure come one after the other
     //firstMeasure.getASuccessor() = secondMeasure
@@ -37,7 +39,6 @@ where
     // improvment point: consider also when we have a for loop with two measurements
     //and not firstMeasureStmt = secondMeasureStmt
     // make sure they are both measruement statements
-    and quantumCirc = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
     // make sure that the the circuit and the two statemetns happen in the same context,
     // this might become outdated
     and firstMeasure.getScope() = quantumCirc.getScope()
@@ -73,14 +74,13 @@ where
     and
     (
        exists(
-            DataFlow::CallCfgNode quantumReg,
+            QuantumRegister quantumReg,
             DataFlow::ExprNode firstRegisterAccess,
             DataFlow::ExprNode secondRegisterAccess,
             SubscriptNode positionAccessFirstMeasurement,
             SubscriptNode positionAccessSecondMeasurement |
                 firstMeasureCall.getArg(0).getAChild() = firstRegisterAccess.getNode()
                 and secondMeasureCall.getArg(0).getAChild() = secondRegisterAccess.getNode()
-                and quantumReg = API::moduleImport("qiskit").getMember("QuantumRegister").getACall()
                 and quantumReg.(DataFlow::LocalSourceNode).flowsTo(firstRegisterAccess)
                 and quantumReg.(DataFlow::LocalSourceNode).flowsTo(secondRegisterAccess)
                 // connect ast call and dataflow of the register access
@@ -107,16 +107,20 @@ where
     )
 
 select
-    quantumCirc, "consecutive measurements on the same circuit",
-    firstMeasure, "First measurement",
-    secondMeasure, "Second measurement",
-    firstMeasureCall, "First call to measure",
-    secondMeasureCall, "second call to measure",
-    // positionAccessFirstMeasurement, "pos 1",
-    // positionAccessSecondMeasurement, "pos 2",
-    firstMeasuredBit.getValue(), "index first reg measured",
-    secondMeasuredBit.getValue(), "second first reg measured"
-    // positionAccessFirstMeasurement, "first superscript parent node"
+    quantumCirc,
+        "repeated measurements of qubit " + firstMeasuredBit.getValue() + " of circuit '" + quantumCirc.get_name() + "' at locations: (" +
+        // show (line, column) for the two measurements
+        firstMeasure.getLocation().getStartLine() + ", " + secondMeasure.getLocation().getStartColumn() + ")" + " and (" +
+        secondMeasure.getLocation().getStartLine() + ", " + secondMeasure.getLocation().getStartColumn() + ")"
+    // firstMeasure, "First measurement",
+    // secondMeasure, "Second measurement",
+    // firstMeasureCall, "First call to measure",
+    // secondMeasureCall, "second call to measure",
+    // // positionAccessFirstMeasurement, "pos 1",
+    // // positionAccessSecondMeasurement, "pos 2",
+    // firstMeasuredBit.getValue(), "index first reg measured",
+    // secondMeasuredBit.getValue(), "second first reg measured"
+    // // positionAccessFirstMeasurement, "first superscript parent node"
 
 // IMPROVEMENT POINTS:
 

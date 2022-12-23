@@ -26,4 +26,5 @@ where
     numClbits = circ.get_total_num_bits() and
     // the number of qubits is larger than the number of classical bits
     numQubits > numClbits
-select circ, "we have more qubits (" + numQubits + ") than classical  bits (" + numClbits + ")"
+select
+    circ, "Circuit '" + circ.get_name() + "' has more qubits (" + numQubits + ") than classical  bits (" + numClbits + ")"

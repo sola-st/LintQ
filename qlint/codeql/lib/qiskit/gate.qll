@@ -132,7 +132,7 @@ class Gate extends GenericGate {
     Gate() {
         exists(
             QuantumCircuit circ, GateName a_supported_gate_name |
-            a_supported_gate_name != "measure" |
+            a_supported_gate_name != "measure"  and a_supported_gate_name != "measure_all"|
             this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
         )
     }

@@ -14,27 +14,19 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-predicate isClassicalRegister(Call classReg) {
-    exists(ClassValue cls |
-        cls.getName() = "ClassicalRegister" and
-        classReg.getFunc().pointsTo(cls)
-    )
-}
+import qiskit.circuit
+
+
 from
-    DataFlow::CallCfgNode quantumCirc,
-    DataFlow::ExprNode classicalReg,
-    DataFlow::ExprNode measureAll
+    QuantumCircuit quantumCirc,
+    ClassicalRegister classicalReg,
+    MeasureAll measureAllOp
 where
-    // the object should be a quantum circuit
-    quantumCirc = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall() and
-    // this object should have an attibute access to measure_all
-    measureAll = quantumCirc.getAnAttributeRead("measure_all") and
+    quantumCirc.get_a_generic_gate() = measureAllOp and
     // the circuit must have a classical register
     // namely there must be a flow from a classical register to the argument of the
     // quantum circuit constructor
-    isClassicalRegister(classicalReg.asExpr()) and
     classicalReg.(DataFlow::LocalSourceNode).flowsTo(quantumCirc.getArg(1))
 select
-    measureAll, "measure_all used when a classical register is present",
-    quantumCirc, "quantum circuit",
-    classicalReg, "classical register"
+    measureAllOp, "measure_all used on '" + quantumCirc.get_name() + "' when a classical register is present " +
+    "(at location: " + measureAllOp.getLocation().getStartLine() + ", " + measureAllOp.getLocation().getStartColumn() + ")"
