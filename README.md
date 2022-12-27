@@ -1,6 +1,31 @@
 # research_project_template
 
 
+# Run the Analysis Notebook
+
+1. make sure you have the virtualenv installed:
+    ```bash
+    pip install virtualenv
+    ```
+2. create a virtual environment:
+    ```bash
+    virtualenv venv
+    ```
+3. activate the virtual environment:
+    ```bash
+    source venv/bin/activate
+    ```
+4. install the requirements:
+    ```bash
+    pip install -r virtualenv/qlint_requirements.txt
+    ```
+5. run the notebook:
+    ```bash
+    jupyter notebook
+    ```
+6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.
+
+
 # Run the Test CodeQL Queries
 
 Follow this steps:
