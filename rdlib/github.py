@@ -190,7 +190,8 @@ def get_list_of_files_async(
         keywords: List[str],
         chunk_size: int = 1000,
         n_chunks: int = None,
-        max_files: int = None,):
+        max_files: int = None,
+        ):
     """Return the list of files with the keywords.
 
     Parameters
@@ -269,14 +270,14 @@ def get_list_of_files_async(
                 files_found += new_files_found
                 print(f"Found {len(files_found)} files so far. Saving {len(new_files_found)} new files.")
                 print("#" * 80)
-                yield new_files_found
+                yield page_query, new_files_found
             c_low_limit = c_high_limit
             query_just_done = True
             if total_count < 200:
                 chunk_size *= 2
                 print(f"Chunk size increased to {chunk_size}")
         c_high_limit = c_low_limit + chunk_size
-    yield files_found
+    yield query, files_found
 
 
 def from_str_to_timestamp(date: str) -> int:
@@ -324,16 +325,21 @@ def downloadfiles(config):
     # read the github_token_path file content
     github_token = open(config['github_token_path']).read().strip()
     output_folder = config['file_mining']['output_folder']
-    for file_list in get_list_of_files_async(
+    # make sure that the file exists
+    pathlib.Path(output_folder).mkdir(parents=True, exist_ok=True)
+    for query, file_list in get_list_of_files_async(
             min_file_size=config['file_mining']['min_file_size'],
             max_file_size=config['file_mining']['max_file_size'],
             chunk_size=config['file_mining']['chunk_size'],
             token=github_token,
-            username=config['github_username'],
             language=config['file_mining']['language'],
             keywords=config['keywords']):
         # current timestamp
         ts = int(time.time())
+        with open(os.path.join(output_folder, 'log_successful_queries.txt'), 'a') as f:
+            data_timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            f.write(f"{data_timestamp}, {ts}, {len(file_list)}, {query}\n")
+            f.close()
         # save the files
         with open(os.path.join(output_folder, f"files_{ts}.json"), 'w') as f:
             json.dump(file_list, f, indent=4, sort_keys=True)

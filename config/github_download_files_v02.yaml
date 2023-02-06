@@ -1,0 +1,16 @@
+# Download the files from github containing the given keywords.
+
+github_token_path: secrets/github_access_token.txt
+
+keywords:
+  - import cirq
+  - from cirq import
+
+# to query files / actual code snippets
+file_mining:
+  chunk_size: 250  # starting range of bytes per query
+  min_file_size: 0
+  max_file_size: 380000
+  language: python
+  output_folder: data/github_query_results/exp_v02
+
