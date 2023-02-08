@@ -243,7 +243,7 @@ def get_list_of_files_async(
         total_count = response.json()['total_count']
         print(query, "-->", total_count)
 
-        if total_count > 1000:
+        if total_count > 1000 and chunk_size > 1:
             chunk_size //= 2
             print(f"Chunk size reduced to {chunk_size}")
             query_just_done = False

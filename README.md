@@ -8,11 +8,11 @@
     ```
 2. create a virtual environment:
     ```bash
-    virtualenv venv
+    virtualenv venv38
     ```
 3. activate the virtual environment:
     ```bash
-    source venv/bin/activate
+    source venv38/bin/activate
     ```
 4. install the requirements:
     ```bash

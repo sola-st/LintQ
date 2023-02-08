@@ -1,0 +1,100 @@
+# This file contains all the parameters needed to convert the downloaded files
+# into a dataset of programs.
+# Ideally the result should be ready to be ingested by CodeQL
+
+# experiment name, this will be used to create a new folder in the dataset
+# folder
+experiment_name: exp_v02
+
+
+# folder containing the raw json downloaded from github
+github_query_results: data/github_query_results/exp_v02
+
+
+# Folder where the dataset will be stored.
+dataset_folder: data/datasets/exp_v02
+
+# At the end of the procedure the folder will contain:
+# - df_summary.csv: a csv containing the github query info in a single table
+# - raw_files (dir): a subfolder with all the raw files downloaded from github
+# - files_selected (dir): containing the files selected after all
+#   processing steps.
+# - intermediate_results (dir): containing the output of each step
+
+# The processing steps to go from raw files to the final dataset.
+#
+# the filter to perform to create the dataset.
+# a subfolder in with the intermediate results will be created for each
+# filter step.
+# the filters are applied in order of definition.
+processing_steps:
+  - name: remove_too_long_filenames
+    function_name: remove_too_long_filenames
+    parameters:
+      max_length: 143
+  - name: keep_only_py_and_ipynb
+    function_name: keep_based_on_attribute
+    parameters:
+      attribute: extension
+      values:
+        - py
+        - ipynb
+  # remove blacklisted repos
+  - name: remove_blacklisted_repos
+    function_name: filter_out
+    parameters:
+      attribute: repository_name
+      values:
+        - UCLA-SEAL/QDiff
+        - MattePalte/Bugs-Quantum-Computing-Platforms
+  # remove informal repos, by removing duplicated
+  - name: remove_informal_forks
+    function_name: remove_selected_duplicates
+    parameters:
+      attribute: repository_description
+      values:
+        - ffff
+  # whether some file should be transformed before the filtering
+  - name: convert_ipynb_to_content_only
+    function_name: convert_ipynb_to_content_only
+  # wether only parsable code should be kept
+  - name: parsable
+    function_name: remove_unparsable_python
+  # # whether the files should be deduplicated following the procedure in:
+  # # "The adverse effects of code duplication in machine learning models of code".
+  # # M Allamanis, OOPSLA Onwards 2019
+  # - name: deduplication
+  #   function_name: deduplicate_allamanis
+  - name: add_hash_of_the_content
+    function_name: add_hash_of_the_content
+  - name: hash_deduplication
+    function_name: remove_duplicates
+    parameters:
+      attributes:
+        - content_hash
+  # wether the files include/or not the following regex
+  - name: include_import
+    function_name: content_regex_filter
+    parameters:
+      regex: "(import cirq|from cirq)"
+      keep_if_match: true
+  - name: exclude_cirq_platform
+    function_name: content_regex_filter
+    parameters:
+      regex: "(# Copyright 2022 The Cirq Developers|# Copyright 2021 The Cirq Developers|# Copyright 2020 The Cirq Developers|# Copyright 2019 The Cirq Developers)"
+      remove_if_match: true
+
+
+
+
+
+# RAW_FILES_FOLDER = '../data/00_program_data_raw/exp_v01'
+# DATASET_OUTPUT_FOLDER = '../data/01_program_data_compressed/exp_v01'
+# PROGRAMS_FOLDER = '../data/02_programs/exp_v01/'
+# FILTERED_PROGRAMS_FOLDER = '../data/03_program_filtered/exp_v01/code_only_programs'
+# PATH_TO_DEDUP_DICT = '../data/03_program_filtered/exp_v01/dedup.json'
+
+# DIR_FINAL_DATASET = '../data/04_program_under_study/exp_v01'
+# PATH_COMPRESSED_FINAL_DATASET = '../data/04_program_under_study/exp_v01_program_dataset.csv'
+
+# DIR_W_CIRCUIT = '../data/05_program_w_quantum_circuit/exp_v01/'

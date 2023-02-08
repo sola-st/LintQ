@@ -62,9 +62,12 @@ def extract_url_hash_filename(url: str):
     # compute the url hash
     url_hash = hashlib.sha256(url.encode('utf-8')).hexdigest()[:6]
     filename = url.split('/')[-1]
-    extension = filename.split('.')[-1]
+    if '.' not in filename:
+        extension = 'no_ext'
+    else:
+        extension = filename.split('.')[-1]
     filename = filename.replace('.' + extension, '')
-    return  filename + "_" + url_hash + "." + extension
+    return filename + "_" + url_hash + "." + extension
 
 
 def extract_user_project_filename(url: str):
