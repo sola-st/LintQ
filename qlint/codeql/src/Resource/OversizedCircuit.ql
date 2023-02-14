@@ -16,8 +16,7 @@ import qiskit.circuit
 
 from
     QuantumCircuit circ,
-    int numQubits,
-    int unusedQubit
+    int numQubits
 where
     // the circuit has a number of qubits
     numQubits = circ.get_total_num_qubits() and
@@ -27,9 +26,7 @@ where
         not exists(Gate g |
             g.get_quantum_circuit() = circ and
             g.get_a_target_qubit() = i
-        ) and
-        unusedQubit = i
+        )
     )
 select
-    circ, "Circuit '" + circ.get_name() + "' (with " + numQubits + " qubits) never manipulates " +
-    "the qubit in position " + unusedQubit + ". Making it useless."
+    circ, "Circuit '" + circ.get_name() + "' never manipulates some of its " + numQubits + "qubits."
