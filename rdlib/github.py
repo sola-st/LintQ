@@ -319,7 +319,7 @@ def downloadprojects(config, output):
 
 @cli.command()
 @click.option('--config', default='config.json', help='Path to the config file.')
-def downloadfiles(config):
+def queryfilesmetadata(config):
     """Download the files from github."""
     config = load_config_and_check(config)
     # read the github_token_path file content

@@ -34,7 +34,7 @@ screen -L -Logfile log_long.txt -S first_run python -m rdlib.github downloadfile
 ```
 Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if you want to have the program run also if you close the terminal. It is usually recommended.
 
-### Dataset Filtering
+### Dataset Filtering (OLD) - Scroll down for the new version
 1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset.ipynb` and run the cells until the `Deduplication` section.
 
 2. To run the de-duplication, run the following command to tokenize the files:
@@ -54,6 +54,36 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
 
 3. Go back to the initial notebook and run it until the end.
 
+### Dataset Filtering (NEW)
+1. **Query GitHub**. Prepare a configuration file in the `config` folder (typically called `github_download_files_vXX`). See `github_download_files_v03.yaml` for an example.
+
+1. Run the following command to download the files:
+    ```bash
+    screen -L -Logfile data/github_query_results/exp_vXX/log.txt -S qiskit_download python -m rdlib.github queryfilesmetadata --config config/github_download_files_vXX.yaml
+    ```
+    Note that the prefix `screen -L -Logfile data/github_query_results/exp_vXX/log.txt -S qiskit_download` is needed if you want to have the program run also if you close the terminal. It is usually recommended, you can change the folder where to save the log file and the name of the screen session.
+
+1. **Download Files**. Prepare the configuration file in the `config` folder (typically called `dataset_creation_exp_vXX.yaml`). See `dataset_creation_exp_v03.yaml` for an example.
+
+1. To download the actual files from the metadata, run the following command:
+    ```bash
+    screen -L -Logfile data/datasets/exp_vXX/log.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation downloadfiles --config config/dataset_creation_exp_vXX.yaml
+    ```
+
+1. To filter the dataset based on the `processing_steps` in the config file, run the following command:
+    ```bash
+    screen -L -Logfile data/datasets/exp_vXX/log.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation filterdataset --config config/dataset_creation_exp_vXX.yaml
+    ```
+
+1. Move the selected programs in a dedicated folder (typically called `files_selected`) and create a subfolder structure, such that each file is stored in a single subfolder.
+
+1. Create the CodeQL database for the filtered dataset:
+    ```bash
+    screen -L -Logfile data/datasets/exp_vXX/log.txt -S codeql_database_creation codeql database create --language=python --threads=10 data/datasets/exp_vXX/files_selected/ -- data/datasets/exp_vXX/codeql_db
+    ```
+
+
+
 ### Dataset Metadata
 
 1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
@@ -68,7 +98,7 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
 
 ## D. Run the Test CodeQL Queries
 
-Follow this steps:
+Follow these steps:
 1. Clone this repository
 2. Install the CodeQL CLI from [here](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/)
 3. Move to the source directory `qlint/codeql/src` containing the `qlpack.yml` and install the external packs (e.g. the python-all dependencies) with the following command:
@@ -81,3 +111,23 @@ Follow this steps:
     codeql test run test/query-tests/Measurement --additional-packs /home/<username>/.codeql/packages
     ```
     This will run the tests of the specific folder `query-tests/Measurement` and will use the dependencies installed in the previous step.
+
+## E. Run the Query on the Full Dataset
+
+Follow these steps:
+1. Run the queries in the `qlint/codeql/src` folder on the dataset (in the folder `data/datasets/exp_vXX/codeql_db`) with the following command:
+The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{current_date_time}`.
+    ```bash
+    export CURRENT_DATE_TIME=`date "+%Y-%m-%d_%H-%M-%S"`; \
+    export OUTPUT_DIR=data/analysis_results/exp_vXX/codeql_${CURRENT_DATE_TIME}; \
+    mkdir -p $OUTPUT_DIR; \
+    codeql database analyze --format=sarifv2.1.0 --output=$OUTPUT_DIR/data.sarif -- data/datasets/exp_vXX/codeql_db/ qlint/codeql/src
+    ```
+    Demo version:
+    ```bash
+    export CURRENT_DATE_TIME=`date "+%Y-%m-%d_%H-%M-%S"`; \
+    export OUTPUT_DIR=data/analysis_results/demo/codeql_${CURRENT_DATE_TIME}; \
+    mkdir -p $OUTPUT_DIR; \
+    codeql database analyze --format=sarifv2.1.0 --rerun --output=$OUTPUT_DIR/data.sarif -- data/demo_dataset_output/ qlint/codeql/src
+    ```
+
