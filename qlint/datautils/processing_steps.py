@@ -8,6 +8,7 @@ import ast
 import multiprocessing
 import functools
 import re
+import numpy as np
 
 
 from rdlib.datalake import extract_url_hash_filename
@@ -65,7 +66,8 @@ def remove_unparsable_python(
     with multiprocessing.Pool() as pool:
         all_parsability = pool.map(is_parsable_safe, all_contents)
     # keep only the parsable files
-    df = df[all_parsability]
+    parsability_mask = np.array(all_parsability)
+    df = df[parsability_mask]
     # copy the files to the output folder
     copy_from_files_to(
         all_filenames=df['unique_id'].tolist(),

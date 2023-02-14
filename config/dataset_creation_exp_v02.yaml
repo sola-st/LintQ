@@ -31,7 +31,7 @@ processing_steps:
   - name: remove_too_long_filenames
     function_name: remove_too_long_filenames
     parameters:
-      max_length: 143
+      max_length: 248
   - name: keep_only_py_and_ipynb
     function_name: keep_based_on_attribute
     parameters:
@@ -47,6 +47,21 @@ processing_steps:
       values:
         - UCLA-SEAL/QDiff
         - MattePalte/Bugs-Quantum-Computing-Platforms
+        - wjy99-c/QDiff
+        - CeYang-Leeds/MSC_porject  # kind of reproduction of QDiff
+        - peiyi1/nassc_code
+        - Simula-COMPLEX/Quantum-Software-Engineering  # mutation testing
+        - roytu/QOSF-FeMoco2020  # modified qiskit core
+        - v-r0/qiskit-terra_duplicate20210324  # duplciate of qiskit core
+        - biblio-t- chers/Qiskit-Fall-Fest-2021
+        - Simula-COMPLEX/muskit  # mutation testing
+        - WaywardPhoton/QSciTech-QuantumBC-Workshop-Team4-Solution # contains the virtual environment folder
+        - MattePalte/Bugs-Quantum-Computing-Platforms # bug study on quantum bugs
+        - Z-928/Bugs4Q-Framework # bug study on quantum bugs - framework
+        - Z-928/Bugs4Q # bug study on quantum bugs
+        - shovitraj/QuantumComputing # aggregation of quantum computing repos
+        - Qiskit-Partners/qiskit-dell-runtime # qiskit runtime, more on the platform side
+        - Qiskit/qiskit-ibm-runtime # qiskit runtime, more on the platform side
   # remove informal repos, by removing duplicated
   - name: remove_informal_forks
     function_name: remove_selected_duplicates
@@ -81,7 +96,7 @@ processing_steps:
   - name: exclude_cirq_platform
     function_name: content_regex_filter
     parameters:
-      regex: "(# Copyright 2022 The Cirq Developers|# Copyright 2021 The Cirq Developers|# Copyright 2020 The Cirq Developers|# Copyright 2019 The Cirq Developers)"
+      regex: "# Copyright 20[0-9][0-9] The Cirq Developers"
       remove_if_match: true
 
 

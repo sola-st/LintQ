@@ -63,7 +63,7 @@ def cli():
 @cli.command()
 @click.option(
     '--config', default='config.json', help='Path to the config file.')
-def createdataset(config):
+def downloadfiles(config):
     """Download files from GitHub given the links and create a dataset."""
     config_dict = load_config_and_check(config)
     dir_github_results = config_dict['github_query_results']
@@ -113,8 +113,8 @@ def createdataset(config):
 @cli.command()
 @click.option(
     '--config', default='config.json', help='Path to the config file.')
-def cleandataset(config):
-    """Clean the dataset following the preprocessing steps."""
+def filterdataset(config):
+    """Filter the dataset following the preprocessing steps."""
     config_dict = load_config_and_check(config)
     dir_dataset_folder = config_dict['dataset_folder']
 
@@ -149,6 +149,30 @@ def cleandataset(config):
         df_current = df_next
         dir_input = dir_output
         print(f'Output size: {len(df_current)}')
+
+
+
+@cli.command()
+@click.option(
+    '--config', default='config.json', help='Path to the config file.')
+def createselection(config):
+    """Take the programs of the last intermediate step and create a selection."""
+    config_dict = load_config_and_check(config)
+    dir_dataset_folder = config_dict['dataset_folder']
+
+    dir_files_selected = os.path.join(dir_dataset_folder, 'files_selected')
+    dir_intermediate_results = \
+        os.path.join(dir_dataset_folder, 'intermediate_results')
+
+    all_steps = os.listdir(dir_intermediate_results)
+    last_step = sorted(all_steps)[-1]
+
+    dir_last_step = os.path.join(
+        dir_intermediate_results, last_step)
+    # copy the content of the last step to the files_selected folder
+    print(f'Copying the content of {dir_last_step} to {dir_files_selected}...')
+    shutil.copytree(dir_last_step, dir_files_selected)
+
 
 
 if __name__ == '__main__':
