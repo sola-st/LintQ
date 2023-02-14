@@ -1,0 +1,56 @@
+# This file contains the configuration of the inspection procedure
+
+# path to the serif file containing all the objects of the inspection
+sarif_path: data/analysis_results/demo/codeql_2023-02-14_09-50-05/data.sarif
+# which run of the static analysis result you should inspect
+sarif_run: 0
+# path of the folder originally analyzed by the static analyzer
+root_path: data/demo_dataset
+
+# whether file should be shown only once to the user (if false, any already seen
+# snippet won't be picked).
+sample_only_once: true
+
+# strategy to sample the files:
+# - random: a file is randomly picked,
+# - stratified: first pick a message, then pick one example from one of them
+sampling_mode: stratified
+
+
+
+# set a budget for your inspection:
+# - 42files (number of inspected files)
+# - 30min (means a number of minutes, after that no new file will be shown)
+# - null (for continuous loop)
+inspection_budget: null
+
+# the following attributes will be asked to the user for every shown file
+# the type can be 'str', 'int' and it will perform a cast.
+attributes_to_log:
+  filepath:
+    type: str
+  warning_category:
+    type: str
+    values:
+     - bug  # bug
+     - more bug than not
+     - more false positive than bug
+     - false positive  # false positive
+     - unclear
+  reason:
+    type: str
+
+file_inspection:
+  # mode is either:
+  # - relative: to the main repo folder
+  # - absolute: to the filesystem
+  mode: relative
+  # this refers to the attributes mentioned beforehand
+  # the one specified here will be used to open the file.
+  filepath_field_name: filepath
+  # this defines which modality to use to inspect the file:
+  # - vscode: open it with vscode
+  file_open_command: vscode
+
+annotation_folder: data/annotations/demo
+task_file_extension: py
