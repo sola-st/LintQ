@@ -1,5 +1,5 @@
 name: mattepalte/qlint
 version: 0.0.1
 dependencies:
-  codeql/python-all: "*"
+  codeql/python-all: "0.6.2"
   mattepalte/qiskit: "*"

@@ -19,6 +19,7 @@ from sarif import loader
 from deprecated import deprecated
 import hashlib
 from termcolor import colored
+import pathlib
 
 
 class SkipNextFileException(Exception):
@@ -112,7 +113,7 @@ def pick_random_static_analysis_result(
         static_analysis_results = [
             result for result in static_analysis_results
             if result["ruleId"] == code_filter]
-    if len(static_analysis_result) == 0:
+    if len(static_analysis_results) == 0:
         print(colored("No more results to annotate.", 'green'))
         sys.exit(0)
     # randomly select a file
@@ -195,6 +196,8 @@ def single_inspection_task(
             fields_to_exclude=[field_name_for_path])
         new_record[field_name_for_path] = filepath.strip()
         new_record["sarif_path"] = config_dict["sarif_path"]
+        new_record["ruleId"] = static_analysis_result["ruleId"]
+        new_record["message"] = msg
         new_record["hash"] = hashlib.sha256(
             str(static_analysis_result["partialFingerprints"]).encode('utf-8')).hexdigest()[:6]
         # write the record to the json file with
@@ -236,6 +239,9 @@ def cli(config, sarif_path, code_filter):
     sarif_file = loader.load_sarif_file(sarif_path)
     sarif_data = sarif_file.data
     results = sarif_data["runs"][sarif_run]["results"]
+    # make sure that the annotation folder exists
+    pathlib.Path(config_dict["annotation_folder"]).mkdir(
+        parents=True, exist_ok=True)
 
     # connect to the database
     db_annotation_path = join(

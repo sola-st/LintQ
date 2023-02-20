@@ -1,0 +1,2 @@
+| QL102_2_code_with_bug.py:11:1:11:33 | ControlFlowNode for Attribute() | Two consecutive measurements on qubit '0' at locations: (9, 1) and (11, 1) |
+| QL102_3_code_with_bug.py:11:1:11:21 | ControlFlowNode for Attribute() | Two consecutive measurements on qubit '0' at locations: (9, 1) and (11, 1) |

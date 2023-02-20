@@ -9,6 +9,8 @@ import multiprocessing
 import functools
 import re
 import numpy as np
+from slugify import slugify
+import subprocess
 
 
 from rdlib.datalake import extract_url_hash_filename
@@ -26,11 +28,18 @@ def copy_from_files_to(
         pool.map(func, [
             os.path.join(input_folder, filename)
             for filename in all_filenames])
+    # check that all the files are there
+    present_filenames = os.listdir(output_folder)
+    # check that all files are in the present filenames
+    assert all([filename in present_filenames for filename in all_filenames])
 
 
-def is_parsable_safe(code: str):
-    """Parse the code using ast, return false if ."""
+def is_parsable_safe(filename: str, folder: str) -> bool:
+    """Read and parse the code."""
     try:
+        path = os.path.join(folder, filename)
+        with open(path, 'r') as f:
+            return f.read()
         c = ast.parse(code)
         return c is not None
     except:
@@ -60,11 +69,8 @@ def remove_unparsable_python(
     all_filenames = df['unique_id'].tolist()
     # read the files in parallel
     with multiprocessing.Pool() as pool:
-        func = functools.partial(read_file, folder=input_folder)
-        all_contents = pool.map(func, all_filenames)
-    # check if the code is parsable (in parallel)
-    with multiprocessing.Pool() as pool:
-        all_parsability = pool.map(is_parsable_safe, all_contents)
+        func = functools.partial(is_parsable_safe, folder=input_folder)
+        all_parsability = pool.map(func, all_filenames)
     # keep only the parsable files
     parsability_mask = np.array(all_parsability)
     df = df[parsability_mask]
@@ -122,6 +128,67 @@ def keep_only_py_content_and_save(
     return clean_code
 
 
+def convert_ipynb_to_script_with_nbconvert(
+        filename: str,
+        input_folder: str,
+        output_folder: str) -> bool:
+    """Convert the ipynb file to a python file using nbconvert.
+
+    The return value is a boolean indicating if the conversion should be retried
+    due to a '429: Too Many Requests' error.
+    """
+    file_path = os.path.join(input_folder, filename)
+    try:
+
+        # subprocess.run(['jupyter', 'nbconvert', '--to', 'script', file_path, '--output-dir', output_folder], check=True)
+        # run and collect the output
+        output = subprocess.check_output(
+            ['jupyter', 'nbconvert', '--to', 'script', file_path, '--output-dir', output_folder],
+            stderr=subprocess.STDOUT)
+        return False
+    except subprocess.CalledProcessError as e:
+        output_error = e.output.decode('utf-8')
+        print(f'ipynb: Error converting {filename}. Output: {output_error}')
+        if '429: Too Many Requests' in output_error:
+            return True
+        # if the error is of any other type, then skip the file
+        return False
+
+
+def sanitize_filenames(
+        df: pd.DataFrame,
+        input_folder: str,
+        output_folder: str):
+    """Sanitize the filenames.
+
+    Rename all the filenames with a new name both in the dataframe and in the
+    filesystem.
+    """
+
+    all_filenames = df['unique_id'].tolist()
+
+    def my_slugify_for_file_with_extension(text: str, separator: str = '_'):
+        """Slugify the text but keep the extension."""
+        text, extension = os.path.splitext(text)
+        return slugify(str(text), separator=separator) + extension
+
+    for column in ['filename', 'unique_id', 'name']:
+        df[column] = df[column].apply(
+            lambda x: my_slugify_for_file_with_extension(x, separator='_'))
+
+    df['filestem'] = df['filestem'].apply(
+        lambda x: slugify(str(x), separator="_"))
+
+    # copy the names and slugify them
+    for filename in all_filenames:
+        old_path = os.path.join(input_folder, filename)
+        new_path = os.path.join(
+            output_folder,
+            my_slugify_for_file_with_extension(filename, separator='_'))
+        shutil.copy(old_path, new_path)
+    return df
+
+
 def convert_ipynb_to_content_only(
         df: pd.DataFrame,
         input_folder: str,
@@ -136,17 +203,48 @@ def convert_ipynb_to_content_only(
     df_untouched = df[~is_ipynb_mask]
     df_to_convert = df[is_ipynb_mask]
     # all the filenames to convert
-    all_filenames = df_to_convert['unique_id'].tolist()
-    # convert the notebooks in parallel
-    with multiprocessing.Pool() as pool:
-        func = functools.partial(
-            keep_only_py_content_and_save,
+    all_ipynb_filenames = df_to_convert['unique_id'].tolist()
+    # n_total_conversions = len(all_ipynb_filenames)
+    # iteration = 0
+    # completed_conversions = []
+
+    # while n_total_conversions == len(completed_conversions):
+    #     print(f'Iteration {iteration}')
+    #     # convert the notebooks in parallel
+    #     with multiprocessing.Pool() as pool:
+    #         func = functools.partial(
+    #             convert_ipynb_to_script_with_nbconvert,
+    #             input_folder=input_folder,
+    #             output_folder=output_folder)
+    #         should_retry = pool.map(func, all_ipynb_filenames)
+    #     # keep only the successful conversions
+    #     should_retry = np.array(is_conversion_successful)
+    #     number_of_retry = np.sum(should_retry)
+    #     all_ipynb_filenames = \
+    #         np.array(all_ipynb_filenames)[should_retry].tolist()
+    #     completed_conversions += \
+    #         np.array(all_ipynb_filenames)[~should_retry].tolist()
+    #     print(f'Number of retry scheduled: {number_of_retry}')
+    #     iteration += 1
+
+
+    # sequential version
+    is_conversion_successful = []
+    for filename in all_ipynb_filenames:
+        should_retry = convert_ipynb_to_script_with_nbconvert(
+            filename,
             input_folder=input_folder,
             output_folder=output_folder)
-        all_contents = pool.map(func, all_filenames)
-    # keep only the filenames that have content not None
-    mask = [content is not None for content in all_contents]
-    df_to_convert = df_to_convert[mask]
+        is_conversion_successful.append(not should_retry)
+
+    successful_converted_files = \
+        [
+            filename
+            for filename, success in
+            zip(all_ipynb_filenames, is_conversion_successful) if success]
+
+    df_to_convert = df_to_convert[df_to_convert['unique_id'].isin(
+        successful_converted_files)]
     # replace their name with the new name
     df_to_convert['unique_id'] = df_to_convert['unique_id'].str.replace(
         '.ipynb', '.py', regex=False)
@@ -201,7 +299,12 @@ def filter_out(
         output_folder: str,
         attribute: str, values: List[str]) -> pd.DataFrame:
     """Filter out the rows with values in the given column."""
+    n_before = len(df)
+    print(f'Number of files before filtering: {n_before}')
+    print(f"Attribute: {attribute}, values: {values}")
     df = df[~df[attribute].isin(values)]
+    n_after = len(df)
+    print(f'Number of files after filtering: {n_after}')
     copy_from_files_to(
         all_filenames=df['unique_id'].tolist(),
         input_folder=input_folder,
@@ -215,6 +318,9 @@ def create_repo_statistic_dataframe(df_summary: pd.DataFrame) -> pd.DataFrame:
     For each repository we count how many files we have and report the
     repository name and description.
     """
+    # fill empty description with empty string
+    df_summary["repository_description"] = \
+        df_summary["repository_description"].fillna("")
     # sorted by frequency of occurence, most frequent first
     df_stats = df_summary.groupby([
         'repository_url', 'repository_description']).count().sort_values(
@@ -280,6 +386,9 @@ def content_regex_filter(
         keep_if_match: bool = None,
         remove_if_match: bool = None) -> pd.DataFrame:
     """Keep the files whose content matches the given regex."""
+    # replace the \\ with \ since they cannot be used in the yaml file
+    regex = regex.replace('\\\\', '\\')
+    print(f'Filtering based on regex: {regex}')
     relevant_files = []
     for filename in df['unique_id'].tolist():
         file_path = os.path.join(input_folder, filename)

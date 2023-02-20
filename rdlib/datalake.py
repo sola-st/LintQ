@@ -9,6 +9,7 @@ from pathlib import Path
 from multiprocessing import Pool
 import hashlib
 from tqdm import tqdm
+from slugify import slugify
 
 
 def dump_string_to_sql(
@@ -67,6 +68,7 @@ def extract_url_hash_filename(url: str):
     else:
         extension = filename.split('.')[-1]
     filename = filename.replace('.' + extension, '')
+    filename = slugify(str(filename), separator='_')
     return filename + "_" + url_hash + "." + extension
 
 

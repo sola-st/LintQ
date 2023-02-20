@@ -67,12 +67,12 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
 
 1. To download the actual files from the metadata, run the following command:
     ```bash
-    screen -L -Logfile data/datasets/exp_vXX/log.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation downloadfiles --config config/dataset_creation_exp_vXX.yaml
+    screen -L -Logfile data/datasets/exp_vXX/log_download.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation downloadfiles --config config/dataset_creation_exp_vXX.yaml
     ```
 
 1. To filter the dataset based on the `processing_steps` in the config file, run the following command:
     ```bash
-    screen -L -Logfile data/datasets/exp_vXX/log.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation filterdataset --config config/dataset_creation_exp_vXX.yaml
+    screen -L -Logfile data/datasets/exp_vXX/log_filter.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation filterdataset --config config/dataset_creation_exp_vXX.yaml
     ```
 
 1. Move the selected programs in a dedicated folder (typically called `files_selected`) and create a subfolder structure, such that each file is stored in a single subfolder.
@@ -108,7 +108,7 @@ Follow these steps:
     Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
 4. Move to the `qlint/codeql` directory and run the following command including this path:
     ```bash
-    codeql test run test/query-tests/Measurement --additional-packs /home/<username>/.codeql/packages
+    codeql test run test/query-tests/Measurement --additional-packs=/home/<username>/.codeql/packages
     ```
     This will run the tests of the specific folder `query-tests/Measurement` and will use the dependencies installed in the previous step.
 
