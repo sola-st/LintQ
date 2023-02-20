@@ -10,8 +10,11 @@ class ClassicalRegister extends DataFlow::CallCfgNode {
     }
 
     int get_num_bits() {
-        exists(IntegerLiteral num_bits |
-            num_bits = this.getArg(0).asExpr() and
+        exists(IntegerLiteral num_bits, DataFlow::LocalSourceNode source
+            |
+            source.flowsTo(this.getArg(0)) and
+            source.asExpr() = num_bits
+            |
             result = num_bits.getValue()
         )
     }
@@ -45,8 +48,11 @@ class QuantumRegister extends DataFlow::CallCfgNode {
     }
 
     int get_num_qubits() {
-        exists(IntegerLiteral num_qubits |
-            num_qubits = this.getArg(0).asExpr() and
+        exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source
+            |
+            source.flowsTo(this.getArg(0)) and
+            source.asExpr() = num_qubits
+            |
             result = num_qubits.getValue()
         )
     }

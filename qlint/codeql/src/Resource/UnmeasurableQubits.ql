@@ -16,15 +16,11 @@ import python
 import qiskit.circuit
 
 from
-    QuantumCircuit circ,
-    int numQubits,
-    int numClbits
+    QuantumCircuit circ
 where
-    // the circuit has a number of qubits
-    numQubits = circ.get_total_num_qubits() and
-    // the circuit has a number of classical bits
-    numClbits = circ.get_total_num_bits() and
     // the number of qubits is larger than the number of classical bits
-    numQubits > numClbits
+    circ.get_total_num_qubits() > circ.get_total_num_bits()
+    // the circuit is not a subcircuit
+    and not circ.is_subcircuit()
 select
-    circ, "Circuit '" + circ.get_name() + "' has more qubits (" + numQubits + ") than classical  bits (" + numClbits + ")"
+    circ, "Circuit '" + circ.get_name() + "' has more qubits (" + circ.get_total_num_qubits() + ") than classical  bits (" + circ.get_total_num_bits() + ")"

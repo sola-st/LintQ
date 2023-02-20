@@ -1,6 +1,6 @@
 name: mattepalte/qiskit
-version: 0.0.0
+version: 0.0.1
 extractor: python
 library: true
 dependencies:
-  codeql/python-all: "*"
+  codeql/python-all: "0.6.2"

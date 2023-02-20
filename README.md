@@ -103,12 +103,14 @@ Follow these steps:
 2. Install the CodeQL CLI from [here](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/)
 3. Move to the source directory `qlint/codeql/src` containing the `qlpack.yml` and install the external packs (e.g. the python-all dependencies) with the following command:
     ```bash
+    cd qlint/codeql/src
     codeql pack install
     ```
     Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
 4. Move to the `qlint/codeql` directory and run the following command including this path:
     ```bash
-    codeql test run test/query-tests/Measurement --additional-packs=/home/<username>/.codeql/packages
+    cd qlint/codeql
+    codeql test run test/query-tests/Measurement --additional-packs=/home/<username>/.codeql/packages --threads=10
     ```
     This will run the tests of the specific folder `query-tests/Measurement` and will use the dependencies installed in the previous step.
 
@@ -131,3 +133,7 @@ The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{c
     codeql database analyze --format=sarifv2.1.0 --rerun --output=$OUTPUT_DIR/data.sarif -- data/demo_dataset_output/ qlint/codeql/src
     ```
 
+## Troubleshooting
+
+1. if you run the quick evaluation in the VSCode environment, be sure to have opened the folder `/home/<username>/.codeql/packages` in your VSCode workspace. Otherwise, the CodeQL extension will not be able to find the dependencies.
+This operation will create a file named `qlint.code-workspace` in the repo folder, it will not uploaded to git but it is important you keep it.

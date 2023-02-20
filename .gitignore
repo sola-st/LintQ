@@ -4,3 +4,6 @@
 
 # test database
 *.testproj
+
+# workspace settings
+qlint.code-workspace
