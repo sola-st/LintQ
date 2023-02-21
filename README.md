@@ -54,6 +54,20 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
 
 3. Go back to the initial notebook and run it until the end.
 
+
+**Dataset Metadata**
+
+1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
+
+**Run the Analysis Notebooks**
+5. run the notebook:
+    ```bash
+    jupyter notebook
+    ```
+6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.
+
+
+
 ### Dataset Filtering (NEW)
 1. **Query GitHub**. Prepare a configuration file in the `config` folder (typically called `github_download_files_vXX`). See `github_download_files_v03.yaml` for an example.
 
@@ -83,17 +97,6 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
     ```
 
 
-
-### Dataset Metadata
-
-1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
-
-## C. Run the Analysis Notebooks
-5. run the notebook:
-    ```bash
-    jupyter notebook
-    ```
-6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.
 
 
 ## D. Run the Test CodeQL Queries
@@ -132,6 +135,17 @@ The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{c
     mkdir -p $OUTPUT_DIR; \
     codeql database analyze --format=sarifv2.1.0 --rerun --output=$OUTPUT_DIR/data.sarif -- data/demo_dataset_output/ qlint/codeql/src
     ```
+
+
+## F. Inspect the Generated Warning
+
+To inspect the generated warnings use the following command:
+```bash
+python -m rdlib.inspector --config config/annotations/inspection_exp_vXX.yaml
+```
+Remember to create the configuration file in the `config/annotations` folder.
+You can see an example of the configuration file in `config/annotations/inspection_exp_v04.yaml`.
+
 
 ## Troubleshooting
 

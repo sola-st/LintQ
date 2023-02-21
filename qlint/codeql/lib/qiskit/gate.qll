@@ -71,10 +71,10 @@ class GenericGate extends DataFlow::CallCfgNode {
 
 
     int get_a_target_qubit() {
+
         // TODO: improve to support sequences of qubits or integers
         exists(
-            QuantumCircuit circ, int target_qubit, int i |
-            this = circ.getAnAttributeRead().getACall() and
+            int target_qubit, int i |
             target_qubit = this.getArg(i).asExpr().(IntegerLiteral).getValue()|
             // return a list with only the target qubit
             result = target_qubit
@@ -86,14 +86,12 @@ class GenericGate extends DataFlow::CallCfgNode {
         // qc.cx(q[0], q[1])
         or
         exists(
-            QuantumCircuit circ,
             QuantumRegister qreg,
             DataFlow::Node nd,
             DataFlow::ExprNode targetSubscript,
             Subscript subscript,
             IntegerLiteral bit,
             int i |
-                this = circ.getAnAttributeRead().getACall() and
                 qreg.flowsTo(nd) and
                 nd.asExpr() = targetSubscript.asExpr() and
                 targetSubscript.asExpr() = subscript.getObject() and
@@ -101,7 +99,81 @@ class GenericGate extends DataFlow::CallCfgNode {
                 bit = subscript.getIndex() |
                 result = bit.getValue()
         )
+        // handle the case where the arguments are variables on a loop.
+        // q = QuantumRegister(2)
+        // qc = QuantumCircuit(q)
+        // for i in range(2):
+        //     qc.h(i)
+        or
+        exists(
+            ForNode forNodeMinimal, //AstNode forTreeMinimal,
+            DataFlow::CallCfgNode rangeCall,
+            CallNode call, ControlFlowNode func,
+            DataFlow::LocalSourceNode sourceMaxDimension,
+            IntegerLiteral maxDimension
+            |
+
+            //forTreeMinimal = forNodeMinimal.getNode().getAChildNode() and
+            // make sure that the range call is for a function called range
+            call.getFunction() = func and func.pointsTo(Value::named("range")) and
+            // check tha the range call is in the forNodeMinimal
+            rangeCall.asCfgNode() = call and
+            // check that the range call is the iter of the forNodeMinimal
+            forNodeMinimal.getNode().contains(call.getNode()) and
+            (
+                (
+                    // range(n) with single argument
+                    sourceMaxDimension.flowsTo(rangeCall.getArg(0)) and
+                    sourceMaxDimension.asExpr() = maxDimension and
+                    count(call.getAnArg().getNode()) = 1
+                )
+                or
+                (
+                    // range(i, n) with two arguments
+                    // TODO To improve by checking the difference between the two
+                    // values
+                    sourceMaxDimension.flowsTo(rangeCall.getArg(1)) and
+                    sourceMaxDimension.asExpr() = maxDimension and
+                    count(call.getAnArg().getNode()) = 2
+                )
+
+            ) and
+
+
+            // rangeCall.getArg(0).asExpr() = maxDimension and
+
+            // check that this gate is defined in the scope of the for node
+            forNodeMinimal.getNode().contains(this.asExpr()) and
+
+            // check that the variable of the loop is the same contained in
+            // this gate
+            exists(
+                Name sourceLoopVar, int argPos
+                |
+                // TODO improve when the variable is used in a strange way
+                // for i in range(6):
+                //     circ.u3(self.U3(), 0, 0,[i])
+                sourceLoopVar.getVariable().getAUse().getNode() = this.getArg(argPos).asExpr()  and
+                sourceLoopVar = forNodeMinimal.getNode().getASubExpression()
+            ) and
+
+            // say that the for loop must be minimal
+            // namely there must not be another forNode in it
+            not (exists(
+                ForNode forNode
+                |
+                forNodeMinimal.getNode().contains(forNode.getNode()) and
+                forNodeMinimal.getNode().contains(this.asExpr())
+                |
+                forNode != forNodeMinimal
+                ))
+            |
+            result = [0 .. maxDimension.getValue() - 1]
+        )
     }
+
+
+
 
     QuantumRegister get_a_target_qubit_in_register() {
         exists(
@@ -147,40 +219,6 @@ class Measure extends GenericGate {
         )
     }
 
-    override int get_a_target_qubit() {
-        // note that measure gets qubits only in the first position
-        // TODO: improve to support sequences of qubits or integers
-        // e.g. qc.measure([0, 1], [0, 1])
-        // from documentation Parameters
-        // qubit (Union[Qubit, QuantumRegister, int, slice, Sequence[Union[Qubit, int]]]) – qubit to measure.
-        // cbit (Union[Clbit, ClassicalRegister, int, slice, Sequence[Union[Clbit, int]]]) – classical bit to place the measurement in.
-
-        // TODO: improve to support entire registers
-        // e.g. qc.measure(q, c)
-        exists(
-            QuantumCircuit circ, int target_qubit|
-            this = circ.getAnAttributeRead("measure").getACall() and
-            target_qubit = this.getArg(0).asExpr().(IntegerLiteral).getValue()|
-            // return a list with only the target qubit
-            result = target_qubit
-        )
-        or
-        exists(
-            QuantumCircuit circ,
-            QuantumRegister qreg,
-            DataFlow::Node nd,
-            DataFlow::ExprNode targetSubscript,
-            Subscript subscript,
-            IntegerLiteral bit|
-                this = circ.getAnAttributeRead("measure").getACall() and
-                qreg.flowsTo(nd) and
-                nd.asExpr() = targetSubscript.asExpr() and
-                targetSubscript.asExpr() = subscript.getObject() and
-                subscript = this.getArg(0).asExpr() and
-                bit = subscript.getIndex() |
-                result = bit.getValue()
-        )
-    }
 }
 
 class MeasureAll extends GenericGate {
