@@ -1,0 +1,119 @@
+# This file contains all the parameters needed to convert the downloaded files
+# into a dataset of programs.
+# Ideally the result should be ready to be ingested by CodeQL
+
+# experiment name, this will be used to create a new folder in the dataset
+# folder
+experiment_name: exp_v06
+
+
+# folder containing the raw json downloaded from github
+github_query_results: data/github_query_results/exp_v03
+
+# you can work on a subset of the total data downloaded
+# (comment out if you do not want to sample)
+# sample_size: 5000
+# random_seed: 96
+
+
+# Folder where the dataset will be stored.
+dataset_folder: data/datasets/exp_v06
+
+# At the end of the procedure the folder will contain:
+# - df_summary.csv: a csv containing the github query info in a single table
+# - raw_files (dir): a subfolder with all the raw files downloaded from github
+# - files_selected (dir): containing the files selected after all
+#   processing steps.
+# - intermediate_results (dir): containing the output of each step
+
+# The processing steps to go from raw files to the final dataset.
+#
+# the filter to perform to create the dataset.
+# a subfolder in with the intermediate results will be created for each
+# filter step.
+# the filters are applied in order of definition.
+processing_steps:
+  - name: remove_too_long_filenames
+    function_name: remove_too_long_filenames
+    skip: false
+    parameters:
+      max_length: 2048
+  # - name: sanitize_filenames
+  #   function_name: sanitize_filenames
+  - name: keep_only_py_and_ipynb
+    function_name: keep_based_on_attribute
+    skip: false
+    parameters:
+      attribute: extension
+      values:
+        - py
+        - ipynb
+  # remove blacklisted repos
+  - name: remove_blacklisted_repos
+    function_name: filter_out
+    skip: false
+    parameters:
+      attribute: repository_name
+      values:
+        - "UCLA-SEAL/QDiff"  # research: differential testing
+        - "wjy99-c/QDiff"  # research: differential testing
+        - "sola-st/MorphQ-Quantum-Qiskit-Testing-ICSE-23"  # research :metamorphic testing
+        - "MattePalte/Bugs-Quantum-Computing-Platforms" # bug study on quantum bugs
+        - "Z-928/Bugs4Q-Framework" # bug study on quantum bugs - framework
+        - "Z-928/Bugs4Q" # bug study on quantum bugs
+        - "dmquinones/qiskit-terra"
+        - "1ucian0/qiskit-terra-fuzz"
+        - "v-r0/qiskit-terra_duplicate20210324"
+        - "mtreinish/qiskit-terra-sandbox"
+        - "vandnaChaturvedi/Qiskit_terra"
+        - "singular-value/qiskit-terra"
+        - "rickyHong/qiskit-terra-repl"
+        - "frevson/Qiskit-Terra"
+        - "IgnacioRiveraGonzalez/qiskit-aer"
+        - "hirabaya443/qiskit-metal"
+        - "v-r0/qiskit-aer_duplicate20210324"
+        - "Simula-COMPLEX/muskit"  # research prototypes
+        - "rickyHong/Qiskit-aqua-repl"
+        - "frevson/Qiskit-Aqua"
+        - "Simula-COMPLEX/Quantum-Software-Engineering"  # research prototypes
+        - "danmills0/qiskit"
+        - "waheeda-saib/qiskit"
+        - "904194705/Qiskit-RIKEN-project-"
+        - "CeYang-Leeds/MSC_porject"  # qdiff replication
+  # # remove informal repos, by removing duplicated
+  # # - name: remove_informal_forks
+  # #   function_name: remove_selected_duplicates
+  # #   parameters:
+  # #     attribute: repository_description
+  # #     values:
+  # #       - ffff
+  # whether some file should be transformed before the filtering
+  - name: convert_ipynb_to_content_only
+    function_name: convert_ipynb_to_content_only
+    skip: false
+    parameters:
+      max_workers: 10
+  # wether only parsable code should be kept
+  - name: parsable
+    function_name: remove_unparsable_python
+    parameters:
+      max_workers: 10
+  - name: add_hash_of_the_content
+    function_name: add_hash_of_the_content
+    skip: false
+  - name: hash_deduplication
+    function_name: remove_duplicates
+    parameters:
+      attributes:
+        - hash_content
+  # whether the files include/or not the following regex
+  - name: include_import
+    function_name: content_regex_filter
+    parameters:
+      regex: "^[\\s]*(import qiskit|from qiskit import)"
+      keep_if_match: true
+  - name: exclude_platform_code
+    function_name: content_regex_filter
+    parameters:
+      regex: "(# This code is part of Qiskit.)"
+      keep_if_match: false
