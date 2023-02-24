@@ -11,4 +11,5 @@ fi
 ## Save the files in the array $files
 files=( "$targetDir"/* )
 ## Cat a random file
+echo "Opening file: ${files[RANDOM % ${#files[@]}]}"
 code "${files[RANDOM % ${#files[@]}]}"
