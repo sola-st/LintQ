@@ -1,0 +1,2 @@
+| op_added_with_for_loop.py:4:8:4:24 | ControlFlowNode for QuantumCircuit() | Circuit 'circ' never manipulates some of its 12qubits. |
+| op_added_with_for_loop.py:17:10:17:26 | ControlFlowNode for QuantumCircuit() | Circuit 'circ_x' never manipulates some of its 6qubits. |

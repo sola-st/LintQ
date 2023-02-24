@@ -1,7 +1,7 @@
 /**
  * @name Unmeasurable qubits.
  * @description Finds circuits instantiated with a lower number of classical
- * bits than the number of qubits, meaning that the full quabntum state cannot
+ * bits than the number of qubits, meaning that the full quantum state cannot
  * be measured.
  * @kind problem
  * @tags maintainability

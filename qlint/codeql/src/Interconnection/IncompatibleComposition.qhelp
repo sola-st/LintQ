@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The class <code>qiskit.circuit.QuantumCircuit</code> provides a method <code>compose()</code> to append a circuit to the current one.
+This fails when the circuit to be appended is larger than the original one.
+</p>
+</overview>
+
+<recommendation>
+<p>Enlarge the size of the main circuit, reduce the size of the sub-circuit (if possible), or compose them in the opposite order.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, <code>compose()</code> does not receive the parameters <code>parameters</code> and <code>clbits</code></p>
+<sample src="IncompatibleComposition.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.compose.html">QuantumCircuit.compose</a>.</li>
+</references>
+
+</qhelp>

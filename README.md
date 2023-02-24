@@ -89,11 +89,14 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
     screen -L -Logfile data/datasets/exp_vXX/log_filter.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation filterdataset --config config/dataset_creation_exp_vXX.yaml
     ```
 
-1. Move the selected programs in a dedicated folder (typically called `files_selected`) and create a subfolder structure, such that each file is stored in a single subfolder.
+1. Move the selected programs in a dedicated folder (typically called `files_selected`) by running:
+    ```bash
+    screen -L -Logfile data/datasets/exp_vXX/log_filter.txt -S qiskit_dataset_creation python -m qlint.datautils.dataset_creation createselection --config config/dataset_creation_exp_vXX.yaml
+    ```
 
 1. Create the CodeQL database for the filtered dataset:
     ```bash
-    screen -L -Logfile data/datasets/exp_vXX/log.txt -S codeql_database_creation codeql database create --language=python --threads=10 data/datasets/exp_vXX/files_selected/ -- data/datasets/exp_vXX/codeql_db
+    screen -L -Logfile data/datasets/exp_vXX/log.txt -S codeql_database_creation codeql database create --language=python --threads=10 --source-root=data/datasets/exp_vXX/files_selected/ -- data/datasets/exp_vXX/codeql
     ```
 
 
@@ -121,12 +124,12 @@ Follow these steps:
 
 Follow these steps:
 1. Run the queries in the `qlint/codeql/src` folder on the dataset (in the folder `data/datasets/exp_vXX/codeql_db`) with the following command:
-The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{current_date_time}`.
+The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{current_date_time}`. Note: add `--rerun` to the command if you want to re-run the analysis on the same dataset without using the cache.
     ```bash
     export CURRENT_DATE_TIME=`date "+%Y-%m-%d_%H-%M-%S"`; \
     export OUTPUT_DIR=data/analysis_results/exp_vXX/codeql_${CURRENT_DATE_TIME}; \
     mkdir -p $OUTPUT_DIR; \
-    codeql database analyze --format=sarifv2.1.0 --output=$OUTPUT_DIR/data.sarif -- data/datasets/exp_vXX/codeql_db/ qlint/codeql/src
+    codeql database analyze --format=sarifv2.1.0 --threads=10 --output=$OUTPUT_DIR/data.sarif -- data/datasets/exp_vXX/codeql_db/ qlint/codeql/src
     ```
     Demo version:
     ```bash

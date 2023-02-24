@@ -7,3 +7,9 @@
 
 # workspace settings
 qlint.code-workspace
+
+# markdown generated from qref
+qlint/codeql/src/**/**/*.md
+
+# generic logs from screen
+log*.txt

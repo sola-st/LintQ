@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The class <code>qiskit.circuit.QuantumCircuit</code> provides a method <code>compose()</code> to append a circuit to the current one.
+If the parameters <code>qubits</code> and <code>clbits</code> of the functions are not set there is an implicit composition which might
+be not the correct one, especially when the size of the two circuits are different.
+</p>
+</overview>
+
+<recommendation>
+<p>Fix the parameters <code>qubits</code> and <code>clbits</code> of the function <code>compose()</code> so that the connection is explicit.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, <code>compose()</code> does not receive the parameters <code>qubits</code> and <code>clbits</code></p>
+<sample src="UngovernedComposition.py" />
+<p>
+This will make Qiskit infer which is the correct concatenation, leaving space to bugs or simply unclear code.
+</p>
+
+<p>A more clear composition can be obtained by setting the parameters <code>qubits</code> and <code>clbits</code></p>
+<sample src="UngovernedComposition2.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.compose.html">QuantumCircuit.compose</a>.</li>
+</references>
+
+</qhelp>

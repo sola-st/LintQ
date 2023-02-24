@@ -195,6 +195,9 @@ class GenericGate extends DataFlow::CallCfgNode {
                 this.get_a_target_qubit() = g.get_a_target_qubit() and
                 this.get_quantum_circuit() = g.get_quantum_circuit() and
                 g.asCfgNode().strictlyReaches(this.asCfgNode())
+                // TODO: and the path between g and this does not contain any other
+                // initialization of the same circuit
+
         )
     }
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The class <code>qiskit.circuit.QuantumCircuit</code> provides a method <code>compose()</code> to append a circuit to the current one.
+If the parameter <code>inplace</code> is not explicitly set to <code>true</code>, the function returns a new object with the two circuits concatenated.
+Thus the returned new circuit needs to be stored into a variable, otherwise the composed circuit is lost and never used, just transient.
+</p>
+</overview>
+
+<recommendation>
+<p>Add <code>inplace=True</code> or store the returned value in the object itself.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, we do not store the return value of <code>compose()</code> and effectively loose the sub-circuit.</p>
+<sample src="GhostComposition.py" />
+
+<p>Change it to <code>qc_macro.compose(qc_subcircuit, inplace=True)</code> to make it work.</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.compose.html">QuantumCircuit.compose</a>.</li>
+</references>
+
+</qhelp>

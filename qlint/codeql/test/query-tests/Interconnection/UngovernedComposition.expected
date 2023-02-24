@@ -1,0 +1,5 @@
+| compose_use.py:9:1:9:31 | ControlFlowNode for Attribute() | The composition of subcircuit 'qc_subcircuit' to the 'qc_macro' has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used). |
+| compose_use.py:14:20:14:58 | ControlFlowNode for Attribute() | The composition of subcircuit 'qc_subcircuit' to the 'qc_macro_correct' has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used). |
+| compose_use.py:19:1:19:61 | ControlFlowNode for Attribute() | The composition of subcircuit 'qc_subcircuit' to the 'qc_macro_correct_inplace' has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used). |
+| compose_use.py:25:5:25:53 | ControlFlowNode for Attribute() | The composition of subcircuit 'qc_subcircuit' to the 'qc_macro_correct_transient' has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used). |
+| compose_use.py:40:1:40:54 | ControlFlowNode for Attribute() | The composition of subcircuit 'qc_subcircuit' to the 'qc_macro_implicit' has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used). |

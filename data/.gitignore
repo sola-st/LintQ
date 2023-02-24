@@ -8,3 +8,6 @@ demo_dataset_output/*
 demo_dataset/*
 
 zenodo/*
+
+datasets/tmp_test_db/*
+datasets/exp_v*/*

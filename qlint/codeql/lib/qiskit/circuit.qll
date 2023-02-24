@@ -20,13 +20,6 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    int get_num_qubits_with_integers() {
-        exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
-            source.flowsTo(this.getArg(0)) and
-            source.asExpr() = num_qubits |
-            result = num_qubits.getValue()
-        )
-    }
 
     int get_num_bits_with_integers() {
         // get the number of bits as created with integrer literals
@@ -41,11 +34,15 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    int get_total_num_bits() {
+    int get_num_bits_from_registers() {
+        // get the number of bits as created with initialized registers
+        // creg = ClassicalRegister(3, 'c')
+        // qc = QuantumCircuit(2, creg)
+        // the number of bits is 3
         result = sum(
             ClassicalRegister clsReg
             |
-                exists(int i | clsReg.flowsTo(this.getArg(i)))
+                clsReg.flowsTo(this.getArg(_))
                 or
                 // there is a this.add_register() call with clsReg as argument
                 exists(
@@ -54,10 +51,48 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
                     addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
                     clsReg.flowsTo(addRegisterCall.getArg(0)))
             |
-            clsReg.get_num_bits()) + this.get_num_bits_with_integers()
+            clsReg.get_num_bits())
+
     }
 
-    int get_total_num_qubits() {
+    int get_total_num_bits() {
+        exists(
+            int num_bits_from_registers, int num_bits_with_integers |
+            num_bits_from_registers = this.get_num_bits_from_registers() and
+            num_bits_with_integers = this.get_num_bits_with_integers() |
+            result = num_bits_from_registers + num_bits_with_integers
+        ) or
+        // if there is only a classical register
+        exists(
+            int num_bits_from_registers
+            |
+            num_bits_from_registers = this.get_num_bits_from_registers() and
+            not exists(int num_bits_with_integers |
+                num_bits_with_integers = this.get_num_bits_with_integers())
+            |
+            result = num_bits_from_registers
+        ) or
+        // if there is only a number of bits
+        exists(
+            int num_bits_with_integers
+            |
+            num_bits_with_integers = this.get_num_bits_with_integers() and
+            not exists(int num_bits_from_registers |
+                num_bits_from_registers = this.get_num_bits_from_registers())
+            |
+            result = num_bits_with_integers
+        )
+    }
+
+    int get_num_qubits_with_integers() {
+        exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
+            source.flowsTo(this.getArg(0)) and
+            source.asExpr() = num_qubits |
+            result = num_qubits.getValue()
+        )
+    }
+
+    int get_num_qubits_from_registers() {
         result = sum(
             QuantumRegister qntReg
             |
@@ -70,7 +105,36 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
                     addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
                     qntReg.flowsTo(addRegisterCall.getArg(0)))
             |
-            qntReg.get_num_qubits()) + this.get_num_qubits_with_integers()
+            qntReg.get_num_qubits())
+    }
+
+    int get_total_num_qubits() {
+        exists(
+            int num_qubits_from_registers, int num_qubits_with_integers |
+            num_qubits_from_registers = this.get_num_qubits_from_registers() and
+            num_qubits_with_integers = this.get_num_qubits_with_integers() |
+            result = num_qubits_from_registers + num_qubits_with_integers
+        ) or
+        // if there is only a quantum register
+        exists(
+            int num_qubits_from_registers
+            |
+            num_qubits_from_registers = this.get_num_qubits_from_registers() and
+            not exists(int num_qubits_with_integers |
+                num_qubits_with_integers = this.get_num_qubits_with_integers())
+            |
+            result = num_qubits_from_registers
+        ) or
+        // if there is only a number of qubits
+        exists(
+            int num_qubits_with_integers
+            |
+            num_qubits_with_integers = this.get_num_qubits_with_integers() and
+            not exists(int num_qubits_from_registers |
+                num_qubits_from_registers = this.get_num_qubits_from_registers())
+            |
+            result = num_qubits_with_integers
+        )
     }
 
     predicate is_subcircuit() {

@@ -1,0 +1,4 @@
+| initialize_circuit_size.py:5:15:5:40 | ControlFlowNode for QuantumCircuit() | Classical register 'qc_only_reg' with 3 bits and 3 qubits |
+| initialize_circuit_size.py:7:20:7:39 | ControlFlowNode for QuantumCircuit() | Classical register 'qc_only_integers' with 2 bits and 1 qubits |
+| initialize_circuit_size.py:11:19:11:34 | ControlFlowNode for QuantumCircuit() | Classical register 'qc_add_register' with 10 bits and 8 qubits |
+| initialize_circuit_size.py:15:22:15:53 | ControlFlowNode for QuantumCircuit() | Classical register 'qc_multi_registers' with 13 bits and 11 qubits |
