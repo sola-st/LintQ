@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>To adapt a quantum circuit to the underlying quantum computer you need to transpile it using the function <code>transpile</code>.
+The transpilation procedure converts the quantum gates in the program to those executable on the target hardware and maps logical qubits to physical ones.
+This process also performs optimizations, such as <code>OptimizeSwapBeforeMeasure</code> which can drop final swap gates if no measurement is performed after them.
+Thus adding measurement or other operations before the transpilation ensures that all can be considered, otherwise you might end up with a non semantically equivalent circuit.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure to transpile only at the end, when the circuit is ready to be executed, never transpile sub-circuits, in the hope they could be integrated to a larger circuit.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the gate <code>h</code> is applied transpiled circuit.</p>
+<sample src="OpAfterOptimization.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.compiler.transpile.html">compiler.transpile()</a>.</li>
+</references>
+
+</qhelp>
