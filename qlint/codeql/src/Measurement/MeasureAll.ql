@@ -8,7 +8,7 @@
  *       qiskit
  * @problem.severity error
  * @precision high
- * @id QL100-MeasureAll
+ * @id ql-measure-all-abuse
  */
 
 import python
@@ -19,14 +19,22 @@ import qiskit.circuit
 
 from
     QuantumCircuit quantumCirc,
-    ClassicalRegister classicalReg,
     MeasureAll measureAllOp
 where
     quantumCirc.get_a_generic_gate() = measureAllOp and
+    // measureAllOp must not have add_bits parameters set to False
+    not (
+        measureAllOp.(API::CallNode).getParameter(
+            1, "add_bits").getAValueReachingSink().asExpr().(
+                ImmutableLiteral).booleanValue() = false
+                ) and
     // the circuit must have a classical register
-    // namely there must be a flow from a classical register to the argument of the
-    // quantum circuit constructor
-    classicalReg.(DataFlow::LocalSourceNode).flowsTo(quantumCirc.getArg(1))
+    quantumCirc.get_total_num_bits() > 0
 select
-    measureAllOp, "measure_all used on '" + quantumCirc.get_name() + "' when a classical register is present " +
-    "(at location: " + measureAllOp.getLocation().getStartLine() + ", " + measureAllOp.getLocation().getStartColumn() + ")"
+    measureAllOp, "measure_all() on the circuit '" + quantumCirc.get_name() +
+    "' (at location:" +
+        quantumCirc.getLocation().getStartLine() + ", " +
+        quantumCirc.getLocation().getStartColumn() + ") " +
+    " when it has already " +
+        quantumCirc.get_total_num_bits()
+        + " classical bits."

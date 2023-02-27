@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds usage of <code>measure_all</code> calls used in a circuit which contains already a classical register.
+The call must not contain the <code>add_bits=False</code> parameter.
+Indeed, using <code>measure_all</code> in a circuit with a classical register is creating a brand new classical register in addition to the existing one.
+This creates confusion since it produces bit-strings which are unnecessary long including the measured value of the initial classical register and the new added one.
+</p>
+</overview>
+
+<recommendation>
+<p>Add <code>add_bits=False</code> or use the call <code>measure_all</code> on a circuit without classical register.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the presence of <code>measure_all</code> with a classical register generates an output string longer than expected (two qubits).</p>
+<sample src="MeasureAll.py" />
+
+<p>Change it to <code>qc.measure_all(add_bits=False)</code> to avoid useless the confusing creating of an extra register in this context.</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.measure_all.html">QuantumCircuit.measure_all()</a>.</li>
+</references>
+
+</qhelp>

@@ -10,7 +10,7 @@
  *       qiskit
  * @problem.severity warning
  * @precision high
- * @id ql-incompatible-composition
+ * @id ql-ungoverned-composition
  */
 
 import python

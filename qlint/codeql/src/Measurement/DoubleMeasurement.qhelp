@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds two usage of <code>measure()</code> calls used in a circuit which measure the same qubit twice.
+Measuring a qubit which has already been measured means to operate on a collapsed classical state which will always return the same result obtained in the first measurement.
+</p>
+</overview>
+
+<recommendation>
+<p>Avoid measuring the same qubit twice.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, there are two <code>measure()</code> calls acting on the same qubit 1: <code>circuit.measure(0, 0)</code> and <code>circuit.measure(0, 1)</code></p>
+<sample src="DoubleMeasurement.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.measure.html">QuantumCircuit.measure()</a>.</li>
+</references>
+
+</qhelp>

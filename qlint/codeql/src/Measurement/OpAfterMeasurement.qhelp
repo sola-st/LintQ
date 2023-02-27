@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds when an operation is performed on a qubit after a measurement.
+The measurement (via <code>measure()</code> call) collapses the quantum state, thus destroying the quantum state of the qubit, for this reason, typically the measurement is performed at the end of the circuit.
+Thus, performing any operation on a qubit after it has been measured might signal a bug.
+
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that the measurements come after the gates performing the quantum algorithm. In Qiskit, you might use the <code>qc.barrier()</code> to clearly separate the two sections.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the gate <code>cx</code> is applied to qubit 0 and 1 after qubit 0 has been already measured.</p>
+<sample src="OpAfterMeasurement.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.measure.html">QuantumCircuit.measure()</a>.</li>
+</references>
+
+</qhelp>
