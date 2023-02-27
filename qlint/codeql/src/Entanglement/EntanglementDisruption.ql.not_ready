@@ -1,0 +1,40 @@
+/**
+ * @name Entangled pairs distrupted.
+ * @description two qubits that are (potentially) entangled get measured at
+ * different times and one of the two has a gate in between these two moments.
+ * This is a problem because the measurement of one qubit will influence the
+ * state of the other qubit, thus the computation of the second qubit might
+ * be wrong.
+ * @kind problem
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision low
+ * @id ql-entanglement-disruption
+ */
+
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
+import qiskit.circuit
+
+
+from
+// TODO
+    Measure measureFirst, Measure measureSecond
+where
+// TODO
+    measureSecond.follows(measureFirst)
+
+select
+// TODO
+    measureSecond, "Two consecutive measurements on qubit '" +
+        measureFirst.get_a_target_qubit() + "' " +
+    "at locations: (" +
+         measureFirst.getLocation().getStartLine() + ", " +
+         measureFirst.getLocation().getStartColumn() +
+         ") and (" +
+         measureSecond.getLocation().getStartLine() + ", " +
+         measureSecond.getLocation().getStartColumn() +
+    ")"
