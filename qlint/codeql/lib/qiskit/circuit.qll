@@ -2,7 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.register
-import qiskit.gate
+import qiskit.Gate
 
 
 class QuantumCircuit extends DataFlow::CallCfgNode {
@@ -151,14 +151,14 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
 
     }
 
-    Gate get_a_gate() {
-        exists(Gate g | g.get_quantum_circuit() = this |
+    GenericGateNew get_a_gate() {
+        exists(GenericGateNew g | g.getQuantumCircuit() = this |
             result = g
         )
     }
 
-    GenericGate get_a_generic_gate() {
-        exists(GenericGate g | g.get_quantum_circuit() = this |
+    GenericGateNew get_a_generic_gate() {
+        exists(GenericGateNew g | g.getQuantumCircuit() = this |
             result = g
         )
     }

@@ -39,6 +39,7 @@ class GateName extends string {
     }
 }
 
+
 // TODO: improve to support
 // from qiskit import QuantumCircuit
 // qc = QuantumCircuit(2)
@@ -68,6 +69,7 @@ class GenericGate extends DataFlow::CallCfgNode {
             result = circ
         )
     }
+
 
 
     int get_a_target_qubit() {
@@ -172,9 +174,6 @@ class GenericGate extends DataFlow::CallCfgNode {
         )
     }
 
-
-
-
     QuantumRegister get_a_target_qubit_in_register() {
         exists(
             QuantumCircuit circ,
@@ -232,4 +231,5 @@ class MeasureAll extends GenericGate {
             this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
         )
     }
+
 }
