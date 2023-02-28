@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds circuits instantiated with a lower number of classical bits than the number of qubits. This means that the full quantum state cannot be measured, thus there might be some information which we do not consider, possibly rendering the result incomplete.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure to always allocate enough classical bit as many qubits you work on and measure always all the qubits involved in your computation.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the circuit has a register with three qubits but only one classical bit, consequently the third bit is never measured.</p>
+<sample src="UnmeasureableQubits.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.measure.html">measure()</a>.</li>
+</references>
+
+</qhelp>

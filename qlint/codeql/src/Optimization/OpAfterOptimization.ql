@@ -18,9 +18,9 @@ import qiskit.circuit
 
 from
     TranspiledCircuit transpiledCirc,
-    GenericGate gate
+    GenericGateNew gate
 where
     transpiledCirc.getScope() = gate.getScope() and
     gate = transpiledCirc.get_a_generic_gate()
 select
-    gate, "Gate " + gate.get_gate_name() + " applied to transpiled circuit: " + transpiledCirc.get_name() + "."
+    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: " + transpiledCirc.get_name() + "."

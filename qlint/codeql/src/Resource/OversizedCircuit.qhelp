@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds circuits instantiated with a larger number of qubits than the actual number of qubits used in gate operations. Thus it spots those circuit with unused qubits, meaning they are wasting the scarce quantum computing resources.
+Note that this checks only the quantum resources, namely the size of the <code>QuantumRegister</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure to use registers of the size you need for your computation and not more.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the circuit has a register with three qubits but only two are used.</p>
+<sample src="OversizedCircuit.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumRegister.html">QuantumRegister()</a>.</li>
+</references>
+
+</qhelp>

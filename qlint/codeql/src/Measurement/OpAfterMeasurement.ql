@@ -8,7 +8,7 @@
  *       qiskit
  * @problem.severity error
  * @precision high
- * @id QL104-OpAfterMeasurement
+ * @id ql-operation-after-measurement
  */
 
 import python
@@ -17,14 +17,16 @@ import semmle.python.ApiGraphs
 import qiskit.circuit
 
 from
-    Measure measure,
-    Gate gate
+    MeasureGateCall measure,
+    GateQuantumOperation gate,
+    int shared_qubit
 where
-    gate.follows(measure)
-    // do not put any other conditions in AND here
-    // otherwise the query will become inefficient
-    // https://github.com/github/codeql/issues/4909
-    // that could be because of the way get_a_target_qubit() works using and OR
+    gate.isAppliedAfter(measure) and
+    shared_qubit = measure.getATargetQubit() and
+    shared_qubit = gate.getATargetQubit()
+    // make sure that there is no definition of the circuit on the
+    // control flow path between the measurement and the operation
 select
-    gate, "Operation '" + gate.get_gate_name() + "' on qubit " + measure.get_a_target_qubit().toString() + " after measurement " +
-    "at location: (" + gate.getLocation().getStartLine() + ", " + gate.getLocation().getStartColumn() + ")."
+    gate, "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
+    " after measurement at location: (" +
+    gate.getLocation().getStartLine() + ", " + gate.getLocation().getStartColumn() + ")."

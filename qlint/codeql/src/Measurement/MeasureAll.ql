@@ -19,9 +19,9 @@ import qiskit.circuit
 
 from
     QuantumCircuit quantumCirc,
-    MeasureAll measureAllOp
+    MeasureAllGateCall measureAllOp
 where
-    quantumCirc.get_a_generic_gate() = measureAllOp and
+    quantumCirc = measureAllOp.getQuantumCircuit() and
     // measureAllOp must not have add_bits parameters set to False
     not (
         measureAllOp.(API::CallNode).getParameter(

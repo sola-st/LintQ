@@ -23,9 +23,9 @@ where
     // there is a qubits in the range of available qubits which is never used
     exists(int i |
         i in [0 .. numQubits - 1] and
-        not exists(Gate g |
-            g.get_quantum_circuit() = circ and
-            g.get_a_target_qubit() = i
+        not exists(GenericGateNew g |
+            g.getQuantumCircuit() = circ and
+            g.getATargetQubit() = i
         )
     )
 select

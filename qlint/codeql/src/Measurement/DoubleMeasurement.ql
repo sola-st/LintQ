@@ -7,25 +7,26 @@
  *       qiskit
  * @problem.severity error
  * @precision high
- * @id QL102-DoubleMeasurement
+ * @id ql-double-measurement
  */
 
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.circuit
+import qiskit.Gate
 
 from
-    Measure measureFirst, Measure measureSecond
+    MeasureGateCall measureFirst, MeasureGateCall measureSecond
 where
-    measureSecond.follows(measureFirst)
+    measureSecond.isAppliedAfter(measureFirst)
     // do not put any other conditions in AND here
     // otherwise the query will become inefficient
     // https://github.com/github/codeql/issues/4909
     // that could be because of the way get_a_target_qubit() works using and OR
 select
     measureSecond, "Two consecutive measurements on qubit '" +
-        measureFirst.get_a_target_qubit() + "' " +
+        measureFirst.getATargetQubit() + "' " +
     "at locations: (" +
          measureFirst.getLocation().getStartLine() + ", " +
          measureFirst.getLocation().getStartColumn() +

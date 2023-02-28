@@ -1,0 +1,38 @@
+/**
+ * @name Register too small
+ * @description when measure operation has been called on two registers but the
+ * quantum register is bigger than the classical register, thus an error is
+ * thrown at runtime because the result cannot be accomodated in the classical
+ * register.
+ * @kind problem
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision low
+ * @id ql-register-too-small
+ */
+
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
+import qiskit.circuit
+
+
+from
+// TODO
+    Measure measure
+where
+// TODO
+
+select
+// TODO
+    measureSecond, "Two consecutive measurements on qubit '" +
+        measureFirst.get_a_target_qubit() + "' " +
+    "at locations: (" +
+         measureFirst.getLocation().getStartLine() + ", " +
+         measureFirst.getLocation().getStartColumn() +
+         ") and (" +
+         measureSecond.getLocation().getStartLine() + ", " +
+         measureSecond.getLocation().getStartColumn() +
+    ")"
