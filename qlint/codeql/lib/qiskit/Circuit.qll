@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.register
+import qiskit.Register
 import qiskit.Gate
 
 
@@ -13,7 +13,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
     }
 
-    string get_name() {
+    string getName() {
         exists(AssignStmt a |
             a.contains(this.getNode().getNode()) and
             result = a.getATarget().(Name).getId()
@@ -21,7 +21,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     }
 
 
-    int get_num_bits_with_integers() {
+    private int get_num_bits_with_integers() {
         // get the number of bits as created with integrer literals
         // e.g. QuantumCircuit(2, 3)
         // the number of bits is 3
@@ -34,7 +34,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    int get_num_bits_from_registers() {
+    private int get_num_bits_from_registers() {
         // get the number of bits as created with initialized registers
         // creg = ClassicalRegister(3, 'c')
         // qc = QuantumCircuit(2, creg)
@@ -51,11 +51,11 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
                     addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
                     clsReg.flowsTo(addRegisterCall.getArg(0)))
             |
-            clsReg.get_num_bits())
+            clsReg.getSize())
 
     }
 
-    int get_total_num_bits() {
+    int getNumberOfClassicalBits() {
         exists(
             int num_bits_from_registers, int num_bits_with_integers |
             num_bits_from_registers = this.get_num_bits_from_registers() and
@@ -84,7 +84,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    int get_num_qubits_with_integers() {
+    private int get_num_qubits_with_integers() {
         exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
             source.flowsTo(this.getArg(0)) and
             source.asExpr() = num_qubits |
@@ -92,7 +92,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    int get_num_qubits_from_registers() {
+    private int get_num_qubits_from_registers() {
         result = sum(
             QuantumRegister qntReg
             |
@@ -105,10 +105,10 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
                     addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
                     qntReg.flowsTo(addRegisterCall.getArg(0)))
             |
-            qntReg.get_num_qubits())
+            qntReg.getSize())
     }
 
-    int get_total_num_qubits() {
+    int getNumberOfQubits() {
         exists(
             int num_qubits_from_registers, int num_qubits_with_integers |
             num_qubits_from_registers = this.get_num_qubits_from_registers() and
@@ -137,40 +137,37 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
-    predicate is_subcircuit() {
-        // it is a subcircuit this circuit is the argument of the append() or
-        // compose() called on another circuit
-        exists(QuantumCircuit motherCircuit |
-            motherCircuit != this |
-            exists(DataFlow::CallCfgNode appendOrComposeCall |
-                appendOrComposeCall = motherCircuit.getAnAttributeRead("append").getACall()
-                or appendOrComposeCall = motherCircuit.getAnAttributeRead("compose").getACall()|
-                this.flowsTo(appendOrComposeCall.getArg(0))
-            )
+    predicate isSubCircuit() {
+        exists(QuantumCircuit qc |
+            qc.isSubCircuitOf(this)
         )
-
     }
 
-    GenericGateNew get_a_gate() {
-        exists(GenericGateNew g | g.getQuantumCircuit() = this |
+    predicate isSubCircuitOf(QuantumCircuit other) {
+        this != other and
+        // this circuit is the argument of the append() or compose() called on
+        // another circuit
+        exists(DataFlow::CallCfgNode appendOrComposeCall |
+            appendOrComposeCall = other.getAnAttributeRead("append").getACall()
+            or appendOrComposeCall = other.getAnAttributeRead("compose").getACall()|
+            this.flowsTo(appendOrComposeCall.getArg(0))
+        )
+    }
+
+    Gate getAGate() {
+        exists(Gate g | g.getQuantumCircuit() = this |
             result = g
         )
     }
 
-    GenericGateNew get_a_generic_gate() {
-        exists(GenericGateNew g | g.getQuantumCircuit() = this |
-            result = g
-        )
-    }
-
-    QuantumRegister get_a_quantum_register() {
+    QuantumRegister getAQuantumRegister() {
         exists(QuantumRegister qntReg, int i |
             qntReg.flowsTo(this.getArg(i)) |
             result = qntReg
         )
     }
 
-    ClassicalRegister get_a_classical_register() {
+    ClassicalRegister getAClassicalRegister() {
         exists(ClassicalRegister clsReg, int i |
             clsReg.flowsTo(this.getArg(i)) |
             result = clsReg
@@ -193,5 +190,10 @@ class TranspiledCircuit extends QuantumCircuit{
         //         //transpileCall.flowsTo(leftSide) and
         //         this = leftSide
         // )
+    }
+
+    int getOptimizationLvl() {
+        result = this.( API::CallNode ).getParameter(7, "optimization_level")
+            .getAValueReachingSink().asExpr().(IntegerLiteral).getValue()
     }
 }

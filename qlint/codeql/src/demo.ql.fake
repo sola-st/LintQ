@@ -1,0 +1,8 @@
+import python
+import qiskit.circuit
+
+// get the iteration variable of each for loop
+
+from ForNode forNode
+where exists(forNode.getNode().getIter())
+select forNode.getNode().getASubExpression(), "for loop iteration variable"

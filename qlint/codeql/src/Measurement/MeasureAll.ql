@@ -14,27 +14,29 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 
+
+predicate isMeasureAllCalledWithDefaultValues(MeasurementAll measureAllOp) {
+    not measureAllOp.(API::CallNode).getParameter(
+        1, "add_bits").getAValueReachingSink().asExpr().(
+            ImmutableLiteral).booleanValue() = false
+}
 
 from
     QuantumCircuit quantumCirc,
-    MeasureAllGateCall measureAllOp
+    MeasurementAll measureAllOp
 where
     quantumCirc = measureAllOp.getQuantumCircuit() and
     // measureAllOp must not have add_bits parameters set to False
-    not (
-        measureAllOp.(API::CallNode).getParameter(
-            1, "add_bits").getAValueReachingSink().asExpr().(
-                ImmutableLiteral).booleanValue() = false
-                ) and
+    isMeasureAllCalledWithDefaultValues(measureAllOp) and
     // the circuit must have a classical register
-    quantumCirc.get_total_num_bits() > 0
+    quantumCirc.getNumberOfClassicalBits() > 0
 select
-    measureAllOp, "measure_all() on the circuit '" + quantumCirc.get_name() +
+    measureAllOp, "measure_all() on the circuit '" + quantumCirc.getName() +
     "' (at location:" +
         quantumCirc.getLocation().getStartLine() + ", " +
         quantumCirc.getLocation().getStartColumn() + ") " +
     " when it has already " +
-        quantumCirc.get_total_num_bits()
+        quantumCirc.getNumberOfQubits()
         + " classical bits."

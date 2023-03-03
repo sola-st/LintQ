@@ -8,19 +8,20 @@
  *       qiskit
  * @problem.severity error
  * @precision medium
- * @id QL105-OpAfterOptimization
+ * @id ql-op-after-optimization
  */
 
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
+import qiskit.Gate
 
 from
     TranspiledCircuit transpiledCirc,
-    GenericGateNew gate
+    Gate gate
 where
-    transpiledCirc.getScope() = gate.getScope() and
-    gate = transpiledCirc.get_a_generic_gate()
+    gate = transpiledCirc.getAGate() and
+    transpiledCirc.getOptimizationLvl() = 3
 select
-    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: " + transpiledCirc.get_name() + "."
+    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: " + transpiledCirc.getName() + "."

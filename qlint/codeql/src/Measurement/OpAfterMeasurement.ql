@@ -14,13 +14,15 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
+import qiskit.Gate
 
 from
-    MeasureGateCall measure,
-    GateQuantumOperation gate,
+    MeasureGate measure,
+    Gate gate,
     int shared_qubit
 where
+    not gate.isMeasurement() and
     gate.isAppliedAfter(measure) and
     shared_qubit = measure.getATargetQubit() and
     shared_qubit = gate.getATargetQubit()

@@ -1,10 +1,10 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 
 
-class GateNameCall extends string {
+private class GateNameCall extends string {
     GateNameCall() {
         this = "x" or
         this = "y" or
@@ -39,7 +39,7 @@ class GateNameCall extends string {
     }
 }
 
-class GateNameObj extends string {
+private class GateNameObj extends string {
     GateNameObj() {
         this = "XGate" or
         this = "YGate" or
@@ -73,7 +73,7 @@ class GateNameObj extends string {
     }
 }
 
-predicate isGateCall(DataFlow::CallCfgNode call) {
+private predicate isGateCall(DataFlow::CallCfgNode call) {
     exists(
         QuantumCircuit circ,
         GateNameCall gate_name_call
@@ -83,7 +83,7 @@ predicate isGateCall(DataFlow::CallCfgNode call) {
     )
 }
 
-predicate isGateObj(DataFlow::CallCfgNode call) {
+private predicate isGateObj(DataFlow::CallCfgNode call) {
     exists(
         QuantumCircuit circ,
         GateNameObj gate_name_obj
@@ -101,8 +101,8 @@ predicate isGateObj(DataFlow::CallCfgNode call) {
 }
 
 
-class GenericGateNew extends DataFlow::CallCfgNode {
-    GenericGateNew() {
+class Gate extends DataFlow::CallCfgNode {
+    Gate() {
         isGateCall(this) or
         isGateObj(this)
     }
@@ -111,7 +111,7 @@ class GenericGateNew extends DataFlow::CallCfgNode {
     abstract QuantumCircuit getQuantumCircuit();
     abstract int getATargetQubit();
 
-    predicate isAppliedAfter(GenericGateNew other) {
+    predicate isAppliedAfter(Gate other) {
         exists(
             QuantumCircuit circ
             |
@@ -122,20 +122,18 @@ class GenericGateNew extends DataFlow::CallCfgNode {
         )
     }
 
-    predicate isAppliedBefore(GenericGateNew other) {
+    predicate isAppliedBefore(Gate other) {
         other.isAppliedAfter(this)
     }
 
-}
-
-class GateMeasure extends GenericGateCall {
-    GateMeasure() {
-        this.getGateName() = "measure"
+    predicate isMeasurement() {
+        this instanceof MeasureGate or this instanceof MeasurementAll
     }
 
 }
 
-class GenericGateObj extends GenericGateNew {
+
+private class GenericGateObj extends Gate {
 
     GenericGateObj() {
         isGateObj(this)
@@ -197,7 +195,7 @@ class GenericGateObj extends GenericGateNew {
 
 }
 
-class GenericGateCall extends GenericGateNew {
+private class GenericGateCall extends Gate {
 
     GenericGateCall() {
         isGateCall(this)
@@ -327,26 +325,40 @@ class GenericGateCall extends GenericGateNew {
 
 }
 
-class MeasureGateCall extends GenericGateCall {
-    MeasureGateCall() {
+class MeasureGate extends GenericGateCall {
+    MeasureGate() {
         this.getGateName() = "measure"
+    }
+
+    int getATargetBit() {
+        exists(
+            API::Node p, int i
+            |
+            p = this.(API::CallNode).getParameter(1, "cbit")  and
+            (
+                // qc.measure(0, 1)
+                p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
+                or
+                // qc.measure(qreg[0], creg[1])
+                p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
+                or
+                // qc.measure([0, 1], [0, 1])
+                p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
+            )
+            |
+            result = i
+        )
     }
 }
 
-class MeasureAllGateCall extends GenericGateCall {
-    MeasureAllGateCall() {
+class MeasurementAll extends GenericGateCall {
+    MeasurementAll() {
         this.getGateName() = "measure_all"
     }
 }
 
-class GateMeasurement extends DataFlow::CallCfgNode {
-    GateMeasurement() {
-        this instanceof MeasureGateCall or this instanceof MeasureAllGateCall
-    }
-}
-
-class GateQuantumOperation extends GenericGateCall {
-    GateQuantumOperation() {
-        not(this instanceof GateMeasurement)
+class MeasurementAny extends DataFlow::CallCfgNode {
+    MeasurementAny() {
+        this instanceof MeasureGate or this instanceof MeasurementAll
     }
 }

@@ -8,25 +8,25 @@
  *       qiskit
  * @problem.severity warning
  * @precision medium
- * @id QL103-OversizedCircuit
+ * @id ql-oversized-circuit
  */
 
 import python
-import qiskit.circuit
+import qiskit.Circuit
 
 from
     QuantumCircuit circ,
     int numQubits
 where
     // the circuit has a number of qubits
-    numQubits = circ.get_total_num_qubits() and
+    numQubits = circ.getNumberOfQubits() and
     // there is a qubits in the range of available qubits which is never used
     exists(int i |
         i in [0 .. numQubits - 1] and
-        not exists(GenericGateNew g |
+        not exists(Gate g |
             g.getQuantumCircuit() = circ and
             g.getATargetQubit() = i
         )
     )
 select
-    circ, "Circuit '" + circ.get_name() + "' never manipulates some of its " + numQubits + "qubits."
+    circ, "Circuit '" + circ.getName() + "' never manipulates some of its " + numQubits + "qubits."

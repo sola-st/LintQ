@@ -17,7 +17,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 
 
 from
@@ -31,9 +31,9 @@ where
     sub_circuit.flowsTo(compose_call.getArg(0))
     // check that the sub_circuit has less qubits than the mother_circuit
     and
-    sub_circuit.get_total_num_qubits() > mother_circuit.get_total_num_qubits()
+    sub_circuit.getNumberOfQubits() > mother_circuit.getNumberOfQubits()
 select
-    compose_call, "The subcircuit '" +sub_circuit.get_name() + "' " +
-        "has more qubits (" + sub_circuit.get_total_num_qubits() + ") than " +
-        "the main circuit '" + mother_circuit.get_name() + "' (" +
-        mother_circuit.get_total_num_qubits() + ")"
+    compose_call, "The subcircuit '" +sub_circuit.getName() + "' " +
+        "has more qubits (" + sub_circuit.getNumberOfQubits() + ") than " +
+        "the main circuit '" + mother_circuit.getName() + "' (" +
+        mother_circuit.getNumberOfQubits() + ")"

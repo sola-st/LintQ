@@ -16,7 +16,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 
 
 from
@@ -30,9 +30,14 @@ where
     sub_circuit.flowsTo(compose_call.getArg(0))
     // check that the two circuits are compatible
     and
-    mother_circuit.get_total_num_qubits() >= sub_circuit.get_total_num_qubits()
+    mother_circuit.getNumberOfQubits() >= sub_circuit.getNumberOfQubits()
+    and
+    // check that the compose call does not specify the wiring
+    not exists(compose_call.(API::CallNode).getParameter(1, "qubits"))
+    and
+    not exists(compose_call.(API::CallNode).getParameter(2, "clbits"))
 select
-    compose_call, "The composition of subcircuit '" + sub_circuit.get_name() + "' " +
-        "to the '" + mother_circuit.get_name() + "' " +
+    compose_call, "The composition of subcircuit '" + sub_circuit.getName() + "' " +
+        "to the '" + mother_circuit.getName() + "' " +
         "has no specified wiring (parameters 'qubits' and 'clbits' of " +
         "compose() are not used)."

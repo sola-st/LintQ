@@ -1,3 +1,11 @@
+2023.03.03
+- refactoring model: java style method calls
+- refactoring of register to share part of it.
+- removed GateQuantumOperation, substituted with a predicate isMeasurement() on a general gate.
+
+2023.02.28
+- refactoring of the Gate class. Remove the tracking of the for loop.
+
 2023.02.21
 - improve the efficiency of get_a_target_qubit() of the gate class (remove extra QuantumCircuit variable)
 - improved the precision of get_a_target_qubit() of the gate class to account also for qubits which are operated on in a loop (e.g. qc.h(i)).

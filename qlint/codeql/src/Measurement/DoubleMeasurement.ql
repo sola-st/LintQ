@@ -13,11 +13,11 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 import qiskit.Gate
 
 from
-    MeasureGateCall measureFirst, MeasureGateCall measureSecond
+    MeasureGate measureFirst, MeasureGate measureSecond
 where
     measureSecond.isAppliedAfter(measureFirst)
     // do not put any other conditions in AND here

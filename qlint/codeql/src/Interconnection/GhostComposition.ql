@@ -16,18 +16,16 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import qiskit.circuit
+import qiskit.Circuit
 
 
 from
     QuantumCircuit mother_circuit,
-    QuantumCircuit sub_circuit,
     DataFlow::CallCfgNode compose_call
 where
     // mother_circuit is the circuit that contains the sub_circuit
     // e.g. mother_circuit.compose(sub_circuit)
-    compose_call = mother_circuit.getAnAttributeRead("compose").getACall() and
-    sub_circuit.flowsTo(compose_call.getArg(0))
+    compose_call = mother_circuit.getAnAttributeRead("compose").getACall()
     // check that the compose has no named argument inplace=True
     // e.g. mother_circuit.compose(sub_circuit, inplace=True)
     // or if it exists, that it is False

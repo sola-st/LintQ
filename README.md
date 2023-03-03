@@ -34,37 +34,6 @@ screen -L -Logfile log_long.txt -S first_run python -m rdlib.github downloadfile
 ```
 Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if you want to have the program run also if you close the terminal. It is usually recommended.
 
-### Dataset Filtering (OLD) - Scroll down for the new version
-1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset.ipynb` and run the cells until the `Deduplication` section.
-
-2. To run the de-duplication, run the following command to tokenize the files:
-    ```bash
-    python qlint/datautils/tokenizer/tokenizepythoncorpus.py data/03_program_filtered/exp_v01/ data/03_program_filtered/exp_v01/tokenized_files/
-    ```
-    followed by the following command to run the de-duplication:
-    ```bash
-    python qlint/datautils/pythonDedup/deduplicationcli.py data/03_program_filtered/exp_v01/tokenized_files/ data/03_program_filtered/exp_v01/dedup.json.gz
-    ```
-
-3. Go to the target folder and unzip the `dedup.json.gz` file:
-    ```bash
-    cd data/03_program_filtered/exp_v01/
-    gzip -d dedup.json.gz
-    ```
-
-3. Go back to the initial notebook and run it until the end.
-
-
-**Dataset Metadata**
-
-1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
-
-**Run the Analysis Notebooks**
-5. run the notebook:
-    ```bash
-    jupyter notebook
-    ```
-6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.
 
 
 
@@ -98,8 +67,6 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
     ```bash
     screen -L -Logfile data/datasets/exp_vXX/log.txt -S codeql_database_creation codeql database create --language=python --threads=10 --source-root=data/datasets/exp_vXX/files_selected/ -- data/datasets/exp_vXX/codeql
     ```
-
-
 
 
 ## D. Run the Test CodeQL Queries
@@ -154,3 +121,37 @@ You can see an example of the configuration file in `config/annotations/inspecti
 
 1. if you run the quick evaluation in the VSCode environment, be sure to have opened the folder `/home/<username>/.codeql/packages` in your VSCode workspace. Otherwise, the CodeQL extension will not be able to find the dependencies.
 This operation will create a file named `qlint.code-workspace` in the repo folder, it will not uploaded to git but it is important you keep it.
+
+# Miscellanea
+
+### Dataset Filtering (OLD) - Scroll down for the new version
+1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset.ipynb` and run the cells until the `Deduplication` section.
+
+2. To run the de-duplication, run the following command to tokenize the files:
+    ```bash
+    python qlint/datautils/tokenizer/tokenizepythoncorpus.py data/03_program_filtered/exp_v01/ data/03_program_filtered/exp_v01/tokenized_files/
+    ```
+    followed by the following command to run the de-duplication:
+    ```bash
+    python qlint/datautils/pythonDedup/deduplicationcli.py data/03_program_filtered/exp_v01/tokenized_files/ data/03_program_filtered/exp_v01/dedup.json.gz
+    ```
+
+3. Go to the target folder and unzip the `dedup.json.gz` file:
+    ```bash
+    cd data/03_program_filtered/exp_v01/
+    gzip -d dedup.json.gz
+    ```
+
+3. Go back to the initial notebook and run it until the end.
+
+
+**Dataset Metadata**
+
+1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
+
+**Run the Analysis Notebooks**
+5. run the notebook:
+    ```bash
+    jupyter notebook
+    ```
+6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.
