@@ -38,3 +38,67 @@ qc_subcircuit_ok.h(0)
 qc_macro_implicit = QuantumCircuit(4, 4)
 qc_macro_implicit.z(2)
 qc_macro_implicit.compose(qc_subcircuit, inplace=True)
+
+
+# ghost addition allowed on return value
+def build_circuit():
+    qc = QuantumCircuit(3, 3)
+    qc.h(0)
+    qc.cx(0, 1)
+    qc.measure(0, 0)
+    qc.measure(1, 1)
+    qc_part_2 = QuantumCircuit(3, 3)
+    qc_part_2.cx(0, 2)
+    qc_part_2.measure(2, 2)
+    return qc.compose(qc_part_2)  # LEGIT
+
+
+# ghost addition used in an addition binary operation
+qc_front = QuantumCircuit(3, 3)
+qc_front.h(0)
+qc_front.cx(0, 1)
+qc_front.h(2)
+
+qc_middle = QuantumCircuit(3, 3)
+qc_middle.h(0)
+qc_middle.cx(0, 1)
+qc_middle.swap(1, 2)
+qc_middle.measure([0, 1, 2], [0, 1, 2])
+
+qc_part_2 = QuantumCircuit(3, 3)
+qc_part_2.cx(0, 2)
+qc_part_2.measure(2, 2)
+qc = qc_front + qc_middle.compose(qc_part_2)  # LEGIT
+
+
+# ghost addition used in chained compose() calls
+qc_chain_1 = QuantumCircuit(2, 2)
+qc_chain_1.h(0)
+qc_chain_1.cx(0, 1)
+qc_chain_1.measure([0, 1], [0, 1])
+
+qc_chain_2 = QuantumCircuit(2, 2)
+qc_chain_2.h(0)
+qc_chain_2.cx(0, 1)
+qc_chain_2.measure([0, 1], [0, 1])
+
+qc_chain_3 = QuantumCircuit(2, 2)
+qc_chain_3.rx(0.5, 0)
+qc_chain_3.cx(0, 1)
+qc_chain_3.measure([0, 1], [0, 1])
+
+qc_chain = qc_chain_1.compose(qc_chain_2).compose(qc_chain_3)  # LEGIT
+
+
+# incompatible composition circuit size depending on runtime value
+half_adder = QuantumCircuit(3, 3)
+half_adder.h(0)
+half_adder.h(2)
+half_adder.cx(0, 1)
+qc_runtime_size = QuantumCircuit(
+    len(half_adder.qubits), len(half_adder.clbits))
+qc_runtime_size.compose(
+    half_adder,
+    qubits=list(range(len(input_circ.qubits))),
+    clbits=list(range(len(input_circ.clbits))),
+    inplace=True)  # LEGIT
