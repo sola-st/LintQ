@@ -109,6 +109,8 @@ class Gate extends DataFlow::CallCfgNode {
 
     abstract string getGateName();
     abstract QuantumCircuit getQuantumCircuit();
+
+    /** The integer of a target qubit (no information on the register). */
     abstract int getATargetQubit();
 
     predicate isAppliedAfter(Gate other) {
@@ -177,7 +179,8 @@ private class GenericGateObj extends Gate {
         exists(
             List qargs
             |
-            qargs = getAppendCall().(API::CallNode).getParameter(1, "qargs").getAValueReachingSink().asExpr()
+            qargs = getAppendCall().(API::CallNode)
+                .getParameter(1, "qargs").getAValueReachingSink().asExpr()
             |
             result = qargs.getAnElt().(IntegerLiteral).getValue()
         )
@@ -187,7 +190,8 @@ private class GenericGateObj extends Gate {
         exists(
             List qargs
             |
-            qargs = getAppendCall().(API::CallNode).getParameter(1, "qargs").getAValueReachingSink().asExpr()
+            qargs = getAppendCall().(API::CallNode)
+                .getParameter(1, "qargs").getAValueReachingSink().asExpr()
             |
             result = qargs.getAnElt().(Subscript).getIndex().(IntegerLiteral).getValue()
         )
@@ -227,13 +231,16 @@ private class GenericGateCall extends Gate {
                 isQubitParameter(p) and
                 (
                     // qc.cx(0, 1)
-                    p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
+                    p.getAValueReachingSink()
+                        .asExpr().(IntegerLiteral).getValue() = i
                     or
                     // qc.cx(qreg[0], qreg[1])
-                    p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
+                    p.getAValueReachingSink().asExpr().(Subscript)
+                        .getIndex().(IntegerLiteral).getValue() = i
                     or
                     // qc.measure([0, 1], [0, 1])
-                    p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
+                    p.getAValueReachingSink().asExpr().(List)
+                        .getAnElt().(IntegerLiteral).getValue() = i
                 )
 
             |

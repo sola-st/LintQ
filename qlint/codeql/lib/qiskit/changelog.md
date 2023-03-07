@@ -1,3 +1,7 @@
+2023.03.07
+- added the getVar() function to the register class to get the variable name of the register.
+- added the QubitUsed abstraction to keep track of each access to a qubit, considering also the register it belongs to.
+
 2023.03.03
 - refactoring model: java style method calls
 - refactoring of register to share part of it.

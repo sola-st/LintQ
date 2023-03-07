@@ -139,7 +139,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
 
     predicate isSubCircuit() {
         exists(QuantumCircuit qc |
-            qc.isSubCircuitOf(this)
+            this.isSubCircuitOf(qc)
         )
     }
 
