@@ -6,6 +6,8 @@ import yaml
 import pathlib
 import pandas as pd
 import shutil
+import glob
+from tqdm import tqdm
 from termcolor import colored
 
 from typing import List, Dict, Any, Tuple
@@ -301,6 +303,7 @@ def createselection(config):
     dir_dataset_folder = config_dict['dataset_folder']
 
     dir_files_selected = os.path.join(dir_dataset_folder, 'files_selected')
+    pathlib.Path(dir_files_selected).mkdir(parents=True, exist_ok=True)
     dir_intermediate_results = \
         os.path.join(dir_dataset_folder, 'intermediate_results')
 
@@ -309,9 +312,33 @@ def createselection(config):
 
     dir_last_step = os.path.join(
         dir_intermediate_results, last_step, 'files')
-    # copy the content of the last step to the files_selected folder
-    print(f'Copying the content of {dir_last_step} to {dir_files_selected}...')
-    shutil.copytree(dir_last_step, dir_files_selected, dirs_exist_ok=True)
+    mapping_last_step = os.path.join(
+        dir_intermediate_results, last_step, 'df_mapping_id_to_filename.csv')
+    df_last_step = pd.read_csv(mapping_last_step)
+    # keep only rows with filename present in dir_last_step folder
+    file_names_last_step = [os.path.basename(f) for f in glob.glob(
+        os.path.join(dir_last_step, '*'))]
+    df_last_step = df_last_step[
+        df_last_step['filename'].isin(file_names_last_step)]
+
+    original_mapping = os.path.join(
+        dir_dataset_folder, 'df_summary.csv')
+    # keep unique_id and html_url columns
+    df_original_mapping = pd.read_csv(original_mapping)[['unique_id', 'html_url']]
+
+    # merge on unique_id
+    df_mapping = df_original_mapping.merge(
+        df_last_step, on='unique_id', how='inner')
+    # convert to a dictionary mapping from colum filename to column html_url
+    mapping = dict(zip(df_mapping['filename'], df_mapping['html_url']))
+
+    # read all the files in dir_last_step and copy them to dir_files_selected
+    # while adding html_url as a comment in the file in the first line
+    for file_name in tqdm(file_names_last_step):
+        with open(os.path.join(dir_last_step, file_name), 'r') as f:
+            content = f.read()
+        with open(os.path.join(dir_files_selected, file_name), 'w') as f:
+            f.write(f'# {mapping[file_name]}\n{content}')
 
 
 if __name__ == '__main__':
