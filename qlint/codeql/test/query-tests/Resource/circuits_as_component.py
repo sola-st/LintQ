@@ -1,6 +1,7 @@
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 
 
+# circuit used as a component, returned by a function
 def u_dag(phi):
     circuit = QuantumCircuit(1, name="U-dag")  # LEGIT CIRCUIT WITH NO BITS
     circuit.sx(0)

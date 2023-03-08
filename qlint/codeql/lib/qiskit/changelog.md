@@ -1,4 +1,8 @@
 2023.03.07
+- fix missing gates `crx` and `cry` in the `Gate` class
+- improved the `isAppliedAfter` in the `Gate` class to remove false positives when the circuit is re-initialized during the path connecting the two gates.
+
+2023.03.07
 - added the getVar() function to the register class to get the variable name of the register.
 - added the QubitUsed abstraction to keep track of each access to a qubit, considering also the register it belongs to.
 

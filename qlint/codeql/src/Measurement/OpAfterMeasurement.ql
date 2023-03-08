@@ -26,9 +26,12 @@ where
     gate.isAppliedAfter(measure) and
     shared_qubit = measure.getATargetQubit() and
     shared_qubit = gate.getATargetQubit()
-    // make sure that there is no definition of the circuit on the
-    // control flow path between the measurement and the operation
 select
     gate, "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
     " after measurement at location: (" +
-    gate.getLocation().getStartLine() + ", " + gate.getLocation().getStartColumn() + ")."
+    measure.getLocation().getStartLine() + ", " + measure.getLocation().getStartColumn() + ")."
+
+// from Gate gate
+// // where gate.getLocation().getFile().getBaseName() = "op_after_measurement.py"
+// where gate.getLocation().getFile().getBaseName() = "gate_addition.py"
+// select gate

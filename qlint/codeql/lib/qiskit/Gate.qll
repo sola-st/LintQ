@@ -25,6 +25,8 @@ private class GateNameCall extends string {
         this = "cz" or
         this = "ch" or
         this = "crz" or
+        this = "cry" or
+        this = "crx" or
         this = "cu1" or
         this = "cu3" or
         this = "swap" or
@@ -121,6 +123,13 @@ class Gate extends DataFlow::CallCfgNode {
             circ = other.getQuantumCircuit() and
             other.getATargetQubit() = this.getATargetQubit() and
             other.asCfgNode().strictlyReaches(this.asCfgNode())
+            // they refer to the same circuit instance
+            and circ.getNode().strictlyReaches(this.getNode())
+            and circ.getNode().strictlyReaches(other.getNode())
+            // we do not want a situation where the order is:
+            // other >> initialization >> gate
+            // because they would not refer to the same circuit anymore
+            and not other.getNode().strictlyReaches(circ.getNode())
         )
     }
 

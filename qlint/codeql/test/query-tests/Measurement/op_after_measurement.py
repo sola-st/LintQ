@@ -8,6 +8,7 @@ qc.cx(0, 1)  # BUG
 qc.measure(1, 1)
 
 # new circuit in the loop
+# Target FP: 06_93508a_22
 for i in range(2):
     qc_new_in_loop = QuantumCircuit(2, 2)
     qc_new_in_loop.h(0)  # LEGIT
