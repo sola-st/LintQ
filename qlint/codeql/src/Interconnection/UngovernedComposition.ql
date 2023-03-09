@@ -19,6 +19,9 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 
 
+// IDEA: disable when the mapping is obvious
+// (e.g., the main and sub circuits have the same size)
+
 from
     QuantumCircuit mother_circuit,
     QuantumCircuit sub_circuit,

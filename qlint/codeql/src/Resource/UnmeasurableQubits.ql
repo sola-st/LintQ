@@ -15,6 +15,11 @@
 import python
 import qiskit.Circuit
 
+// IDEA: disable if the circuit is draw, since we probably do not care about measurment
+// IDEA: disable if the circuit is run on a unitary simulator, since we do not need measurement with that
+// IDEA: disable when it is returned by a function, since it might be a sub-part
+
+
 from
     QuantumCircuit circ
     // EXTRA IDEA:

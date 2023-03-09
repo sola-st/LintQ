@@ -14,6 +14,9 @@
 import python
 import qiskit.Circuit
 
+// IDEA: if the circuit has subcircuits, we cannot know the real number of ops >> disable
+// IDEA: if the circuit has an unknown register size, we cannot know the real number of qubits >> disable
+
 from
     QuantumCircuit circ,
     int numQubits
