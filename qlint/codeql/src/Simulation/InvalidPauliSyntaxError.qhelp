@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An n-qubit Pauli may be represented by a string consisting of n characters from <code>['I', 'X', 'Y', 'Z']</code> , and optionally phase coefficient in <code>['', '-i', '-', 'i']</code>
+. For example: <code>'XYZ'</code> or <code>'-iZIZ'</code>. Whenever a Pauli gate or error is initialized with a string not following this pattern a runtime error is raised.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that the string used respect the format.
+</p>
+</recommendation>
+
+<example>
+<p>The circuit contains an incorrect initialization of pauli gates</p>
+<sample src="InvalidPauliSyntaxError.py" />
+
+<p>Change the string <code>'--iXYZ'</code> to respect the pattern, e.g., <code>'-iXYZ'</code></p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/apidoc/aer_noise.html">NoiseModel</a>.</li>
+</references>
+
+</qhelp>

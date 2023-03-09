@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Whenever we want to model the noisy characteristic of the hardware of a quantum computer we rely on a <a href="https://qiskit.org/documentation/apidoc/aer_noise.html">NoiseModel</a>. But when creating the noise we need to follow some rules, in particular the noise simulating pauli error can only take pauli strings of the same length, otherwise it fails with an error <code>NoiseError: "Pauli's are not all of the same length."</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that the string used are: <code>['I', 'X', 'Y', 'Z']</code> and that they are all of the same length.
+</p>
+</recommendation>
+
+<example>
+<p>The circuit contains an incorrect initialization of pauli gates</p>
+<sample src="InvalidPauliErrorSize.py" />
+
+<p>Change the string <code>'XY'</code> to 'X'</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/apidoc/aer_noise.html">NoiseModel</a>.</li>
+</references>
+
+</qhelp>

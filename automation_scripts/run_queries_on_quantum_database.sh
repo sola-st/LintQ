@@ -49,6 +49,15 @@ mkdir -p $dir_output_specific_analysis
 
 echo "Analysis starting in 5 seconds..."
 sleep 5
-screen codeql database analyze --format=sarifv2.1.0 --threads=10 --output=$dir_output_specific_analysis/data.sarif --rerun -- $dir_dataset/codeql ../qlint/codeql/src
+screen \
+    -L -Logfile $dir_output_specific_analysis/log.txt \
+    -S codeql_query_run \
+    codeql database analyze \
+        --format=sarifv2.1.0 \
+        --threads=10 \
+        --output=$dir_output_specific_analysis/data.sarif \
+        --rerun \
+        -- $dir_dataset/codeql \
+        ../qlint/codeql/src
 
 
