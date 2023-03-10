@@ -36,6 +36,7 @@ private class GateNameCall extends string {
         this = "ryy" or
         this = "rzz" or
         this = "rzx" or
+        this = "mct" or
         this = "measure" or
         this = "measure_all"
     }
@@ -336,6 +337,17 @@ private class GenericGateCall extends Gate {
                 this.(API::CallNode).getParameter(1, "qubit1") = p
                 or
                 this.(API::CallNode).getParameter(2, "qubit2") = p
+            )) or
+        ((
+            this.getGateName() = "mct"
+            )
+            and
+            (
+                this.(API::CallNode).getParameter(0, "control_qubits") = p
+                or
+                this.(API::CallNode).getParameter(1, "target_qubit") = p
+                or
+                this.(API::CallNode).getParameter(2, "ancilla_qubits") = p
             ))
     }
 
