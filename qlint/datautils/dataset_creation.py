@@ -10,7 +10,7 @@ import glob
 from tqdm import tqdm
 from termcolor import colored
 
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 
 
 from rdlib.fsh import load_config_and_check
@@ -43,7 +43,7 @@ from qlint.datautils.processing_function import RemoveBasedOnAttributeValue
 from qlint.datautils.processing_function import ConvertNotebooksToScripts
 from qlint.datautils.processing_function import ContentRegexFilter
 from qlint.datautils.processing_function import RemoveUnparsable
-
+from qlint.datautils.processing_function import UnrollLoops
 
 def get_function(function_name: str) -> str:
     """Get the function name from given string."""
@@ -88,6 +88,8 @@ def get_function_from_string(function_name: str) -> ProcessingFunction:
         return ContentRegexFilter
     elif function_name == "remove_unparsable_python":
         return RemoveUnparsable
+    elif function_name == "unroll_loops":
+        return UnrollLoops
     else:
         raise ValueError(f'Unknown function name: {function_name}')
 
@@ -175,8 +177,25 @@ def print_chain_summary(
     remaining_folders = [
         folder for folder in folders if folder not in processing_steps_names]
     all_folders = processing_steps_names + remaining_folders
+
+    def get_step_with_name(
+            name: str,
+            processing_steps: List[Dict[str, Any]]
+            ) -> Optional[Dict[str, Any]]:
+        for step in processing_steps:
+            if step['name'] == name:
+                return step
+        return None
+
     for folder in all_folders:
+        # color red if it is not active
+        # one step could ce inactive if:
+        # - it is not in the processing_steps list
+        # - it is in the processing_steps list but it is disabled (skip: true)
         color = 'green' if folder in processing_steps_names else 'red'
+        step_dict = get_step_with_name(folder, processing_steps)
+        if step_dict and step_dict.get('skip', False):
+            color = 'red'
         folder_path = os.path.join(dir_intermediate_results, folder)
         print(colored(f'Folder: {folder}', color))
         source_folder_path = os.path.join(
@@ -309,6 +328,7 @@ def createselection(config):
 
     all_steps = config_dict['processing_steps']
     last_step = all_steps[-1]['name']
+    print(f'Last step: {last_step}')
 
     dir_last_step = os.path.join(
         dir_intermediate_results, last_step, 'files')
@@ -320,6 +340,7 @@ def createselection(config):
         os.path.join(dir_last_step, '*'))]
     df_last_step = df_last_step[
         df_last_step['filename'].isin(file_names_last_step)]
+    print(f'Number of files in last step: {len(df_last_step)}')
 
     original_mapping = os.path.join(
         dir_dataset_folder, 'df_summary.csv')

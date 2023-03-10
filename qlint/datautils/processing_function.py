@@ -1,3 +1,37 @@
+"""Processing function to transform and/or filter the data.
+
+
+GUIDE TO IMPLEMENT A NEW FUNCTION:
+-----------------
+Each processing function must implement a run() which populates the following
+attributes:
+1. self.mapping (Dict[str, str]): a dictionary that maps the original filename
+    (referred to as `unique_id` in the metadata) to the new filename used in
+    this folder. The change of name is typical for steps which modify the
+    file type (e.g., from .ipynb to .py).
+2. self.extra_metadata (pd.DataFrame): a dataframe with extra metadata that
+    will be added to the metadata file in the current step folder.
+and:
+3. stores the new files in the folder self.output_files_folder
+
+AVAILABLE INFOS TO EACH STEP:
+-----------------------------
+Each step has access to the following information:
+- self.metadata (pd.DataFrame) with all the metadata added in the previous steps.
+    Note that this also include the metadata coming from the `df_summary.csv`
+    which is referred to in the `csv_metadata.path` file in the current step.
+
+IMPORTANT NOTES ON MAPPING:
+--------------------------
+Each step is allowed to change the name of the file (e.g., by
+converting it to a new file type). However, the csv file named
+"df_mapping_id_to_filename.csv" must be always created and contain the mapping
+between the original filename (referred to as `unique_id` in the metadata) and
+the filename of the file in the current step folder.
+Note that although some steps can delete the files, they have to retain the
+file mentioned in the "df_mapping_id_to_filename.csv" file with an associated
+empty file (implemented assigning it to None in the step).
+"""
 import os
 import pandas as pd
 from typing import List, Dict, Any
@@ -12,6 +46,8 @@ import subprocess
 import re
 import glob
 import ast
+from qlint.datautils.loop_unroller import LoopUnroller
+
 
 pandarallel.initialize(progress_bar=True)
 
@@ -456,3 +492,36 @@ class RemoveUnparsable(ProcessingFunction):
         except Exception as e:
             print(f'Error parsing {filepath}. Output: {e}')
             return False
+
+
+class UnrollLoops(ProcessingFunction):
+
+    def run(self, max_iterations: int = 20):
+        """Unroll all loops in the files."""
+        self.max_iterations = max_iterations
+        all_filenames = self.metadata['filename'].values
+        all_unique_ids = self.metadata['unique_id'].values
+        all_paths = [
+            os.path.join(self.input_folder, filename)
+            for filename in all_filenames]
+        with ProcessPoolExecutor(max_workers=10) as executor:
+            unrolled_files = executor.map(
+                self._convert_to_unrolled_file, all_paths)
+        # the mapping is the same as the original one
+        self.mapping = {
+            unique_id: filename
+            for unique_id, filename in zip(all_unique_ids, all_filenames)}
+        # write the unrolled files
+        for filename, unrolled in tqdm(zip(all_filenames, unrolled_files)):
+            with open(os.path.join(self.output_files_folder, filename), 'w') as f:
+                f.write(unrolled)
+
+    def _convert_to_unrolled_file(self, filepath: str):
+        """Convert the file to an unrolled version."""
+        with open(filepath, 'r') as f:
+            content = f.read()
+        loop_unroller = LoopUnroller(max_iterations=self.max_iterations)
+        unrolled = loop_unroller.unroll_program(content)
+        return unrolled
+
+
