@@ -1,0 +1,14 @@
+# Get info on repositories to decide which one to prioritize
+
+github_token_path: secrets/github_access_token.txt
+metadata_path: data/datasets/exp_v08/df_summary.csv
+
+# which column of the metadata path contains the repository name
+# it must ocntain the format author_name/repo_name
+column_name_for_repository: repository_name
+
+
+# output datbase
+path_to_database: data/github_repo_infos/exp_v08
+
+
