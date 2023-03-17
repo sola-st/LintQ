@@ -28,7 +28,7 @@ done
 
 # create the test database with CodeQL (multiline command)
 echo "Creating the test database"
-codeql database create $dataset_path/codeql_db \
+codeql database create $dataset_path/codeql \
     --language=python \
     --overwrite \
     --source-root=$dataset_raw_files_path
