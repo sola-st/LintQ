@@ -160,9 +160,19 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         )
     }
 
+    //* Returns a QuantumRegister added to a circuit. */
     QuantumRegister getAQuantumRegister() {
         exists(QuantumRegister qntReg, int i |
             qntReg.flowsTo(this.getArg(i)) |
+            result = qntReg
+        ) or
+        // there is a this.add_register() call with qntReg as argument
+        exists(
+            QuantumRegister qntReg, DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            qntReg.flowsTo(addRegisterCall.getArg(0))
+            |
             result = qntReg
         )
     }
@@ -170,6 +180,15 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     ClassicalRegister getAClassicalRegister() {
         exists(ClassicalRegister clsReg, int i |
             clsReg.flowsTo(this.getArg(i)) |
+            result = clsReg
+        ) or
+        // there is a this.add_register() call with clsReg as argument
+        exists(
+            ClassicalRegister clsReg, DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            clsReg.flowsTo(addRegisterCall.getArg(0))
+            |
             result = clsReg
         )
     }

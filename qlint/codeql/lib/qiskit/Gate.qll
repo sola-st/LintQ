@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.Circuit
+import qiskit.Qubit
 
 
 private class GateNameCall extends string {
@@ -21,6 +22,7 @@ private class GateNameCall extends string {
         this = "u2" or
         this = "u3" or
         this = "cx" or
+        this = "cnot" or
         this = "cy" or
         this = "cz" or
         this = "ch" or
@@ -31,6 +33,7 @@ private class GateNameCall extends string {
         this = "cu3" or
         this = "swap" or
         this = "ccx" or
+        this = "toffoli" or
         this = "cswap" or
         this = "rxx" or
         this = "ryy" or
@@ -114,16 +117,51 @@ class Gate extends DataFlow::CallCfgNode {
     abstract QuantumCircuit getQuantumCircuit();
 
     /** The integer of a target qubit (no information on the register). */
-    abstract int getATargetQubit();
+    abstract IntegerLiteral getATargetQubit();
 
-    predicate isAppliedAfter(Gate other) {
+    predicate isAppliedAfterOn(Gate other, int qubit_index) {
         exists(
-            QuantumCircuit circ
+            QuantumCircuit circ,
+            QubitUsedInteger this_used_qubit,
+            QubitUsedInteger other_used_qubit
             |
-            circ = this.getQuantumCircuit() and
-            circ = other.getQuantumCircuit() and
-            other.getATargetQubit() = this.getATargetQubit() and
-            other.asCfgNode().strictlyReaches(this.asCfgNode())
+
+            // // WITH TARGET QUBITS DIRECTLY - OLD VERSION
+            // // they act on the same qubit
+            // and this.getATargetQubit().getValue() = qubit_index
+            // and other.getATargetQubit().getValue() = qubit_index
+
+            // they are in the same file
+            this.getLocation().getFile() = other.getLocation().getFile() and
+            // they are applied in the right order: other >> this
+            other.getNode().strictlyReaches(this.getNode())
+            // they belong to the same circuit
+            and circ = this.getQuantumCircuit()
+            and circ = other.getQuantumCircuit()
+
+            // // WITH QUBIT USED INDEX
+            and this_used_qubit = this.getATargetQubit()
+            and other_used_qubit = other.getATargetQubit()
+            and
+                (
+                    // // they act on the same register
+                    // // (if there is one explicitely instantiated)
+                    this_used_qubit.getQuantumRegister() = other_used_qubit.getQuantumRegister()
+                    or
+                    (
+                        // or they act on the single quantum register of a circuit
+                        // experessed implicitely with e.g. QuantumCircuit(4)
+                        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0
+                        and circ.getNumberOfQubits() > 0
+                    )
+                )
+            // and they act on the same position
+            and this_used_qubit.getQubitIndex() = other_used_qubit.getQubitIndex()
+            // bind the qubit index
+            and qubit_index = this_used_qubit.getQubitIndex()
+
+
+            // EXTRA PRECISION
             // they refer to the same circuit instance
             and circ.getNode().strictlyReaches(this.getNode())
             and circ.getNode().strictlyReaches(other.getNode())
@@ -134,12 +172,20 @@ class Gate extends DataFlow::CallCfgNode {
         )
     }
 
+    predicate isAppliedAfter(Gate other) {
+        exists(
+            int qubit_index
+            |
+            this.isAppliedAfterOn(other, qubit_index)
+        )
+    }
+
     predicate isAppliedBefore(Gate other) {
         other.isAppliedAfter(this)
     }
 
     predicate isMeasurement() {
-        this instanceof MeasureGate or this instanceof MeasurementAll
+        (this instanceof MeasureGate or this instanceof MeasurementAll)
     }
 
 }
@@ -183,7 +229,7 @@ private class GenericGateObj extends Gate {
 
 
     /* get a target qubit of this gate */
-    override int getATargetQubit() {
+    override IntegerLiteral getATargetQubit() {
         // qc.append(CXGate(), qargs=[0, 1])
         // returns either 0 or 1
         exists(
@@ -192,7 +238,7 @@ private class GenericGateObj extends Gate {
             qargs = getAppendCall().(API::CallNode)
                 .getParameter(1, "qargs").getAValueReachingSink().asExpr()
             |
-            result = qargs.getAnElt().(IntegerLiteral).getValue()
+            result = qargs.getAnElt()
         )
         or
         // qc.append(CXGate(), [qreg[0], qreg[1]])
@@ -203,7 +249,7 @@ private class GenericGateObj extends Gate {
             qargs = getAppendCall().(API::CallNode)
                 .getParameter(1, "qargs").getAValueReachingSink().asExpr()
             |
-            result = qargs.getAnElt().(Subscript).getIndex().(IntegerLiteral).getValue()
+            result = qargs.getAnElt().(Subscript).getIndex()
         )
     }
 
@@ -225,32 +271,32 @@ private class GenericGateCall extends Gate {
 
     override QuantumCircuit getQuantumCircuit() {
         exists(
-            QuantumCircuit circ, GateNameCall a_supported_gate_name |
-            this = circ.getAnAttributeRead(a_supported_gate_name).getACall() |
+            QuantumCircuit circ|
+            this = circ.getAnAttributeRead(_).getACall() |
             result = circ
         )
     }
 
     /* get a target qubit of this gate */
-    override int getATargetQubit() {
+    override IntegerLiteral getATargetQubit() {
         // qc.cx(0, 1)
         // returns either 0 or 1
         exists(
-            API::Node p, int i
+            API::Node p, IntegerLiteral i
             |
                 isQubitParameter(p) and
                 (
                     // qc.cx(0, 1)
                     p.getAValueReachingSink()
-                        .asExpr().(IntegerLiteral).getValue() = i
+                        .asExpr() = i
                     or
                     // qc.cx(qreg[0], qreg[1])
                     p.getAValueReachingSink().asExpr().(Subscript)
-                        .getIndex().(IntegerLiteral).getValue() = i
+                        .getIndex() = i
                     or
                     // qc.measure([0, 1], [0, 1])
                     p.getAValueReachingSink().asExpr().(List)
-                        .getAnElt().(IntegerLiteral).getValue() = i
+                        .getAnElt() = i
                 )
 
             |
@@ -262,7 +308,8 @@ private class GenericGateCall extends Gate {
     predicate isQubitParameter(API::Node p) {
         ((
             this.getGateName() = "cx" or this.getGateName() = "cz" or
-            this.getGateName() = "cy" or this.getGateName() = "ch"
+            this.getGateName() = "cy" or this.getGateName() = "ch" or
+            this.getGateName() = "cnot"
           ) and
             (
                 this.(API::CallNode).getParameter(0, "control_qubit") = p
@@ -314,11 +361,15 @@ private class GenericGateCall extends Gate {
                 or
                 this.(API::CallNode).getParameter(1, "qubit2") = p
             )) or
-        (this.getGateName() = "ccx" and
+        ((
+            this.getGateName() = "ccx" or this.getGateName() = "toffoli"
+            ) and
             (
-                this.(API::CallNode).getParameter(1, "control_qubit1") = p
+                this.(API::CallNode).getParameter(0, "control_qubit1") = p
                 or
-                this.(API::CallNode).getParameter(2, "control_qubit2") = p
+                this.(API::CallNode).getParameter(1, "control_qubit2") = p
+                or
+                this.(API::CallNode).getParameter(2, "target_qubit") = p
             )) or
         (this.getGateName() = "cswap" and
             (

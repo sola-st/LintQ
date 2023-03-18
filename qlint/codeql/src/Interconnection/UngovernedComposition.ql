@@ -39,6 +39,9 @@ where
     not exists(compose_call.(API::CallNode).getParameter(1, "qubits"))
     and
     not exists(compose_call.(API::CallNode).getParameter(2, "clbits"))
+    // check that it is not obvious (aka they have the same size)
+    and
+    mother_circuit.getNumberOfQubits() != sub_circuit.getNumberOfQubits()
 select
     compose_call, "The composition of subcircuit '" + sub_circuit.getName() + "' " +
         "to the '" + mother_circuit.getName() + "' " +

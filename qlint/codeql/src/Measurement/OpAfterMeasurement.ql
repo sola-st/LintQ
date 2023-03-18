@@ -16,16 +16,19 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
+import qiskit.Qubit
+
+
+// IMPROVEMENT:
+// - check that there is no reset() after the measurement
 
 from
     MeasureGate measure,
     Gate gate,
     int shared_qubit
 where
-    not gate.isMeasurement() and
-    gate.isAppliedAfter(measure) and
-    shared_qubit = measure.getATargetQubit() and
-    shared_qubit = gate.getATargetQubit()
+    not gate instanceof MeasureGate and
+    gate.isAppliedAfterOn(measure, shared_qubit)
 select
     gate, "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
     " after measurement at location: (" +

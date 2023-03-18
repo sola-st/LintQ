@@ -20,3 +20,23 @@ for i in range(2):
     qc_new_outside_loop.h(0)
     qc_new_outside_loop.crx(0.1, 0, 1)  # BUG
     qc_new_outside_loop.measure(1, 1)
+
+# op after measurement with registers
+qr = QuantumRegister(2)
+qr_extra = QuantumRegister(4)
+cr = ClassicalRegister(2)
+qc_registers = QuantumCircuit(qr, qr_extra, cr)
+qc_registers.h(qr[0])
+qc_registers.measure(qr[0], cr[0])
+qc_registers.cx(qr[0], qr[1])  # BUG
+qc_registers.measure(qr[1], cr[1])
+
+# op after measurement with registers
+qr = QuantumRegister(2)
+qr_extra = QuantumRegister(4)
+cr = ClassicalRegister(2)
+qc_registers = QuantumCircuit(qr, qr_extra, cr)
+qc_registers.h(qr[0])
+qc_registers.measure(qr[0], cr[0])
+qc_registers.cx(qr_extra[0], qr_extra[1])  # LEGIT
+qc_registers.measure(qr[1], cr[1])

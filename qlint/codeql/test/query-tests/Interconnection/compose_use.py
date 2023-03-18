@@ -39,6 +39,13 @@ qc_macro_implicit = QuantumCircuit(4, 4)
 qc_macro_implicit.z(2)
 qc_macro_implicit.compose(qc_subcircuit, inplace=True)
 
+# obvious composition: disable warning
+qc_subcircuit_obvious = QuantumCircuit(3, 3)
+qc_subcircuit_obvious.h(0)
+qc_macro_obvious = QuantumCircuit(3, 3)
+qc_macro_obvious.z(2)
+qc_macro_obvious.compose(qc_subcircuit, inplace=True)  # DISABLED WARNING
+
 
 # ghost addition allowed on return value
 def build_circuit():

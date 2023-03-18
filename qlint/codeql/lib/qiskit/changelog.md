@@ -1,3 +1,9 @@
+2023.03.17
+- improve the efficiency of `isAppliedAfter` in the `Gate` class by checking that the two gates happen in the same file.
+
+2023.03.13
+- added `QubitUsedInteger` abstraction to keep track of each access to a qubit, the connection is made vai the Gate. It also tracks the register of generic gate e.g. qc.h(0) in case they have only a single quantum register.
+
 2023.03.07
 - fix missing gates `crx` and `cry` in the `Gate` class
 - improved the `isAppliedAfter` in the `Gate` class to remove false positives when the circuit is re-initialized during the path connecting the two gates.

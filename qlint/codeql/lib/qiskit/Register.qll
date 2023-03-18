@@ -21,6 +21,16 @@ abstract class Register extends DataFlow::CallCfgNode {
         )
     }
 
+    //* Holds if the circuit has integer parameter. */
+    predicate hasIntegerParameter() {
+        exists(DataFlow::LocalSourceNode source
+            |
+            source.flowsTo(this.getArg(0))
+            |
+            source.asExpr() instanceof IntegerLiteral
+        )
+    }
+
     int getAnAccessedPosition() {
         exists(
             DataFlow::Node nd,
@@ -34,6 +44,43 @@ abstract class Register extends DataFlow::CallCfgNode {
             result = position.getValue()
         )
     }
+
+
+    Variable getVar() {
+        // get the left side of the assignment
+        // e.g. reg = QuantumRegister(2)
+        // reg is the name of the register
+        exists(
+            Variable var,
+            AssignStmt assignStmt,
+            Scope same_scope
+            |
+            //var.getAStore() = this.asExpr()
+            //and
+            assignStmt.getValue() = this.asExpr()
+            and this.getScope() = same_scope
+            and var.getScope() = same_scope
+            and assignStmt.getScope() = same_scope
+            and assignStmt.getATarget() = var.getAStore()
+            |
+            // return the left side of the assignment, namely the reference
+            // to the NameNode
+            result = var
+        )
+
+    }
+
+
+    // /** Gets a index/position available in this register as int.*/
+    // int getAQubitIndex() {
+    //     exists(
+    //         int i
+    //         |
+    //         i = [0 .. this.getSize() - 1]
+    //         |
+    //         result = i
+    //     )
+    // }
 
 }
 
@@ -68,40 +115,6 @@ class QuantumRegister extends Register {
     // }
 
 
-    Variable getVar() {
-        // get the left side of the assignment
-        // e.g. reg = QuantumRegister(2)
-        // reg is the name of the register
-        exists(
-            Variable var,
-            AssignStmt assignStmt
-            |
-            //var.getAStore() = this.asExpr()
-            //and
-            assignStmt.getValue() = this.asExpr()
-            and
-            var.getScope() = assignStmt.getScope()
-            and
-            assignStmt.getATarget() = var.getAStore()
-            |
-            // return the left side of the assignment, namely the reference
-            // to the NameNode
-            result = var
-        )
-
-    }
-
-
-    /** Gets a qubit index/position available in this register as int.*/
-    int getAQubitIndex() {
-        exists(
-            int i
-            |
-            i = [0 .. this.getSize() - 1]
-            |
-            result = i
-        )
-    }
 
 
 
