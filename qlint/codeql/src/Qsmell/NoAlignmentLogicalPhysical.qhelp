@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Since the quantum memory of a real quantum computer is asymmetric, how the noise influences the result of the computation depends on how the logical qubits are mapped to physical ones.
+Thus, this detector reports every time that the user does not specify the mapping when using the <code>transpile()</code> method call, thus does not have a <code>initial_layout<code> argument.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that each <code>transpile()</code> sets the <code>initial_layout<code> argument.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, there is a single <code>transpile()</code> has no <code>initial_layout()</code> argument.</p>
+<sample src="NoAlignmentLogicalPhysical.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.compiler.transpile.html">transpile</a>.</li>
+</references>
+
+</qhelp>

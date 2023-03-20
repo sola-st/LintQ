@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>To minimize the number of calls between backend and client, you should batch all the circuits together before submitting them to the backend, especially when the same circuit is called with different parameters.
+This detector spots when the program has an excess of <code>execute()</code> and <code>backend.run()</code> method calls as compared to the number of <code>bind_parameters()</code> call.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that each <code>execute()</code> and <code>backend.run()</code> has only one corresponding <code>bind_parameters()</code> call.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, there is a single <code>backend.run()</code> and no <code>bind_parameters()</code> call, so the detector will raise a warning.</p>
+<sample src="NonParametrizedCircuit.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/apidoc/execute.html">Execute</a>.</li>
+</references>
+
+</qhelp>

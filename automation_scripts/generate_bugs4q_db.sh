@@ -25,7 +25,16 @@ folder_to_mine=../data/datasets/Bugs4Q_15_03_2023/Bugs4Q_raw
 for file in $(find $folder_to_mine -name "buggy.py" -o -name "bug_version.py") ; do
     # copy the file in the raw_files folder
     echo "Copying $file to $dataset_raw_files_path"
-    cp $file $dataset_raw_files_path
+    # create a hash of the path of length 6 chars
+    hash_suffix=$(echo $file | md5sum | cut -c 1-6)
+    new_file=$dataset_raw_files_path/$hash_suffix.py
+    cp $file $new_file
+    # read the file and append the $file path on the first line of the file
+    content=$(cat $new_file)
+    last_two_folders=$(echo $file | rev | cut -d '/' -f 1-3 | rev)
+    github_link=https://github.com/Z-928/Bugs4Q/blob/master/$last_two_folders
+    echo "# $github_link" > $new_file
+    echo "$content" >> $new_file
 done
 
 # create the test database with CodeQL (multiline command)
