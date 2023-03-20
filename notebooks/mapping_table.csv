@@ -1,0 +1,24 @@
+Our Abstraction," Qiskit API",Our Methods,Result,Cardinality
+Register,qreg = *QuantumRegister*(3),getSize(),3,single
+" ",creg = *ClassicalRegister*(2),hasIntegerParameter(),true,single
+" ",qX = *QuantumRegister*(2),getAnAccessedPosition(),0,multiple
+" ",qY = *QuantumRegister*(1),getVar(),qY,single
+Quantum Circuit,"qc = *QuantumCircuit*(qreg, qX, creg)",getNumberOfQubits(),6,single
+" ",,getAQuantumRegister(),"[qreg, qX, qY]",set
+" ","qc_sub = *QuantumCircuit*(2, 2)",getNumberOfClassicalBits(),2,single
+,*qc*.add_register(qY),isSubCircuit(),false,single
+" ",qc = qc.compose(*qc_sub*),isSubCircuit(),true,single
+Qubit Access,qc.h(*0*),getQubitIndex(),0,single
+,qc.y(qreg[*1*]),getQuantumRegister(),qreg,single
+,"qc.cnot(0, *2*)",getGate(),cnot,single
+Gate,qc.*h*(0),getGateName(),h,single
+,"qc.append(*HGate()*, 1)",getQuantumCircuit(),qc,single
+,"qc.*cnot*(2, 3)",getATargetQubit(),"[2, 3]",set
+,"qc.*cnot*(qX[0], qX[1])",isAppliedAfter(measure),false,single
+MeasureGate,"qc.*measure*(qX[0], creg[1])",isMeasurement(),true,single
+,,getATargetBit(),[0],set
+MeasureAll,qc.*measure_all*(),hasDefaultArgs(),true,single
+Transpiled Circuit,"qc_tr = *transpile*(qc, optimization_level=3)",getOptimizationLvl(),3,single
+PauliString,P_valid = *Pauli*( '- iXYZ '),isValid(),true,single
+PauliError,"err = *pauli_error*([( 'XY ', p ) , ( 'I ', 1 - p) ])",arePauliStringSameSize(),false,single
+,,getPauliString(),"['XY', 'I']",set
