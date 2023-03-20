@@ -18,6 +18,8 @@ import qiskit.Circuit
 // IDEA: disable if the circuit is draw, since we probably do not care about measurment
 // IDEA: disable if the circuit is run on a unitary simulator, since we do not need measurement with that
 // IDEA: disable when it is returned by a function, since it might be a sub-part
+// IDEA: if the circuit has an unknown register size, we cannot know the real number of qubits >> disable
+
 
 
 from
@@ -29,6 +31,13 @@ where
     circ.getNumberOfQubits() > circ.getNumberOfClassicalBits()
     // the circuit is not a subcircuit
     and not circ.isSubCircuit()
+    // the circuit has no unknown register size
+    and not (
+        exists(QuantumRegister reg |
+            reg = circ.getAQuantumRegister() and
+            not reg.hasIntegerParameter()
+        )
+    )
     // EXTRA IDEA
     // the circuit contains a measurement which has classical argument larger
     // than the size of the circuit

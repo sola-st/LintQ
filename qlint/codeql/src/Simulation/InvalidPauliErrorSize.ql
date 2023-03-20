@@ -21,6 +21,6 @@ import qiskit.NoiseModel
 from
     PauliError pauliError
 where
-    pauliError.arePauliStringsSizeIncompatible()
+    not pauliError.arePauliStringSameSize()
 select
     pauliError, "Invalid noise nodel: different size of Pauli strings."

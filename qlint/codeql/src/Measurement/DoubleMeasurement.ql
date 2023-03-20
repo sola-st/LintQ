@@ -20,10 +20,6 @@ from
     MeasureGate measureFirst, MeasureGate measureSecond
 where
     measureSecond.isAppliedAfter(measureFirst)
-    // do not put any other conditions in AND here
-    // otherwise the query will become inefficient
-    // https://github.com/github/codeql/issues/4909
-    // that could be because of the way get_a_target_qubit() works using and OR
 select
     measureSecond, "Two consecutive measurements on qubit '" +
         measureFirst.getATargetQubit() + "' " +

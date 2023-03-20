@@ -1,0 +1,17 @@
+/**
+ * @name Register not in the circuit
+ * @description when a circuit adds a gate which operates on a register that is
+ * not in the circuit.
+ *
+ * @kind problem
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision high
+ * @id ql-reg-not-in-circuit
+ */
+
+
+ // inspired by /home/paltenmo/projects/qlint/data/datasets/exp_v06/files_selected/project_vqls_6476a8.py
+ // but too obvious since it manifests with a crash.

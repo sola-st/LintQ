@@ -434,6 +434,13 @@ class MeasurementAll extends GenericGateCall {
     MeasurementAll() {
         this.getGateName() = "measure_all"
     }
+
+
+    predicate hasDefaultArgs() {
+        not this.(API::CallNode).getParameter(
+            1, "add_bits").getAValueReachingSink().asExpr().(
+                ImmutableLiteral).booleanValue() = false
+    }
 }
 
 class MeasurementAny extends DataFlow::CallCfgNode {

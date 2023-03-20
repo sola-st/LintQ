@@ -17,11 +17,6 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 
 
-predicate isMeasureAllCalledWithDefaultValues(MeasurementAll measureAllOp) {
-    not measureAllOp.(API::CallNode).getParameter(
-        1, "add_bits").getAValueReachingSink().asExpr().(
-            ImmutableLiteral).booleanValue() = false
-}
 
 from
     QuantumCircuit quantumCirc,
@@ -29,7 +24,7 @@ from
 where
     quantumCirc = measureAllOp.getQuantumCircuit() and
     // measureAllOp must not have add_bits parameters set to False
-    isMeasureAllCalledWithDefaultValues(measureAllOp) and
+    measureAllOp.hasDefaultArgs() and
     // the circuit must have a classical register
     quantumCirc.getNumberOfClassicalBits() > 0
 select

@@ -31,10 +31,10 @@ class PauliError extends DataFlow::CallCfgNode {
     }
 
     /** Check that the Pauli String are of different size.*/
-    predicate arePauliStringsSizeIncompatible() {
+    predicate arePauliStringSameSize() {
         // pauli_error([('XY', p), ('I', 1 - p)])
         // extract 'XY' and 'I'
-        exists(
+        not exists(
             string str1, string str2
             |
             this.getPauliString().getText() = str1

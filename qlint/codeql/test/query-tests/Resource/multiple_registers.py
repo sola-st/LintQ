@@ -23,3 +23,12 @@ qc.x(q1[1])
 qc.x(q2[0])
 qc.measure(q2[0], c_small[0])
 qc.measure(q2[1], c_small[1])
+
+
+# an extra register is added implicitly with measure_all()
+# TARGET FP: ddsim_b86c86
+circ = QuantumCircuit(3)  # LEGIT: because of measure_all()
+circ.h(0)
+circ.cx(0, 1)
+circ.cx(0, 2)
+circ.measure_all()
