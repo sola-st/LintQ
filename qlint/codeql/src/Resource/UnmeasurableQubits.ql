@@ -32,16 +32,15 @@ where
     // the circuit is not a subcircuit
     and not circ.isSubCircuit()
     // the circuit has no unknown register size
-    and not (
-        exists(QuantumRegister reg |
+    and not (exists(QuantumRegister reg |
             reg = circ.getAQuantumRegister() and
-            not reg.hasIntegerParameter()
-        )
-    )
+            not reg.hasIntegerParameter()))
     // EXTRA IDEA
     // the circuit contains a measurement which has classical argument larger
     // than the size of the circuit
     // and measure.getQuantumCircuit() = circ
     // and measure.getATargetBit() >= circ.get_total_num_bits()
 select
-    circ, "Circuit '" + circ.getName() + "' has more qubits (" + circ.getNumberOfQubits() + ") than classical  bits (" + circ.getNumberOfClassicalBits() + ")"
+    circ, "Circuit '" + circ.getName() + "' has more qubits (" +
+    circ.getNumberOfQubits() + ") than classical  bits (" +
+    circ.getNumberOfClassicalBits() + ")"

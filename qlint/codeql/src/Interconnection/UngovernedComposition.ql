@@ -43,7 +43,7 @@ where
     and
     mother_circuit.getNumberOfQubits() != sub_circuit.getNumberOfQubits()
 select
-    compose_call, "The composition of subcircuit '" + sub_circuit.getName() + "' " +
-        "to the '" + mother_circuit.getName() + "' " +
+    compose_call, "The composition of subcircuit '" + sub_circuit.getName() +
+        "' to the '" + mother_circuit.getName() + "' " +
         "has no specified wiring (parameters 'qubits' and 'clbits' of " +
         "compose() are not used)."

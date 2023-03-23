@@ -29,24 +29,17 @@ where
     // check that the compose has no named argument inplace=True
     // e.g. mother_circuit.compose(sub_circuit, inplace=True)
     // or if it exists, that it is False
-    and (
-            (not exists(compose_call.getArgByName("inplace")))
-            or
-            (compose_call.getArgByName("inplace").asExpr().(Name).getId() = "False")
-    )
+    and ((not exists(compose_call.getArgByName("inplace")))
+        or
+        (compose_call.getArgByName("inplace").asExpr().(Name).getId()="False"))
     // check that the return value of the compose() method is not stored
     // e.g. composed_circuit = mother_circuit.compose(sub_circuit)
-    and not exists(AssignStmt a |
-        a.getValue() = compose_call.asExpr()
-    )
+    and not exists(AssignStmt a | a.getValue() = compose_call.asExpr())
     // check that it is not used as argument of another method
     // e.g. qiskit.execute(mother_circuit.compose(sub_circuit))
     and not exists(DataFlow::CallCfgNode execute_call |
-        execute_call.getArg(_).asExpr() = compose_call.asExpr()
-    )
-
+        execute_call.getArg(_).asExpr() = compose_call.asExpr())
 select
     compose_call, "Ghost composition at location: (" +
     compose_call.getLocation().getStartLine() + ", " +
-    compose_call.getLocation().getStartColumn() +
-         ")"
+    compose_call.getLocation().getStartColumn() + ")"

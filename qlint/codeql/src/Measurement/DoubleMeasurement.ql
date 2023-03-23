@@ -16,10 +16,8 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
 
-from
-    MeasureGate measureFirst, MeasureGate measureSecond
-where
-    measureSecond.isAppliedAfter(measureFirst)
+from MeasureGate measureFirst, MeasureGate measureSecond
+where measureSecond.isAppliedAfter(measureFirst)
 select
     measureSecond, "Two consecutive measurements on qubit '" +
         measureFirst.getATargetQubit() + "' " +

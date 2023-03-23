@@ -17,11 +17,9 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
 
-from
-    TranspiledCircuit transpiledCirc,
-    Gate gate
-where
-    gate = transpiledCirc.getAGate() and
+from TranspiledCircuit transpiledCirc, Gate gate
+where gate = transpiledCirc.getAGate() and
     transpiledCirc.getOptimizationLvl() = 3
 select
-    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: " + transpiledCirc.getName() + "."
+    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: "
+    + transpiledCirc.getName() + "."
