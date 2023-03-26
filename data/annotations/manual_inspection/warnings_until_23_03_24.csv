@@ -1,0 +1,1088 @@
+bug_id,url,Snippet,experiment,unique_id,line,date_found,analysis_results,detector_rule,API_usage,triage,manifestation,added_to_test_suite,summary,IDEA,date_reported,is_detector_correct_in_latest_version,bug_description,link_to_issue,developer_reaction,developer comment,component,known_before,status
+06_df608f_322,https://github.com/fastflair/Tutorials/blob/ec3cec9ae4219f34f9a9980b3dfc33bad930e1e5/Quantum/ShorDecrypt/Shor.py,"# Apply inverse QFT
+        iqft = QFT(len(self._up_qreg), inverse=True)
+        circuit.compose(iqft, qubits=self._up_qreg)
+        logger.info(summarize_circuits(circuit))
+        return circuit",exp_v06,shor_df608f,322,6-mar-23,codeql_2023-03-06_13-18-16,ql-ghost-composition,compose,TP,silent,,"Ghost compose() call, ignored statement. the statement compose is lost because its return value is not used and the inplace=true is not set.",#N/A,6-mar-23,,BUG: Shor algo: missing insertion of the inverse qft,https://github.com/fastflair/Tutorials/issues/14,,,algorithm,,reported
+06_13ba80_90,https://github.com/qclib/qclib/blob/ddafadf004cfe79d6086b3874c96a00219bf896d/test/test_mc_gate.py,"def test_linear_toffoli2(self):
+        """""" Testing Toffoli control 110""""""
+        gate_x = np.array([[0, 1], [1, 0]])
+        circuit2 = qiskit.QuantumCircuit(4)
+        circuit2.x(2)
+        circuit2.x(3)
+        circuit2.x(0)
+        state1 = qclib.util.get_state(circuit2)
+        circuit = qiskit.QuantumCircuit(4)
+        mc_gate(gate_x, circuit, [3, 2, 1], 0)
+        circuit2.compose(circuit, circuit2.qubits)
+        state2 = qclib.util.get_state(circuit2)",exp_v06,test_mc_gate_13ba80,90,6-mar-23,codeql_2023-03-06_13-18-12,ql-ghost-composition,compose,TP,silent,,"Ghost compose() call, ignored statement. the statement compose is lost because its return value is not used. ",#N/A,6-mar-23,,BUG: ghost compose in test_ldmcu (A),https://github.com/qclib/qclib/issues/139,,,testing,,fixed: https://github.com/qclib/qclib/pull/140
+06_13ba80_107,https://github.com/qclib/qclib/blob/ddafadf004cfe79d6086b3874c96a00219bf896d/test/test_mc_gate.py,"def test_linear_toffoli1(self):
+        """""" Testing Toffoli control 100""""""
+        gate_x = np.array([[0, 1], [1, 0]])
+        circuit2 = qiskit.QuantumCircuit(4)
+        circuit2.x(2)
+        state1 = qclib.util.get_state(circuit2)
+        circuit = qiskit.QuantumCircuit(4)
+        mc_gate(gate_x, circuit, [0, 1, 2], 3)
+        circuit2.compose(circuit, circuit2.qubits)
+        state2 = qclib.util.get_state(circuit2)
+        self.assertTrue(np.allclose(state1, state2))",exp_v06,test_mc_gate_13ba80,107,6-mar-23,codeql_2023-03-06_13-18-13,ql-ghost-composition,compose,TP,silent,,"Ghost compose() call, ignored statement. the statement compose is lost because its return value is not used and the inplace=true is not set.",#N/A,6-mar-23,,BUG: ghost compose in test_ldmcu (B),https://github.com/qclib/qclib/issues/139 ,,,testing,,fixed: https://github.com/qclib/qclib/pull/140
+06_c4c34f_45,https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/blob/e97de3d2fb81b2057a1e45d1be82b8d9444792a3/Paulihedral/real_system.py,"qc3 = qiskit_synthesis(a2, graph=graph, gamma=gamma, beta=beta)
+    qc3 = transpile(qc3, basis_gates=['u3', 'cx'], backend=backend, coupling_map=coup, optimization_level=3)
+    qc3.measure_all()",exp_v06,real_system_c4c34f,45,6-mar-23,codeql_2023-03-06_13-18-18,ql-op-after-optimization,transpile (lv3) + measure,TP,silent,,"The transpilation lvl 3 might remove final swaps if there is no measurement after it, thus it is necessary to transpile the final circuit only. The measurements are not consider in the transpilation. ",#N/A,7-mar-23,,BUG: measurement after transpilation level 3 (A),https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/issues/1,,,transpilation,,reported
+06_c4c34f_40,https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/blob/e97de3d2fb81b2057a1e45d1be82b8d9444792a3/Paulihedral/real_system.py,"qc1 = synth_qaoa1(a2, graph=graph, gamma=gamma, beta=beta)
+    qc1 = transpile(qc1, basis_gates=['u3', 'cx'], backend=backend, coupling_map=coup, optimization_level=3)
+    qc1.measure_all()",exp_v06,real_system_c4c34f,40,6-mar-23,codeql_2023-03-06_13-18-17,ql-op-after-optimization,transpile (lv3) + measure,TP,silent,,"The transpilation lvl 3 might remove final swaps if there is no measurement after it, thus it is necessary to transpile the final circuit only.",#N/A,7-mar-23,,BUG: measurement after transpilation level 3 (B),https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/issues/1,,,transpilation,,reported
+06_09be03_19,https://github.com/tula3and/qoupang/blob/efab669e5d529e42a66d6cb2d28cfc22c6103d68/qrng/qrng.py,"circuit = QuantumCircuit(q,c)
+circuit.h(q)
+for i in range(47):
+    circuit.cx(q[i], q[47])
+circuit.measure_all()",exp_v06,qrng_09be03,19,6-mar-23,codeql_2023-03-06_13-18-20,ql-measure-all-abuse,measure_all,TP,longer output,,"Using measure_all with default parameters adds a new classical register. Here you already have one, thus the outputs has 47*2 bits.",#N/A,8-mar-23,,BUG: consuming double of the space needed,https://github.com/tula3and/qoupang/issues/1,,,algorithm,,reported
+06_55fd07_25,https://github.com/0tt3r/QuaC-qiskit/blob/6fda8db41e6cbdab11059f036a34fa9e410d11a8/examples/demos/bell_states_example.py,"circuit2 = QuantumCircuit(2, 2)
+    circuit2.h(0)
+    circuit2.cx(0, 1)
+    circuit2.measure_all()",exp_v06,bell_states_example_55fd07,25,6-mar-23,codeql_2023-03-06_13-18-21,ql-measure-all-abuse,measure_all,TP,longer output,,"Using measure_all with default parameters adds a new classical register. Here you already have one, thus the outputs has 2*2 bits.",#N/A,9-mar-23,,BUG: unwanted addition of classical bits via `measure_all`,https://github.com/0tt3r/QuaC-qiskit/issues/1,,,algorithm,,reported
+06_17fe47_18,https://github.com/shantanu-misra/Quantum_coumputing_with_Qiskit/blob/baebc362c436de5e5a3d026625f486e44d17203f/Classical%20Gates%20with%20Qubits/OR_with_qubits.py,"qc = QuantumCircuit(3,1)
+for input in ['00', '01', '10', '11']:
+    if input[0] == '1':
+        qc.x(0)
+    if input[1] == '1':
+        qc.x(1)
+    qc.cx(0,2)
+    qc.cx(1,2)
+    qc.ccx(0,1,2)
+    qc.measure(2,0)
+    job = execute(qc,Aer.get_backend('qasm_simulator'),shots=1000)
+    counts = job.result().get_counts(qc)
+    print(""Input:"", input, ""Output:"", counts)",exp_v06,or_with_qubits_17fe47,18,6-mar-23,codeql_2023-03-06_13-18-26,ql-operation-after-measurement,for loop circuit construction,TP,silent,,"The circuit is not re-initialized at each iteration, thus what remains from the previous iteration is reused making qubit gates to appear after a measurement. NOTE: this is correctly detected becuase the program sees any possible control flow. It is naive now: it doesn't check any initialization as of now.",#N/A,10-mar-23,,BUG: missing circuit re-initialization in OR implementation,https://github.com/shantanu-misra/Quantum_coumputing_with_Qiskit/issues/1,,,algorithm,,reported
+06_4c9443_35,https://github.com/beaudoco/qiskit-shifting-simulator/blob/5348151514ed2c60619b813b7b0eaad693fd8e59/circuits/circuit_0_5.py,"qr = QuantumRegister(5, 'q')
+cr = ClassicalRegister(2, 'c')
+qc_5_close = QuantumCircuit(qr, cr)
+num_gates = 50
+for i in range(num_gates):
+    qc_5_close.cx(qr[0], qr[1])
+    qc_5_close.cx(qr[3], qr[4])
+    qc_5_close.barrier()
+qc_5_close.measure(qr[0], cr[0])
+qc_5_close.measure(qr[1], cr[1])
+max_experiments = 25
+circ_list = []
+for i in range(max_experiments):
+    circ_list.append(qc_5_close)
+job = execute(circ_list, backend, shots=8192)
+result = job.result()",exp_v06,circuit_0_5_4c9443,35,7-mar-23,codeql_2023-03-06_13-18-36,ql-oversized-circuit,unused bits,TP,silent,,The circuit has 5 qubits but uses only four.,#N/A,13-mar-23,,BUG: unused qubit,https://github.com/beaudoco/qiskit-shifting-simulator/issues/1,,,algorithm,,reported
+06_4c9443_11,https://github.com/beaudoco/qiskit-shifting-simulator/blob/5348151514ed2c60619b813b7b0eaad693fd8e59/circuits/circuit_0_5.py,"QX_TOKEN = ""67313723797a8e ...""
+IBMQ.enable_account(QX_TOKEN)
+provider = IBMQ.get_provider(
+    hub='ibm-q-research', group='penn-state-1', project='main')",exp_v06,circuit_0_5_4c9443,11,13-mar-23,codeql_2023-03-09_12-18-15,ql-token-leakage,leaked secret,TP,silent,,They leak a secret in clear,#N/A,13-mar-23,,BUG: IBMQ token secret leakage,https://github.com/beaudoco/qiskit-shifting-simulator/issues/2,,,IBMQ Connection,,reported
+06_7af332_35,https://github.com/pnnl/SV-Sim/blob/3a22b3137c8f35b92375548ac9a94c1f47c35aa8/svsim/crusher/qiskit/test/ghz.py,"n_qubits = 10
+def cx_chain(qc,n):
+    for i in range(0,n-1):
+        qc.cx(i,i+1)
+qc = QuantumCircuit(n_qubits, n_qubits)
+qc.h(0)
+cx_chain(qc,n_qubits)
+qc.measure_all()",exp_v06,ghz_7af332,35,10-mar-23,codeql_2023-03-08_15-15-36,ql-measure-all-abuse,measure_all,TP,longer output,,They create a new register when not needed.,#N/A,16-mar-23,,BUG: measure_all adds extra register in ghz test,https://github.com/pnnl/SV-Sim/issues/2,,,algorithm,,reported
+08_c50734_412,https://github.com/Qiskit/platypus/blob/48a874f4395a8e68c97fdca7f18f7474a5e27e68/notebooks/ch-appendix/qiskit.ipynb,"qc = QuantumCircuit(5,5)
+qc.x(0)
+qc.cx(0,0+1)
+qc.cx(0,1+1)
+qc.cx(0,2+1)
+qc.cx(0,3+1)
+qc.measure_all()
+qc.draw()",exp_v08,qiskit_c50734,412,18-mar-23,codeql_2023-03-17_19-08-02,ql-measure-all-abuse,measure_all,TP,silent,,"They use measure_all with a classical register, adding a new register for no reasons.",#N/A,18-mar-23,,BUG: unwanted addition of classical bits via `measure_all` (B),https://github.com/Qiskit/platypus/issues/2007,,,algorithm,,confirmed
+06_fe6009_63,https://github.com/timholthuijsen/QuantumProject/blob/bf410651cbdd41af4552a36be480b10bc412a40b/InefficientNot.py,"qc.barrier()
+    qc.measure(0,0)
+    trial = qc.measure(0,0)",exp_v06,inefficientnot_fe6009,63,16-mar-23,codeql_2023-03-09_12-18-15,ql-double-measurement,measure,TP,silent,,There are two measurement on qubit 0.,#N/A,20-mar-23,,BUG: redundant identical measure gate,https://github.com/timholthuijsen/QuantumProject/issues/1,,,algorithm,,"fixed:
+https://github.com/timholthuijsen/QuantumProject/commit/ef400f41fb12bd8a91a572569224c6df9a2f4779"
+06_5accfc_6,https://github.com/sqrta/Qsketch/blob/ffdfbe309e6d18f562d4e2cab968c45cfee68ba1/Qiskit_wstate.py,"circ = QuantumCircuit(3)
+circ.__1(__, 0)  # unrecognized weird api
+ch0=HGate().control(ctrl_sstate=0)
+circ.append(ch0, [0,1])",exp_v06,"
+qiskit_wstate_5accfc",6,7-mar-23,codeql_2023-03-06_13-18-33,ql-oversized-circuit,unused bits,TP,,,"The warning is correct: the qubit 2 is unused. But it is uclear if this is intended or not, probably not because the is no other context (e.g. teleportation algo)",#N/A,,,,,,,,,
+06_c0bda9_473,https://github.com/qifanyyy/JupyterNotebook/blob/20d8df6172906337f81583dabb841d66b8f31857/new_algs/Number%2Btheoretic%2Balgorithms/Shor's%2Balgorithm/Shor_Sequential_QFT.py,""""""" Cycle to create the Sequential QFT, measuring qubits and applying the right gates according to measurements """"""
+    for i in range(0, 2*n):
+        """"""reset the top qubit to 0 if the previous measurement was 1""""""
+        circuit.x(up_reg).c_if(c_aux, 1)
+        circuit.h(up_reg)
+        cMULTmodN(circuit, up_reg[0], down_reg, aux, a**(2**(2*n-1-i)), N, n)
+        """"""cycle through all possible values of the classical register and apply the corresponding conditional phase shift""""""
+        for j in range(0, 2**i):
+            """"""the phase shift is applied if the value of the classical register matches j exactly""""""
+            circuit.u1(getAngle(j, i), up_reg[0]).c_if(up_classic, j)
+        circuit.h(up_reg)
+        circuit.measure(up_reg[0], up_classic[i])
+        circuit.measure(up_reg[0], c_aux[0])",exp_v06,shor_sequential_qft_c0bda9,473,8-mar-23,codeql_2023-03-08_15-15-36,ql-double-measurement,measure,TP,,,"The alert is correct, but the intent of the use could be to copy the classical information around (this could be a pattern of advanced users)",#N/A,,,,,,,,,
+06_6835fc_46,https://github.com/agustinsilva447/Reinforcement-Learning/blob/28e8c06ea081bb3130ae806cf4180a6a52eed099/Prueba%201/scigym-teleportation-bruteforce.py,"circuit = QuantumCircuit(3,3)
+        for action in observation:
+            if action == 0:
+                actions_gate.append('H_0')
+                circuit.h(0)
+                circuit.barrier()
+            ....
+            elif (action == 10) or (action == 11):
+                actions_gate.append('MEASURE_0')
+                circuit.measure(0, 0)
+                circuit.barrier()
+           ...",exp_v06,scigym_teleportation_bruteforce_6835fc,46,8-mar-23,codeql_2023-03-06_13-18-39,ql-operation-after-measurement,for loop circuit construction,TP,,,Not clear if the in-circuit measurements is intended or not.,#N/A,,,,,,,,,
+06_9133c2_14,https://github.com/ArtemPervushow/QuantumSea/blob/b272da800f39cf62a74e049f5c9a8787c02ef7dc/QuantumSea/main.py,"IBMQ.enable_account('99c0e0cf082 etc..') # Enter your API token here
+provider = IBMQ.get_provider(hub='ibm-q')",exp_v06,main_9133c2,14,8-mar-23,codeql_2023-03-08_15-15-36,ql-token-leakage,credentials,TP,,,They leaked the credentials. Not sure if it was intended. Probably it is never intended.,#N/A,,,,,,,,,
+06_f283bf_2543,https://github.com/Simula-COMPLEX/MutTG-paper/blob/fb7ec57f8ed101045d0f2bd573baf8a8cc078547/code/programs/QRAM.py,"qc = QuantumCircuit(qreg, addr, qram0, qram1, c)
+    input_string = dec2bin(input)
+    #print('input:'+str(input_string))
+    if input_string[8] == '1':
+        qc.x(addr[0])
+    for i in range(4):
+        if input_string[7-i] == '1':
+            #print('input '+ str(7-i) + '=1')
+            qc.x(qram0[i])
+    for i in range(4):
+        if input_string[3-i] == '1':
+            #print('input ' + str(3 - i) + '=1')
+            qc.x(qram1[i])
+...
+for i in range(4):
+        qc.cswap(addr[0],qram0[i],qram1[i])",exp_v06,qram_f283bf,2543,9-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused bits,TP,,,"The modeling doesn't consider that different registers are different. Nevertheless, there is an actual bug because the addr is not fully used, even when expanding the loops. IDEA: implement QubitUsed concetpt and use loop unrolling.", implement QubitUsed concetpt and use loop unrolling.,,,,,,,,,
+06_f68607_219,https://github.com/Chibikuri/QuantumCircuitAnalyzer/blob/34e0761bb26e3f37d18e3c72bce3610e32fa7ffc/analyzer/fidelity/analyzefidelity.py,"q = QuantumRegister(4)
+    c = ClassicalRegister(2)
+    qc = QuantumCircuit(q, c)
+    qc.x(q[0])
+    for i in range(3):
+        qc.cx(q[0], q[1])
+        qc.cx(q[1], q[0])
+    qc.measure(q[0], c[0])
+    qc.measure(q[1], c[1])",exp_v06,analyzefidelity_f68607,219,9-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused bits,TP,,,There are indeed unused qubits here. The one at index 3 is never used.,#N/A,,,,,,,,,
+06_6d96db_39,https://github.com/Mirkesx/quantum_programming/blob/f7674cf833035a8115442a7f7ad49fef9f4c85ed/Exercises/5.py,"inp = QuantumRegister(2)
+    anc = QuantumRegister(1)
+    out = QuantumRegister(1)
+    final_res = QuantumRegister(1)
+    cr = ClassicalRegister(1)
+    qc = QuantumCircuit(inp, out, anc, final_res, cr)
+...
+    qc.cx(out, final_res)
+    qc.cx(anc, out)
+    qc.ccx(inp[0], inp[1],anc)
+    qc.barrier()
+    qc.measure_all()",exp_v06,5_6d96db,39,10-mar-23,codeql_2023-03-08_15-15-36,ql-measure-all-abuse,measure_all,TP,,,They create a new register when not needed.,#N/A,,,,,,,,,
+06_cff11a_53,https://github.com/Quantum-Computing-Cooperation/Tutorials/blob/9b44a4410dedba9d15bc8fd6a6bcd6621441e4fb/quantumteleport.py,"# Next, apply the teleportation protocol.
+qc.cx(0, 1)
+qc.h(0)
+qc.measure(0, 0)
+qc.measure(1, 1)
+qc.cx(1, 2)
+qc.cz(0, 2)
+qc.barrier()",exp_v06,quantumteleport_cff11a,53,16-mar-23,codeql_2023-03-09_12-18-15,ql-operation-after-measurement,mid-circuit measurements,TP,,,Actually the teleportation protocol considers a conditional rx or rz rotation after the measurement. Not following the deferred measurment principle. https://qiskit.org/textbook/ch-algorithms/teleportation.html,#N/A,,,,,,,,,
+06_365616_260,https://github.com/SRI-International/QC-App-Oriented-Benchmarks/blob/0af48398f1faa0b1bacfff1ac0525f830d35c83d/shors/qiskit/shors_benchmark.py,"            qc.h(qr_counting)
+            qc.measure(qr_counting[0], cr_data[k])
+            qc.measure(qr_counting[0], cr_aux[0])",exp_v06,shors_benchmark_365616,260,16-mar-23,codeql_2023-03-09_12-18-15,ql-double-measurement,measure,TP,,,Two measruement on the same qubit.,#N/A,,,,,,,,,
+06_e67137_332,https://github.com/narghev/qiskit/blob/6d0e2e79bdc63579d00569543e7bb0bd7c71930c/1_ProbDist_Measurement_Evolution_Practice.ipynb,"inp = qiskit.QuantumRegister(1, 'input')
+meas = qiskit.ClassicalRegister(2, 'measure')
+circuit = qiskit.QuantumCircuit(inp, meas)
+circuit.h(inp[0])
+circuit.measure(inp[0], meas[0])
+circuit.measure(inp[0], meas[1])",exp_v06,1_probdist_measurement_evolution_practice_e67137,332,16-mar-23,codeql_2023-03-09_12-18-15,ql-double-measurement,measure,TP,,,Two measruement on the same qubit.,#N/A,,,,,,,,,
+06_7da521_55,https://github.com/B10-H4ck3r/QComp_QuantumTeleportationProtocol/blob/5f839a5e8f27cae31d5783a6cffd252a2acf6db0/QuantumTeleportationProtocol.py,"circuit.barrier()
+circuit.measure([0,1], [0,1])
+circuit.draw()
+circuit.barrier()
+circuit.cx(1,2)
+circuit.cz(0,2)
+circuit.draw()
+",exp_v06,quantumteleportationprotocol_7da521,55,16-mar-23,codeql_2023-03-09_12-18-15,ql-operation-after-measurement,mid-circuit measurements,TP,,,Teleportation with measurement without conditional application.,#N/A,,,,,,,,,
+06_5b8be6_27,https://github.com/neocarton/demo-quantum-hello/blob/bc5042830f89b45b4ee7342d3c174967c6a346d4/demo3_quantum_teleportation.ipynb,"circuit = QuantumCircuit(3, 3)
+circuit.x(0)
+circuit.barrier()
+circuit.h(1)
+circuit.cx(1, 2)
+circuit.cx(0, 1)
+circuit.h(0)
+circuit.barrier()
+circuit.measure([0, 1], [0, 1])
+circuit.barrier()
+circuit.cx(1, 2)
+circuit.cz(0, 2)
+circuit.measure([2], [2])",exp_v06,"
+demo3_quantum_teleportation_5b8be6",27,6-mar-23,codeql_2023-03-06_13-18-28,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,"The teleportation algorithm requires in circuit measurement, thus it is normal to apply cnot or controlled rotations as function of what has been measured. OPENQasm3 supports mid circuits measurements: https://quantum-computing.ibm.com/lab/docs/iql/manage/systems/midcircuit-measurement/ IDEA: disable the check if you work with OpenQASM3.", disable the check if you work with OpenQASM3.,,,,,,,,,
+06_a7cb5a_4,https://github.com/UST-QuAntiL/QuantME-UseCases/blob/9403b0a896ad55676416c001539c7589f8efe5fb/2020-ucc/grover/circuits/oracle3.py,"qc = QuantumCircuit()
+q = QuantumRegister(5, 'q')
+qc.add_register(q)
+qc.h(q[4])
+qc.mct(list(range(4)), 4)
+qc.h(q[4])
+def get_circuit(**kwargs):
+    """"""Get oracle circuit.""""""
+    return qc",exp_v06,oracle3_a7cb5a,4,6-mar-23,codeql_2023-03-06_13-18-22,ql-unmeasurable-qubits,circuit size,Noisy warning,,yes,"The circuit has indeed a bug (since it has 5 qubits vs 0 bits), but this is expected since the circuit is returned to be used as a subcircuit. IDEA: We could improve it by checking whether the circtit has been used as return value of a function or it is a subcircuit.", We could improve it by checking whether the circtit has been used as return value of a function or it is a subcircuit.,,,,,,,,,
+06_60383a_15,https://github.com/iitis/PyQBench/blob/2294720a49b869c7f1e20b1510d7cb089bd4d771/qbench/fourier/_components/_lucy_and_ibmq_common.py,"def u_dag(phi: AnyParameter) -> Instruction:
+    circuit = QuantumCircuit(1, name=""U-dag"")
+    circuit.sx(0)
+    circuit.rz(np.pi / 2, 0)
+    circuit.sx(0)
+    circuit.rz(-phi, 0)
+    circuit.sx(0)
+    circuit.rz(np.pi / 2, 0)
+    circuit.sx(0)
+    return circuit.to_instruction()",exp_v06,lucy_and_ibmq_common_60383a,15,6-mar-23,codeql_2023-03-06_13-18-23,ql-unmeasurable-qubits,circuit size,Noisy warning,,yes,"The circuit with no classical bit has a meaning in this case, because it is returned as function, thus making it a reusable component. IDEA: check that the circuit doesn't appear in the return function.", check that the circuit doesn't appear in the return function.,,,,,,,,,
+06_8acb22_16,https://github.com/mcoggins96/Quantum-Computing-UK-Repository/blob/b6835dcc619c7125a77c9e502ab4fc69af93ecb4/Advanced/Phase_estimation.py,"q = QuantumRegister(4,'q')
+c = ClassicalRegister(3,'c')
+circuit = QuantumCircuit(q,c)",exp_v06,phase_estimation_8acb22,16,6-mar-23,codeql_2023-03-06_13-18-24,ql-unmeasurable-qubits,circuit size,Noisy warning,,,"The circuit has an extra qubit with a certain phase. This phase is detected indirectly using the qft. Thus, the extra bit which is not measured seems typical of this artificial experimental setup.",#N/A,,,,,,,,,
+06_c7825c_18,https://github.com/jdmejiav/cuantum-teleportation/blob/9dc2eab7fe791015a5c0f0a467fc0c93c439d1f2/qiskitcode.py,"circuit.h(qreg_q[0])
+circuit.barrier(qreg_q[2], qreg_q[0], qreg_q[1])
+circuit.measure(qreg_q[0], creg_c[0])
+circuit.measure(qreg_q[1], creg_c[1])
+circuit.barrier(qreg_q[2], qreg_q[0], qreg_q[1])
+circuit.cx(qreg_q[1], qreg_q[2])
+circuit.cz(qreg_q[0], qreg_q[2])",exp_v06,qiskitcode_c7825c,18,7-mar-23,codeql_2023-03-06_13-18-31,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,Resemblance with Teleportation variant. Duplicate of: 06_5b8be6_27,#N/A,,,,,,,,,
+06_864acb_10,https://github.com/jamesjcai/quantum/blob/b18436492456e62db64a8b725554e07068ef2f3e/draw_bloch_sphere.py,"qc = QuantumCircuit(1)
+qc.h(0)
+qc.x(0)
+qc.draw()
+qc.save_statevector()
+qobj = assemble(qc)
+state = sim.run(qobj).result().get_statevector()
+plot_bloch_multivector(state).show()",exp_v06,draw_bloch_sphere_864acb,10,7-mar-23,codeql_2023-03-06_13-18-38,ql-unmeasurable-qubits,plotting intent,Noisy warning,,,In theory the detector is right. But we would not want to notify the user when the intent is plotting. IDEA: remove warnings when the circuit goes to a plotting funtion (or even draw?), remove warnings when the circuit goes to a plotting funtion (or even draw?),,,,,,,,,
+06_7c89be_15,https://github.com/CCNYseniors/rubik/blob/92ea9cbe816d85db447b8c6cdedf42b4e3f4e7c1/circuit.py,"circuit = QuantumCircuit(qreg_q, creg_c)
+...
+circuit.cx(qreg_q[0], qreg_q[1])
+circuit.measure(qreg_q[0], creg_c[0])
+circuit.rx(pi/3, qreg_q[0])
+circuit.measure(qreg_q[1], creg_c[1])
+circuit.ry(pi/5, qreg_q[1])
+# END OF FILE",exp_v06,circuit_7c89be,15,8-mar-23,codeql_2023-03-08_15-15-36,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,Duplicate of the teleportation algorithm.,#N/A,,,,,,,,,
+06_bc8def_14,https://github.com/TomaszModrzejewski/Python/blob/5ff53a9f0f870659baa34718d361e624b3427ec9/circuit.py,"circuit = QuantumCircuit(qreg_q, creg_c)
+...
+circuit.tdg(qreg_q[0])
+circuit.measure(qreg_q[1], creg_c[1])
+circuit.rzz(pi/2, qreg_q[1], qreg_q[2]).c_if(creg_c, 0)
+circuit.reset(qreg_q[1])",exp_v06,circuit_bc8def,14,8-mar-23,codeql_2023-03-08_15-15-36,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,"They use the mid-circuit measurement to decide whether to apply a gate in realtime or not. This is a rudimental runtime control flow, which is typically deactivated in most HW because of the complexity to implement it physically, but some started to support it.",#N/A,,,,,,,,,
+06_8c8baa_21,https://github.com/Kylet1699/Quantum-Minesweeper/blob/707e54e42249e7d0ca402f6536a149566cafc952/BombTester.py,"def quantum_sweeper(cycles) -> QuantumCircuit:
+    qr = QuantumRegister(3, 'q')
+    cr = ClassicalRegister(cycles + 1, 'c')
+    qc = QuantumCircuit(qr, cr)
+    qc.h(qr[0])
+    theta = math.pi/cycles
+    for cycle in range(cycles - 1):
+        qc.append(RXGate(theta), [qr[1]])
+        qc.ccx(qr[0], qr[1], qr[2])
+        qc.measure(qr[2], cr[cycle])
+        if cycle < cycles - 1:
+            qc.reset(qr[2])
+    qc.append(RXGate(theta), [qr[1]])
+    qc.measure(qr[1], cr[cycles - 1])
+    qc.measure(qr[0], cr[cycles])
+    return qc
+",exp_v06,bombtester_8c8baa,21,8-mar-23,codeql_2023-03-08_15-15-36,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,"They run the same circuit multiple times without reinitializing the circuit, it seems to be intended. IDEA: we could raise the alerm operation after measurement when the qubit is not reset after the measure. This example is indeed following this principle, thus it should be a FP. (althought they use a classical condition which might be difficult to detect)."," we could raise the alerm operation after measurement when the qubit is not reset after the measure. This example is indeed following this principle, thus it should be a FP. (althought they use a classical condition which might be difficult to detect).",,,,,,,,,
+06_bc8def_26,https://github.com/TomaszModrzejewski/Python/blob/5ff53a9f0f870659baa34718d361e624b3427ec9/circuit.py,"qreg_q = QuantumRegister(3, 'q')
+creg_c = ClassicalRegister(3, 'c')
+circuit = QuantumCircuit(qreg_q, creg_c)
+...
+circuit.measure(qreg_q[1], creg_c[1])
+circuit.rzz(pi/2, qreg_q[1], qreg_q[2]).c_if(creg_c, 0)
+circuit.reset(qreg_q[1])   # NOTE THE RESET, BUT IT IS APPLIED AFTER THE  RZZ
+circuit.cx(qreg_q[0], qreg_q[1])
+circuit.ccx(qreg_q[0], qreg_q[1], qreg_q[2]).c_if(creg_c, 0)
+circuit.t(qreg_q[0])
+circuit.swap(qreg_q[1], qreg_q[2]).c_if(creg_c, 0)
+circuit.x(qreg_q[0])
+circuit.u(pi/2, pi/2, pi/2, qreg_q[1])
+circuit.h(qreg_q[2])
+circuit.sx(qreg_q[0])
+circuit.id(qreg_q[1])
+circuit.rx(pi/2, qreg_q[2])
+circuit.y(qreg_q[1])",exp_v06,circuit_bc8def,26,8-mar-23,codeql_2023-03-08_15-15-36,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,"Here the reset is use one instruction too late, it should have been anticipated perhaps. IDEA: add this as a potential TP bug in the test.", add this as a potential TP bug in the test.,,,,,,,,,
+06_beccb9_28,https://github.com/benkoehlL/Qiskit_Playground/blob/2a9ede4d0ce3cc9718dccb6ff06538d0ec32824a/quantum_k_means.py,"theta_list = [0.01, 0.02, 0.03, 0.04, 0.05,
+                    1.31, 1.32, 1.33, 1.34, 1.35]
+qr = QuantumRegister(5,'q')
+cr = ClassicalRegister(5, 'c')
+qc = QuantumCircuit(qr, cr, name=circuit_name)
+# define a loop to compute the distance between each pair of points
+for i in range(len(theta_list)-1):
+    for j in range(1,len(theta_list)-i):
+        # set the parameters theta about different points
+        theta_1 = theta_list[i]
+        theta_2 = theta_list[i+j]
+        qc.h(qr[2])
+        qc.h(qr[1])
+        qc.h(qr[4])
+        qc.u3(theta_1, np.pi, np.pi, qr[1])
+        qc.u3(theta_2, np.pi, np.pi, qr[4])
+        qc.cswap(qr[2], qr[1], qr[4])
+        qc.h(qr[2])
+
+        qc.measure(qr[2], cr[2])
+        qc.reset(qr)  # GOOD PRACTICE
+
+        job = execute(qc, backend=backend, shots=1024)
+        result = job.result()
+        print(result.get_counts())
+        print('theta_1: ', theta_1, '\t', 'theta_2: ', theta_2)
+plot_histogram(result.get_counts())",exp_v06,quantum_k_means_beccb9,28,8-mar-23,codeql_2023-03-08_15-15-36,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,This is another example of good practice where the quantum register is reset after the measurement. IDEA: add this to the test suite when supporting the reset() modeling., add this to the test suite when supporting the reset() modeling.,,,,,,,,,
+06_061e13_39,https://github.com/sungmin-net/Qiskit_Tutorials/blob/579df0293d478e197bcaa579855aa6971354359f/tutorial03_QuantumOperations.py,"qc = QuantumCircuit(q)
+qc.u2(pi / 2, pi / 2, q)
+qc.draw('mpl')
+plt.show()
+plot_bloch_multivector(qc)
+plt.show()
+job = execute(qc, backend)
+print(job.result().get_unitary(qc, decimals = 3))",exp_v06,tutorial03_quantumoperations_061e13,39,8-mar-23,codeql_2023-03-06_13-18-39,ql-oversized-circuit,plotting intent,Noisy warning,,yes,Similar to 06_864acb_10 but here the plot_bloch_sphere take the circuit as input,#N/A,,,,,,,,,
+06_9489c1_26,https://github.com/jiangtong1000/learn_QuantumCompute/blob/af36a484fe02cd21d3c44ebeba785825570a1c54/test1.py,"circ = QuantumCircuit(2)
+    circ.h(0)
+    circ.cx(0, 1)
+...
+    meas = QuantumCircuit(2, 1)
+    meas.barrier(range(2))
+    meas.measure(0, 0)
+    qc = meas.compose(circ, front=True)",exp_v06,test1_9489c1,26,9-mar-23,codeql_2023-03-08_15-15-36,ql-ungoverned-composition,compose,Noisy warning,,,"Even if the warning is correct, thy pattern might is not very precise. IDEA: disable or evaluate different levels of precision separately.", disable or evaluate different levels of precision separately.,,,,,,,,,
+06_a4a9d1_29,https://github.com/CAholder/TKET-Testing/blob/4c27af305968f0169ebdd91c697392d38f8140a7/Testing.py,"qc = QuantumCircuit(2,2)
+qc.h(0)
+qc.cx(0,1)
+meas = QuantumCircuit(2,2)
+meas.measure([0,1],[0,1])
+backend = BasicAer.get_backend('qasm_simulator')
+drawing = qc.compose(meas)",exp_v06,testing_a4a9d1,29,9-mar-23,codeql_2023-03-08_15-15-36,ql-ungoverned-composition,compose,Noisy warning,,,"too noisy, all right here. IDEA: maybe we can improve this by preventing alerts when the two composed circuits have the same size.", maybe we can improve this by preventing alerts when the two composed circuits have the same size.,,,,,,,,,
+06_b0607e_30,https://github.com/cda-tum/ddsim/blob/236821f556492dc3cce2c6d528626a1f08423a8a/test/python/simulator/test_multi_registers_convention.py,"qreg0 = QuantumRegister(2, ""q0"")
+        creg0 = ClassicalRegister(2, ""c0"")
+        qreg1 = QuantumRegister(2, ""q1"")
+        creg1 = ClassicalRegister(2, ""c1"")
+        circ = QuantumCircuit(qreg0, qreg1)
+        circ.x(qreg0[1])
+        circ.x(qreg1[0])
+        meas = QuantumCircuit(qreg0, qreg1, creg0, creg1)
+        meas.measure(qreg0, creg0)
+        meas.measure(qreg1, creg1)
+        qc = meas.compose(circ, front=True)",exp_v06,"
+test_multi_registers_convention_b0607e",30,9-mar-23,codeql_2023-03-08_15-15-36,ql-ungoverned-composition,compose,Noisy warning,,,IDEA: disable when they refer to the same registers even., disable when they refer to the same registers even.,,,,,,,,,
+06_841fdd_8,https://github.com/Namr/YAQCS/blob/65a286f05fc917a39462d23ab1ad368f84466e7c/BQSKit%20Extensions/examples/cx.py,"backend = Aer.get_backend('unitary_simulator')
+qc = QuantumCircuit(2)
+qc.cx(1,0)
+qc.ry(np.pi/2,1)
+qc.rxx(np.pi/2,1,0)
+qc.ry(-np.pi/2,1)
+qc.rx(-np.pi/2,0)
+qc.p(-np.pi/2,1)
+job = execute(qc, backend)
+result = job.result()
+print(result.get_unitary(qc, decimals=3))",exp_v06,cx_841fdd,8,9-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,Here we do not have any classical register because we probe the state with a unitary simulator. IDEA: disable the check when the circuit is run on a simulator `unitary` backend., disable the check when the circuit is run on a simulator `unitary` backend.,,,,,,,,,
+06_81712e_83,https://github.com/Ninomoriaty/iToolkit/blob/fc2def63c476cecd88dc61b64b70e82eae58408d/QBioI_Qiskit/qiskit-textbook-master/i18n/locales/ja/ch-gates/more-circuit-identities.ipynb,"qc = QuantumCircuit(2)
+qc.ry(pi/4,t)
+qc.cx(c,t)
+qc.ry(-pi/4,t)
+qc.draw()",exp_v06,more_circuit_identities_81712e,83,9-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,The circuit is unmeasureable (no class reg) because the goal is plotting. IDEA: disable the warning if the circuit is drawn., disable the warning if the circuit is drawn.,,,,,,,,,
+06_6476a8_59,https://github.com/JorgeAGR/nmsu-course-work/blob/6cd204abbc074734fb7e8ca0e693a15e1cbe4ede/PHYS520/Project/project_vqls.py,"def overlap_Hadamard_Test(gates, qubits, ancilla_index, parameters):
+    qctl = QuantumRegister(3)
+    qc = ClassicalRegister(1)
+    circ = QuantumCircuit(qctl, qc)
+    circ.h(ancilla_index)",exp_v06,project_vqls_6476a8,59,10-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused qubits,Noisy warning,,,"The proble is not there, but our modelling doesn't detect the gates applied with a parametric variable as argument, thus they could exercise the qubits. IDEA: disable the warning when there is a gate with a parametric value (i.e. variable).", disable the warning when there is a gate with a parametric value (i.e. variable).,,,,,,,,,
+06_bca6d2_23,https://github.com/PGelss/scikit_tt/blob/cbc064ad6ac5a24a82fe916a66dcba8cf5312ba5/examples/qfa.py,"utl.header(title='Quantum full adder')
+# construct quantum full adder using Qiskit
+circuit = QuantumCircuit(4,2)
+circuit.h(1)
+circuit.h(2)
+circuit.barrier()
+circuit.ccx(1,2,3)
+circuit.cx(1,2)
+circuit.ccx(2,0,3)
+circuit.cx(2,0)
+circuit.cx(1,2)
+circuit.barrier()
+circuit.measure(0,0) # sum S
+circuit.measure(3,1) # carry out C
+circuit.draw(output='latex')
+print(circuit)",exp_v06,qfa_bca6d2,23,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,"The warning is precise, but unfortunately the intent of the programmer is to use them as ancilla. IDEA: maybe the existance of ancille makes this bug pattern less real.", maybe the existance of ancille makes this bug pattern less real.,,,,,,,,,
+06_a485bf_23,https://github.com/QLemma/qleet/blob/d78886718c8f9bd50522dc1836e959df1b997b72/tests/analyzers/test_expressibility.py,"def test_expressibility(params, noise_model, metric, samples):
+    """"""Test expressibility of a quantum circuit""""""
+    qiskit_circuit = qiskit.QuantumCircuit(2)
+    if not params:
+        qiskit_circuit.h(0)
+    else:
+        qiskit_circuit.rx(params[0], 0)
+        qiskit_circuit.rz(params[1], 0)
+    qiskit_circuit.cx(0, 1)
+    qiskit_descriptor = qleet.interface.circuit.CircuitDescriptor(
+        circuit=qiskit_circuit, params=params, cost_function=None
+    )",exp_v06,test_expressibility_a485bf,23,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,"The cirucuit witthout classical bits is sent to an unknown function, thus we do no even know if the intent was to measure the quantum state or something else. IDEA: when we have ONLY qubits, we could assume that the user knows that she wants to use it for another purpose."," when we have ONLY qubits, we could assume that the user knows that she wants to use it for another purpose.",,,,,,,,,
+06_83eb33_23,https://github.com/hkhetawat/QArithmetic/blob/a9950caf15aeda5cb7d45c327a457d773268bf54/examples/test_rev_pow.py,"# Input N
+N = 2
+X = 2 # qc will take exponentially longer to compile with each increase
+a = QuantumRegister(N)
+b = QuantumRegister(X)
+m = QuantumRegister(N*(pow(2,X)-1))
+ca = ClassicalRegister(N)
+cm = ClassicalRegister(N*(pow(2,X)-1))
+qc = QuantumCircuit(a, b, m, cm, ca)",exp_v06,test_rev_pow_83eb33,23,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,"It detects only 4 qubits, since it cannot understand exressions. IDEA: if there is at least an unknown reg size we disable the warning, or we decide to model simple expressions (e.g. addition)"," if there is at least an unknown reg size we disable the warning, or we decide to model simple expressions (e.g. addition)",,,,,,,,,
+06_73da13_77,https://github.com/revilooliver/Quantum-Circuits-for-Dynamic-Runtime-Assertions-in-Quantum-Computation/blob/1d5f716375b3ae7cbdfb26bef6f931a7da895d2c/fidelity/3qubit_entanglement_assertion_fidelity.ipynb,"from qiskit.ignis.verification.tomography import state_tomography_circuits
+..
+qr = QuantumRegister(4)
+circ = QuantumCircuit(qr)
+#assertion circuit for three qubit entanglement, because the measurement in state_tomography_circuit and the
+#measurement of ancilla qubit in our assertion function will cause conflict, we manually insert the assertion circuits
+circ.cx(qr[0], qr[3])
+circ.cx(qr[1], qr[3])
+circ.cx(qr[2], qr[3])
+circ.cx(qr[1], qr[3])
+tomocircuits=state_tomography_circuits(circ, qr, meas_labels='Pauli', meas_basis='Pauli')
+trans_qc = transpile(tomocircuits, device, optimization_level = 3)",exp_v06,3qubit_entanglement_assertion_fidelity_73da13,77,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,Circuit with zero classical registers because of state tomography intent (state tomography essentially includes measurements by itself). IDEA: the drop warning when this api is used. Or drop them for circuit without classical reg., the drop warning when this api is used. Or drop them for circuit without classical reg.,,,,,,,,,
+06_a8e9c1_6,https://github.com/tsrobinson/quantum/blob/927f0cc7d46029f5ab2bbb926416d04fc3adfc31/quantum_entanglement.py,"from qiskit.quantum_info import Statevector
+...
+# Entangled statevectors
+qc = QuantumCircuit(2)
+qc.h(1) # The second qubit is now in superposition
+ket = Statevector(qc)
+ket.draw()",exp_v06,quantum_entanglement_a8e9c1,6,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,Noisy warning,,,They use the statevector. IDEA: disable with statevecotr or when no classical bits at all., disable with statevecotr or when no classical bits at all.,,,,,,,,,
+06_a36b04_4,https://github.com/vicvaleeva/qiskit-learn/blob/e8d179369e6c3f4ba815604f8183cec5044a8c7a/MultipleQubits/gammaplus.py,"qc = QuantumCircuit(2)
+qc.h(0)
+qc.x(1)
+qc.cx(0, 1)
+backend = Aer.get_backend('statevector_simulator')",exp_v06,gammaplus_a36b04,4,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,simulation / initialization,Noisy warning,,,"Correct warning, but the intent is to inspect the state with a statevector simulator thus the measurement is not needed. IDEA: disable when the statevector simulator is used.", disable when the statevector simulator is used.,,,,,,,,,
+06_bc8def_14,https://github.com/TomaszModrzejewski/Python/blob/5ff53a9f0f870659baa34718d361e624b3427ec9/circuit.py,"qreg_q = QuantumRegister(3, 'q')
+creg_c = ClassicalRegister(3, 'c')
+circuit = QuantumCircuit(qreg_q, creg_c)
+...
+circuit.measure(qreg_q[1], creg_c[1])
+circuit.rzz(pi/2, qreg_q[1], qreg_q[2]).c_if(creg_c, 0)
+circuit.reset(qreg_q[1])",exp_v06,circuit_bc8def,14,16-mar-23,codeql_2023-03-09_12-18-15,ql-operation-after-measurement,mid-circuit measurements,Noisy warning,,,Same as the duplicate,#N/A,,,,,,,,,
+06_c31173_153,https://github.com/0sophy1/Oct2021HKUST/blob/783a363a4759627ad5344bdc050fa1bd5d8261f0/Lecture1/Lecture%201%20-%20Intro%20to%20QC%20for%20the%20physicist%20Part3.ipynb,"qc2 = QuantumCircuit(2)
+qc2.draw(output='mpl')
+nsteps = 10
+for i in range(nsteps):
+    # We add a controlled R_x gate with different angle to our base circuit
+    qc3 = QuantumCircuit(2)
+    qc3.compose(qc2, inplace=True)",exp_v06,lecture_201_20_20intro_20to_20qc_20for_20the_20physicist_20part3_c31173,153,16-mar-23,codeql_2023-03-09_12-18-15,ql-ungoverned-composition,compose,Noisy warning,,,The two circuit have the same size. IDEA: disable the warning when the two composed circuits have the same size., disable the warning when the two composed circuits have the same size.,,,,,,,,,
+08_b0607e_22,https://github.com/cda-tum/ddsim/blob/236821f556492dc3cce2c6d528626a1f08423a8a/test/python/simulator/test_multi_registers_convention.pyy,"        qreg0 = QuantumRegister(2, ""q0"")
+        creg0 = ClassicalRegister(2, ""c0"")
+        qreg1 = QuantumRegister(2, ""q1"")
+        creg1 = ClassicalRegister(2, ""c1"")
+        circ = QuantumCircuit(qreg0, qreg1)
+        circ.x(qreg0[1])
+        circ.x(qreg1[0])",exp_v08,test_multi_registers_convention_b0607e,22,18-mar-23,codeql_2023-03-17_19-08-02,ql-oversized-circuit,unused qubits,Noisy warning,,,"The warning is correct, but perhaps 99% that was the intent of the user, they needed to test another feature.",#N/A,,,,,,,,,
+08_c6fa63_18,https://github.com/csenrui/Pauli_Learnability/blob/ce57ecae95d00f118a52639cf5c5fd5a0b9c6805/others/transpile.py,"qc = QuantumCircuit(2)
+qc.barrier()
+qc.id(0)
+...
+qc.s(1)
+qc.barrier()
+qc_transpile = transpile(qc,basis_gates=['cx', 'id', 'rz', 'sx', 'x'],optimization_level=3)
+print(qc)
+print(qc_transpile)",exp_v08,transpile_c6fa63,18,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,transpile intent,Noisy warning,,,"Correct, but it is not clear if the program is complete or not. IDEA: disable the warning whenever the circuti is printed (e.g. the intent is not execution)", disable the warning whenever the circuti is printed (e.g. the intent is not execution),,,,,,,,,
+08_113629_152,https://github.com/SupertechLabs/qiskit-superstaq/blob/a585a5be3e1604133a5571dbee9b07a4b14b4818/qiskit_superstaq/superstaq_provider_test.py,"@patch(""requests.post"")
+def test_service_aqt_compile_eca(mock_post: MagicMock) -> None:
+    provider = qss.superstaq_provider.SuperstaQProvider(api_key=""MY_TOKEN"")
+
+    qc = qiskit.QuantumCircuit(8)
+    qc.cz(4, 5)",exp_v08,superstaq_provider_test_113629,152,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,testing intent,Noisy warning,,,"Intent is not measuring, but testing some connection.",#N/A,,,,,,,,,
+06_fd4508_36,https://github.com/CleverCracker/Quantum_Image_Based_Search_Engine/blob/42baeb62714d685a011213fe209cab208154e301/SearchEngine_32x32.py,"for x in range(0, 5):
+    qc = QuantumCircuit(targetQubit, ref, original, anc, c)
+    qc.initialize(data[index], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 23])
+    qc.initialize(data[x], range(12, 24))
+    qc.tdg(targetQubit[0])
+    qc.h(targetQubit[0])
+    for i in range(len(ref)):
+        qc.cswap(targetQubit[0], ref[i], original[i])
+    qc.h(targetQubit[0])
+    qc.tdg(targetQubit[0])
+    qc.measure(targetQubit[0], c)",exp_v06,searchengine_32x32_fd4508,36,6-mar-23,codeql_2023-03-06_13-18-29,ql-operation-after-measurement,for loop circuit construction,FP,,yes,"The loop is correct, each iteration works on a brand new circuit, but the detector doesn't address the initialization. IDEA: this should perhaps became a path detector, similar to the sanitization detectors. "," this should perhaps became a path detector, similar to the sanitization detectors. ",,,,,,,,,
+06_fe192c_,https://github.com/iitis/ec-qaoa-code/blob/5d679759c0f66c4bcda405894699e1dd68e75981/encoding_qubo_decoding_mixture.py,"    qreg = QuantumRegister(n)
+    qc_ub, _ = binary_to_unary(qreg, n)
+    qc_init = QuantumCircuit(qr)
+    init_list = list(range(n))
+    new_qc = qc_init + qc_init.compose(qc_ub,init_list)",exp_v06,encoding_qubo_decoding_mixture_fe192c,,6-mar-23,codeql_2023-03-06_13-18-10,ql-ghost-composition,compose,FP,silent,yes,"We consier only assignments, but we should we should consider also aritmetic operations with it",#N/A,,,,,,,,,
+06_f549f9_,https://github.com/LucianoPereiraValenzuela/HEEM/blob/1e74fd7e93aa615dc22feb0052b68e7532e2c1d6/Codes/deprecated/our_VQE.py,return qc.compose(qc_temp) ,exp_v06,our_vqe_f549f9,,6-mar-23,codeql_2023-03-06_13-18-11,ql-ghost-composition,compose,FP,silent,yes,We should remove warnings when qc.compose is used in a return statement,#N/A,,,,,,,,,
+06_e6a6d7_,https://github.com/Cryoris/notebooks/blob/7d04b5470e245c1d060a3eb73b5fbce9ee1f85f4/QFT%20madness.ipynb,textbook = QuantumCircuit(2).compose(rswap).compose(QFT(2)).compose(rswap),exp_v06,qft_20madness_e6a6d7,,6-mar-23,codeql_2023-03-06_13-18-14,ql-ghost-composition,compose,FP,,yes,"The compose is used in a chain of function calls. This should be modelled, perhaps checking that the compose is not in the AST subtree on the right.",#N/A,,,,,,,,,
+06_e94ab1_,https://github.com/Qiskit/platypus/blob/57c19e59c7e87e2000f0c158dc2bb0da42bf90ce/notebooks/quantum-hardware/error-correction-repetition-code.ipynb,qc_init.compose(qc).draw(),exp_v06,error_correction_repetition_code_e94ab1,,6-mar-23,codeql_2023-03-06_13-18-15,ql-ghost-composition,compose,FP,,,"Composed just before the function draw(), we may handle this similarly to the execute() in an ad hoc manner",#N/A,,,,,,,,,
+06_639c75_34,https://github.com/cpbunker/learn_qiskit/blob/08911639eb8fd94b2c5101ccfb24e6385cfc9a27/intro/adder.py,"qc = QuantumCircuit(len(halfadder.qubits), len(halfadder.clbits)); # zeros like
+    qc.compose(input_circ, qubits = list(range(len(input_circ.qubits))), clbits = list(range(len(input_circ.clbits))), inplace = True);
+    qc.compose(halfadder, qubits = list(range(len(halfadder.qubits))), clbits = list(range(len(halfadder.clbits))), inplace = True);",exp_v06,adder_639c75,34,6-mar-23,codeql_2023-03-06_13-18-19,ql-incompatible-composition,compose,FP,,yes,,#N/A,,,,,,,,,
+06_93508a_22,https://github.com/Albisourous/quantumgameoflife/blob/3f320a774eae714e8e17dbdc2601239d3de8a5f8/quantum.py,"for row in range(0, grid_size):
+        qc = QuantumCircuit(2, 2)
+        qc2 = QuantumCircuit(2, 2)
+        # 00 or 11
+        qc.h(0)
+        qc.cx(0, 1)
+        qc.ry((np.pi/3), 0)
+        qc.measure([0, 1], [0, 1])",exp_v06,quantum_93508a,22,6-mar-23,codeql_2023-03-06_13-18-27,ql-operation-after-measurement,for loop circuit construction,FP,,yes,"The loop is correct, each iteration works on a brand new circuit, but the detector doesn't address the initialization. IDEA: this should perhaps became a path detector, similar to the sanitization detectors. "," this should perhaps became a path detector, similar to the sanitization detectors. ",,,,,,,,,
+06_72ca3d_591,https://github.com/Chibikuri/qwopt/blob/e65549db83142af4c6b63cce9f55050ee87fb27a/notebook/benchmark.py,"cq = QuantumRegister(3, 'control')
+    tq = QuantumRegister(3, 'target')
+#     ancilla for mct gates
+    anc = QuantumRegister(3, 'mct anc')
+    c = ClassicalRegister(3, 'classical')
+    if opt:
+        opt_anc = QuantumRegister(2, 'ancilla')
+        qc = QuantumCircuit(cq, tq, anc, opt_anc, c)
+        qc.x(cq[0])
+        qc.x(cq[2])
+        qc.mct(cq, tq[2], anc)",exp_v06,benchmark_72ca3d,591,6-mar-23,codeql_2023-03-06_13-18-25,ql-oversized-circuit,unused bits,FP,,yes,The circuit has different registers but our modelling doesn't consider when the index refers to differnt circuits. IDEA: introduce the concept of Qubit instead of relying on the int index., introduce the concept of Qubit instead of relying on the int index.,,,,,,,,,
+06_23d6b0_22,https://github.com/ahmedkfu2020/-/blob/a205805a9dfaef2f8cb2ff0645c597b1b119747c/ahmed23_2.py,"for i in range(1,12):
+    # quantum circuit with one qubit and one bit
+    qreg =  QuantumRegister(1)
+    creg = ClassicalRegister(1)
+    mycircuit = QuantumCircuit(qreg,creg)
+    # the stream of length i
+    for j in range(i):
+        mycircuit.ry(2*theta,qreg[0]) # apply one rotation for each symbol
+    mycircuit.measure(qreg[0],creg[0])",exp_v06,ahmed23_2_23d6b0,22,7-mar-23,codeql_2023-03-06_13-18-30,ql-double-measurement,mid-circuit measurements,FP,,yes,"The current setup doesn't consider circuits initialization along the control flow path. Leading to false positives. IDEA: keep only warnings without circuit initialization along the path, get inspired by sanitization."," keep only warnings without circuit initialization along the path, get inspired by sanitization.",,,,,,,,,
+06_197312_9,https://github.com/utzb/ceq/blob/91699cabea3910be2d20c850173a64c1a1607658/src/main.py,"N = 6
+qc = QuantumCircuit(N)  # it correctly detects it has 6 bits
+qc.x(range(0, N))
+qc.h(range(0, N))
+",exp_v06,main_197312,9,7-mar-23,codeql_2023-03-06_13-18-32,ql-oversized-circuit,gate addition in parallel,FP,,,"The modelling doesn't support the addition of gate with a range, meaning that all bits should get the same gate assigned in parallel. IDEA: support qc.h(range(0,c)) parallel addition."," support qc.h(range(0,c)) parallel addition.",,,,,,,,,
+06_ebf3ee_23,https://github.com/BenWhiteside/Quantum/blob/9ae1de847d4632279222c091d69a0b570ab43333/testSuperDenseCoding3.py,"from qiskit import QuantumCircuit as qc
+circuit = qc(q, c)  # QLINT: detected correcly as a Quantum circuit
+def create_bell_pair(qc, q, q0, q1):
+    qc.h(q[q0])  # Apply a Hadamard to the first qubit.
+    qc.cx(q[q0], q[q1])  # Apply a CNOT, controlled on the first qubit.
+create_bell_pair(circuit, q, 0, 1)
+circuit.barrier()",exp_v06,testsuperdensecoding3_ebf3ee,23,7-mar-23,codeql_2023-03-06_13-18-35,ql-oversized-circuit,subroutines to add gates,FP,,,"The modeling doesn't consider when the gates are added in subroutines. IDEA: consider subroutines by creating a connection between the local variable of a function and the circuit global variable, when the circuit is used in the respective function, use it transitively."," consider subroutines by creating a connection between the local variable of a function and the circuit global variable, when the circuit is used in the respective function, use it transitively.",,,,,,,,,
+06_7b998a_11,https://github.com/J2304789/Quantum-Random-Number-Generator/blob/dd751ffb653b88fdf4610ea3a5ba54e4efb5caa9/Python_Quantum_Random_Number_Generator/Python_Quantum_Number_Generator_1-6_QASM.py,"qc=QuantumCircuit(3,3)
+for i in range(0,3):
+    qc.h(i)",exp_v06,python_quantum_number_generator_1_6_qasm_7b998a,11,7-mar-23,codeql_2023-03-06_13-18-34,ql-oversized-circuit,unused bits,FP,,,"Due to modeling limitations, the gates added in a loop at the i position are invisible. IDEA: model an addition of a gate to the i-th position as an additon of a gate at any position in the range of i. OPTION 2: loop unroling in python, before codeql."," model an addition of a gate to the i-th position as an additon of a gate at any position in the range of i. OPTION 2: loop unroling in python, before codeql.",,,,,,,,,
+06_93ae72_7,https://github.com/masosky/qiskit_basics/blob/a207f673078013ddbcee193f545936250bae7a8a/opeanQSAM_backend.py,"circ = QuantumCircuit(3)
+circ.h(0)
+circ.cx(0, 1)
+circ.cx(0, 2)
+meas = QuantumCircuit(3, 3)
+meas.barrier(range(3))
+meas.measure(range(3), range(3))
+qc = meas.compose(circ, range(3), front=True)",exp_v06,opeanqsam_backend_93ae72,7,7-mar-23,codeql_2023-03-06_13-18-37,ql-unmeasurable-qubits,compose,FP,,yes,"The check of the unmeasurable qubits doesn't consider that the circuit might be part of a bigger circuit, thus the warning should be raised only if the final circuit has unmeasurable qubits. IDEA: improve the detector by raising the warning only if the circuit is not subcircuit.", improve the detector by raising the warning only if the circuit is not subcircuit.,,,,,,,,,
+06_ccbb30_44,https://github.com/physicalattraction/quantum-computing-tutorial/blob/bbeb8a86cb8ae06bd8072505d826a3eec6ce861a/src/qiskit_1_3_representing_qubit_states.py,"def draw_bloch_spheres():
+    qc = QuantumCircuit(1)
+    states = [ [1, 0], [0, 1],[1, 1], [1, -1j], [1j, 1],]
+    for state in states:
+        qc.initialize(normalize(state))
+        draw_quantum_circuit(qc, draw_unitary=False)
+",exp_v06,qiskit_1_3_representing_qubit_states_ccbb30,44,7-mar-23,codeql_2023-03-06_13-18-39,ql-unmeasurable-qubits,simulation / initialization,FP,,,"The circuit is created for simulation/plotting, thus they use qc.initialize() call. IDEA: We should model the initialize as an action on all the qubits perhaps. If we want to handle this case.", We should model the initialize as an action on all the qubits perhaps. If we want to handle this case.,,,,,,,,,
+06_7e5ff0_74,https://github.com/qiskit-community/qiskit-qec/blob/9fc029d9656ab8fae8b253fe7b2f069e63075b21/tests/error_propagator/test_pyerrorpropagator.py,"def test_load_multiregister_circuit(self):
+        """"""Test loading another circuit.""""""
+        qrega = QuantumRegister(2, ""qra"")
+        qregb = QuantumRegister(1, ""qrb"")
+        crega = ClassicalRegister(3)
+        qc = QuantumCircuit(qrega, qregb, crega)
+        qc.h(qrega[0])
+        qc.cx(qrega[0], qrega[1])
+        qc.cx(qrega[1], qregb[0])
+        qc.i(qrega[0])
+        qc.measure(qrega[0], crega[0])  # DIFFERENT REGISTER NAME
+        qc.measure(qrega[1], crega[1])
+        qc.measure(qregb[0], crega[2])",exp_v06,test_pyerrorpropagator_7e5ff0,74,8-mar-23,codeql_2023-03-08_15-15-36,ql-double-measurement,measure,FP,,,"The alarm on the duble measurement is triggered because they use the same qubit index, but indeed they refer to two different registers. IDEA: use the QubitUsed abstraction to reduce the FP.", use the QubitUsed abstraction to reduce the FP.,,,,,,,,,
+06_f0be4f_994,https://github.com/hugelaopo/qcnn-public/blob/ec1dabcfce01ecedbfa0b85addc0d5c3135e3d29/test_multiprocess4g1.py,"qr6 = QuantumRegister(6)
+cr6 = ClassicalRegister(1)
+qc6 = QuantumCircuit(qr6, cr6)
+theta6 = []
+for i in range(5):
+...",exp_v06,"
+test_multiprocess4g1_f0be4f",994,9-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused bits,FP,,,Even with loop unrolling all the qubits are used at list one.,#N/A,,,,,,,,,
+06_ceb7ad_75,https://github.com/braqiiit/QRealBoost/blob/09b364f55c08e18214871fe928cbe0cbd9ae9179/upload_for/QRealboost/Brest%20Cancer/M_64/QRealBoosting64.py,"j_i = QuantumRegister(2,'j_i')
+    k = QuantumRegister(2, 'k')
+    qq = QuantumRegister(2, 'qq')
+    i_1 = QuantumRegister(1,'i_1')
+    qc = QuantumCircuit(j_i, k, qq, i_1, name = 'label j')
+    qc.x(j_i[0])
+    qc.x(j_i[1])
+    qc.cx(j_i[0] ,k[0])
+    qc.cx(j_i[1] ,k[1])
+    qc.cx(k[0],qq[0])
+    qc.cx(k[1],qq[1])
+    qc.ccx(qq[0],qq[1],i_1)
+    return qc",exp_v06,qrealboosting64_ceb7ad,75,9-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused bits,FP,,,"They are all used, the problem is the missing register modelling. IDEA: add the modelling of the registers. Remember that sometimes a register might be used without index/subscript (e.g. i_j in this case) ", add the modelling of the registers. Remember that sometimes a register might be used without index/subscript (e.g. i_j in this case) ,,,,,,,,,
+06_5e751f_193,https://github.com/pratjz/IBM-Quantum-Challenges/blob/4e3a32cfb6e743dab56d994b6c035df43952d45e/4-IBMQ-challenge-fall-2021/topscorers/263220_Alberto%20Maldonado.py,"qr_index = QuantumRegister(index_qubits, ""index"")
+        qr_data = QuantumRegister(data_qubits, ""data"")
+        qr_f = QuantumRegister(1, ""flag"")
+        qc = QuantumCircuit(qr_index, qr_data,qr_f)
+        qc.append(constraint_testing(data_qubits, C_max).inverse(),qr_data[:] + qr_f[:])
+        qc.append(cost_calculation(index_qubits, data_qubits, C1, C2).inverse(),qr_index[:]+qr_data[:])
+        ",exp_v06,263220_alberto_20maldonado_5e751f,193,9-mar-23,codeql_2023-03-08_15-15-36,ql-oversized-circuit,unused qubits,FP,,,"Since the circuit gets a subcircuit attached, we cannot track whether those circuits act on which qubits. Moreover some register have parametric size, potentially infinite. IDEA: disable when the circuit has subcircuits. Disable warning also when there is at least an unknow size register.", disable when the circuit has subcircuits. Disable warning also when there is at least an unknow size register.,,,,,,,,,
+06_f1eb3b_67,https://github.com/boyesjo/tma4500/blob/41c56c2cd29e3763832334701fd2c676f2cb4bc8/code/iris_multiclass/vqc.py,"from qiskit_machine_learning.algorithms.classifiers import VQC
+qi = QuantumInstance(backend=Aer.get_backend(""aer_simulator""))
+
+fm = ZZFeatureMap(feature_dimension=NUM_QUBITS, reps=2)
+
+ansatz = RealAmplitudes(num_qubits=NUM_QUBITS, reps=1)
+
+qc = QuantumCircuit(NUM_QUBITS)
+qc.append(fm, range(NUM_QUBITS))
+qc.append(ansatz, range(NUM_QUBITS))
+qnn = VQC(
+    num_qubits=NUM_QUBITS,
+    quantum_instance=qi,
+    feature_map=fm,
+    ansatz=ansatz,
+    callback=callback,
+    optimizer=optimizers.ADAM(maxiter=100),
+)
+",exp_v06,vqc_f1eb3b,67,10-mar-23,codeql_2023-03-08_15-15-36,ql-unmeasurable-qubits,circuit size,FP,,,"The author seems to have a good reason not to use classical reg, since whey are creating a quantum neural network. IDEA: disable when the circuit is used in a more complex API (to be defined, e.g. VQC)."," disable when the circuit is used in a more complex API (to be defined, e.g. VQC).",,,,,,,,,
+08_4347a9_60,https://github.com/gwjacobson/QuantumErrorCorrection/blob/6d8cb6c3ed10399575c562ce76b8131c6f799858/seven_qubit_stabilizer.py,"
+    for i in range(0, shots):
+        ...
+        seven_qc.measure(7,0)
+        ...
+        seven_qc.initialize([1,0], 7)
+        ...
+        seven_qc.measure(7,0)
+
+
+",exp_v08,seven_qubit_stabilizer_4347a9,60,13-mar-23,codeql_2023-03-13_13-54-00,ql-double-measurement,c_if operation,FP,,,"there is a double measurment without reinitialization, this might be wanted since we have some c_if operations (this is the stabilizer algo, not so expert with it). IDEA: check that there is no reinitialization between measurements.", check that there is no reinitialization between measurements.,,,,,,,,,
+08_6a5da6_34,https://github.com/qifanyyy/JupyterNotebook/blob/20d8df6172906337f81583dabb841d66b8f31857/new_algs/Number%2Btheoretic%2Balgorithms/Shor's%2Balgorithm/testQFT.py,"qc = QuantumCircuit(qr)
+qc.x(qr[0])
+qc.x(qr[2])
+gate = QFT(3,approximation_degree=2)
+inv = QFT(3,inverse=True,approximation_degree=2)
+qc.append(gate,qargs=qr[:])",exp_v08,testqft_6a5da6,34,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,custom gate append ,FP,,,The model do not model the addition of unknown gates (e.g. qft via data flow). Thus the detector thinks that qubit 1 is unused. IDEA: support the dataflo and extend to well known functions in qiskit (e.g. QFT). We also do not model the access to the register qr[:]., support the dataflo and extend to well known functions in qiskit (e.g. QFT). We also do not model the access to the register qr[:].,,,,,,,,,
+08_5c1db0_45,https://github.com/danielecuomo/IndefiniteCausalOrder/blob/b4f636df538edbe5599d10226c4dbc7390e0c79d/QPT/TomographyEntanglementSwitch.ipynb,"e = QuantumRegister(2, name='e')
+q = QuantumRegister(1, name='q')
+a = QuantumRegister(2, name='a')
+switch = QuantumCircuit(e, q, a, name='$\mathcal{S}$')
+switch.h(0)
+switch.cnot(0,1)
+switch.barrier()
+switch.cswap(0,2,3)",exp_v08,tomographyentanglementswitch_5c1db0,45,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,gate register access,FP,,,"We do not handle this case, because we are able to ""infer"" which is the register of a gate operation, only when either we have a single register and a int argument, or we have the register variable used in the gate operation. IDEA: we should disable the warning when we have multiple gates and gates on that circuit which use integer access.", we should disable the warning when we have multiple gates and gates on that circuit which use integer access.,,,,,,,,,
+08_d627bd_51,https://github.com/FredericSauv/qc_optim/blob/d30cd5d55d89a9ce2c975a8f8891395e94e763f0/_old/tests/test_optim_cyclical_simulator.py,"def ansatz_easy(params):
+    """""" Ansatz for which an ideal solution exist""""""
+    c = qk.QuantumCircuit(qk.QuantumRegister(1, 'a'), qk.QuantumRegister(1, 'b'),
+                          qk.QuantumRegister(1,'c'),qk.QuantumRegister(1,'d'),
+                          qk.QuantumRegister(1,'e'),qk.QuantumRegister(1,'f'))
+    c.ry(params[0],0)
+    c.ry(params[1],1)
+    c.ry(params[2],2)
+    c.ry(params[3],3)
+    c.ry(params[4],4)
+    c.ry(params[5],5)",exp_v08,test_optim_cyclical_simulator_d627bd,51,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,gate register access,FP,,,"Similar problem as 08_5c1db0_45 . IDEA: we do should disable the warning when multiple register are there and we have circ.rx(1.234, 0) that acts on a qubit based on the integer index."," we do should disable the warning when multiple register are there and we have circ.rx(1.234, 0) that acts on a qubit based on the integer index.",,,,,,,,,
+08_64a4f6_12,https://github.com/kishan-shanthakumar/Projects/blob/82db9fa2d710772fb9f8849e086f9da44efc1e82/Python/Quantum%20Computing/TRNG.py,"n = 3
+q = QuantumRegister(n)
+c = ClassicalRegister(n)
+circ = QuantumCircuit(q , c)
+for j in range(n):
+    circ.rx(pi/(2.5+j),q[j])
+    ",exp_v08,trng_64a4f6,12,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,loop,FP,,,The detector do not see the circ.rx operations becuase it acts on a variable qubit (depneding on the loop). Here we do not unroll this loop. IDEA: unroll this loop by looking the assignment right before it. Unroll only cases where the loop variable n is not touched anymore in between the assignment and the loop., unroll this loop by looking the assignment right before it. Unroll only cases where the loop variable n is not touched anymore in between the assignment and the loop.,,,,,,,,,
+08_606c7a_28,https://github.com/lukasszz/qiskit-exp/blob/ce14d53735870e7b6ace352629eb4049e9cd6740/ibm-challange/max-cut-challange.py,"c1 = q[9]
+    circ.cx(q[4], S)
+    circ.cx(q[5], S)
+    circ.cx(q[6], S)
+    circ.ccx(q[4], q[5], c1)",exp_v08,max_cut_challange_606c7a,28,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,reg renaming,FP,,,"The gate has been renamed, thus there is a variable in the gate call, this is not supported. IDEA: model the dataflow.", model the dataflow.,,,,,,,,,
+08_37ed3a_10,https://github.com/mustafamrahman/ThreeEntangledQubits2/blob/2565e2257437cea275957199c4db595a468732e4/steps/solution.py,"q = QuantumRegister(3)
+    c = ClassicalRegister(3)
+    circuit = QuantumCircuit(q, c)
+    circuit.h(q[0])
+    circuit.cnot(q[0], q[1])  # invisible operations
+    circuit.cnot(q[0], q[2])
+    circuit.measure(q, c)",exp_v08,solution_37ed3a,10,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,supported gates,FP,,,The detctor did not model the CNOT gate thus it thought thta some qubits were unused in this circuit. Fixed.,#N/A,,,,,,,,,
+08_4748e2_13,https://github.com/DGAguado/DGAVFTHackathonMadrid/blob/f36e72cb1e5c6fc6b8f60a95716fbbf6bc0835f7/levels/3qubit.py,"qreg_q = QuantumRegister(3, 'q')
+    creg_c = ClassicalRegister(3, 'c')
+    circuit = QuantumCircuit(qreg_q, creg_c)
+    circuit.barrier(qreg_q[0])
+    circuit.barrier(qreg_q[1])
+    circuit.barrier(qreg_q[2])
+    circuit.y(qreg_q[0])
+    circuit.ccx(qreg_q[2], qreg_q[0], qreg_q[1])
+    circuit.h(qreg_q[0])
+    circuit.measure(qreg_q[1], creg_c[1])",exp_v08,3qubit_4748e2,13,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,supported gates,FP,,,The detctor did not model the CCX gate correctly missing the first gate. Fixed.,#N/A,,,,,,,,,
+08_1f5bf5_13,https://github.com/ArfatSalman/qc-test/blob/9ec9efff192318b71e8cd06a49abc676196315cb/warnings/program_pairs/01_6e8363/followup_6e8363d301e44b0c833f51d6918af826.py,"qr_qr = QuantumRegister(3, name='qr_qr')
+cr_qr = ClassicalRegister(3, name='cr_qr')
+qc = QuantumCircuit(qr_qr, cr_qr, name='qc')
+qc.append(RCCXGate(), qargs=[qr_qr[1], qr_qr[0], qr_qr[2]], cargs=[])",exp_v08,followup_6e8363d301e44b0c833f51d6918af826_1f5bf5,13,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,supported gates,FP,,,Copy of MorphQ repo. IDEA: black list ArfatSalman/qc-test . Missing supporting gate of MORPHQ. IDEA: add all the morphq gates., black list ArfatSalman/qc-test . Missing supporting gate of MORPHQ. IDEA: add all the morphq gates.,,,,,,,,,
+08_ceb7ad_841,https://github.com/braqiiit/QRealBoost/blob/09b364f55c08e18214871fe928cbe0cbd9ae9179/upload_for/QRealboost/Brest%20Cancer/M_64/QRealBoosting64.py,"qr_xi = QuantumRegister(6, 'xi')
+    qr_Dti = QuantumRegister(4, 'dti')
+    qr_final_rot = QuantumRegister(1,  'final_rot')
+    qc = QuantumCircuit(qr_xi, qr_Dti, qr_final_rot)#cr)
+    qc.h(qr_xi)
+   ...
+   Oh_Dbk_custom_new(qc,qr_xi,listofqubits,listofydj)
+   qc = qc.compose(rot_circuit(),[qr_Dti[0],qr_Dti[1],qr_Dti[2],qr_Dti[3],qr_final_rot[0]])",exp_v08,"
+qrealboosting64_ceb7ad",841,13-mar-23,codeql_2023-03-13_13-54-00,ql-oversized-circuit,unused qubits,FP,,,"We have a circuit which is passed as argument to an unknown function, which probably adds operations we are not aware of. IDEA: disable the warnings every tim the circuit goes to an known function, it could change its state without us knowing it. This is also used as subcircuit, thus it might be fine as well to have circuit without used qubits in a subcircuit. We could use this as another thing to check to disable the warning."," disable the warnings every tim the circuit goes to an known function, it could change its state without us knowing it. This is also used as subcircuit, thus it might be fine as well to have circuit without used qubits in a subcircuit. We could use this as another thing to check to disable the warning.",,,,,,,,,
+06_a201b4_30,https://github.com/vietzd/qc-cloud-challenges/blob/32cd036077002bb1126b484ed0bc34a9154566e3/classification/distance_qiskit.py,"qreg = QuantumRegister(3, 'qreg')
+    creg = ClassicalRegister(1, 'creg')
+    qc = QuantumCircuit(qreg, creg, name='qc')
+    backend = Aer.get_backend('qasm_simulator')
+    centroid_distances = []
+    for i in range(1, len(centroids)+1):
+        qc.h(qreg[2])
+        ....
+        qc.measure(qreg[2], creg[0])
+        qc.reset(qreg)
+        job = execute(qc, backend=backend, shots=1024)
+        result = job.result().get_counts(qc)
+        centroid_distances.append(result['1'])",exp_v06,distance_qiskit_a201b4,30,16-mar-23,codeql_2023-03-09_12-18-15,ql-operation-after-measurement,mid-circuit measurements,FP,,,The presence of th ereset makes the measurement legitimate. IDEA: check when there is no reset between measurement and gate., check when there is no reset between measurement and gate.,,,,,,,,,
+06_943e31_171,https://github.com/AlexsashaV4/bachelor_thesis_QEC/blob/d7b731fec1abc3dec6b73ea3a1677031db44fcad/QEC_Simulations/3Bit_flip_QECC.py,"def Circuit(p_error, err=0):
+       qc_3qx = QuantumCircuit(3)
+        ...
+        qc_3qx.measure([0,1,2],[2,3,4])
+
+for n , prob in enumerate(probs):
+    print(""n:"", n +1, ""prob:"", prob)
+    for i in range(N):
+        qc_err_on = Circuit(prob,0)",exp_v06,3bit_flip_qecc_943e31,171,16-mar-23,codeql_2023-03-09_12-18-15,ql-double-measurement,measure + loop,FP,,,Not considering initialized circuit between consecutive measurments of different iterations of a loop.,#N/A,,,,,,,,,
+08_607e79_1641,https://github.com/unitaryfund/mitiq/blob/caa9b67dcc3fe5e0d998f21350df57a832eddfc7/mitiq/zne/scaling/tests/test_folding.py,"gate = Operator([[0.0, 1.0], [-1.0, 0.0]])
+    qreg = QuantumRegister(1)
+    circ = QuantumCircuit(qreg)
+    circ.unitary(gate, [0])",exp_v08,test_folding_607e79,1641,18-mar-23,codeql_2023-03-17_19-08-02,ql-oversized-circuit,gate,FP,,,"The gate is added as an operator, thus it is not detected. IDEA: add Operators in our modeling, at least for a single qubit."," add Operators in our modeling, at least for a single qubit.",,,,,,,,,
+08_665506_520,https://github.com/unitaryfund/mitiq/blob/dfc4616ba4876abec1c2812bad8cdb1910c23b42/mitiq/pec/tests/test_pec.py,"qreg = qiskit.QuantumRegister(1)
+    circuit = qiskit.QuantumCircuit(qreg)
+    _ = circuit.x(qreg)",exp_v08,test_pec_665506,520,18-mar-23,codeql_2023-03-17_19-08-02,ql-oversized-circuit,gate,FP,,,The gate operate on an entire register (of size 1). IDEA: model when a register with size one is used as argument., model when a register with size one is used as argument.,,,,,,,,,
+08_bf7359_260,https://github.com/C2QA/bosonic-qiskit/blob/5d411d1fc97c312050ed44d405a211e4a0966ef6/c2qa/circuit.py,"sub_qr = QuantumRegister(1)
+        sub_qmr = QumodeRegister(num_qumodes, num_qubits_per_qumode)
+        sub_circ = QuantumCircuit(sub_qr, sub_qmr.qreg, name=name)
+        qargs = [sub_qr[0]]
+        for i in range(num_qumodes):
+            qargs += sub_qmr[i]
+        gate_0 = ParameterizedUnitaryGate(
+            ...
+        )
+sub_circ.append(gate_0.control(num_ctrl_qubits=1, ctrl_state=0), qargs)",exp_v08,circuit_bf7359,260,18-mar-23,codeql_2023-03-17_19-08-02,ql-oversized-circuit,gate,FP,,,"The ParameterizedUnitaryGate is not detected (not even part of Qiskit. IDEA: Too borderline case, not supported."," Too borderline case, not supported.",,,,,,,,,
+08_8a85ae_6,https://github.com/sudo-gera/c/blob/3d7ae9e2015a8cfeb66b00d8486e98dd5c2d4ea7/quant.py,"svsim = Aer.get_backend('statevector_simulator') # Tell Qiskit how to simulate our circuit
+qc = QuantumCircuit(1)  # Create a quantum circuit with one qubit
+initial_state = [0,1]   # Define initial_state as |1>
+qc.initialize(initial_state, 0) # Apply initialisation operation to the 0th qubit
+qobj = assemble(qc)     # Create a Qobj from the circuit for the simulator to run
+result = svsim.run(qobj).result() # Do the simulation and return the result
+out_state = result.get_statevector()",exp_v08,quant_8a85ae,6,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,measure,FP,,yes,"The intent is measureing the state vector, thus no measurement is inserted. IDEA: disable the unmeasureble warning if there is a get_statevector call.", disable the unmeasureble warning if there is a get_statevector call.,,,,,,,,,
+08_60662b_29,https://github.com/hlammiv/z2_matter_qc/blob/ab7ee15c140da6a564acec9542fa845c5247a409/pauli_twirling/test.py,"qc = QuantumCircuit(5)
+    qc.cx(0, 1)
+    qc.cx(2, 3)
+    qc2 = QuantumCircuit(5)
+    pairs = [(0, 1), (2, 3)]
+    qc2 = circuit_twirling.paulitwirling.twirl_hard_cycle(qc2,5,pairs)
+    if Operator(qc2).equiv(qc):",exp_v08,test_60662b,29,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,equivalence / test,FP,,,"here the intent is to check if two circuits are equivalent, thus we need no measurement. IDEA: disable the check when there is an equivalence check.", disable the check when there is an equivalence check.,,,,,,,,,
+08_374dda_38,https://github.com/cda-tum/ddsim/blob/236821f556492dc3cce2c6d528626a1f08423a8a/test/python/taskbasedsimulator/test_path_sim_standalone_simulator.py,"circ = QuantumCircuit(3)
+        circ.h(0)
+        circ.cx(0, 1)
+        circ.cx(0, 2)
+
+        sim = ddsim.PathCircuitSimulator(circ, seed=1337)
+        result = sim.simulate(1000)
+        assert len(result.keys()) == self.nonzero_states_ghz
+        assert ""000"" in result
+        assert ""111"" in result",exp_v08,test_path_sim_standalone_simulator_374dda,38,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,other library,FP,,,The circuit communitcates with another library. Not supported.,#N/A,,,,,,,,,
+08_f69113_122,https://github.com/cda-tum/ddsim/blob/236821f556492dc3cce2c6d528626a1f08423a8a/test/python/generate_benchmarks.py,"q = QuantumRegister(n, ""q"")
+    psi = QuantumRegister(1, ""psi"")
+    c = ClassicalRegister(n + 1, ""c"")
+    qc = QuantumCircuit(q, psi, c, name=""qpe_exact"")",exp_v08,generate_benchmarks_f69113,122,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,unknown register size,FP,,,The unknown size registers lead us to wrong conclusions. IDEA: disable warnings with register of unknown size., disable warnings with register of unknown size.,,,,,,,,,
+08_b86c86_35,https://github.com/cda-tum/ddsim/blob/236821f556492dc3cce2c6d528626a1f08423a8a/ddsim.ipynb,"circ = QuantumCircuit(3)
+circ.h(0)
+circ.cx(0, 1)
+circ.cx(0, 2)
+circ.measure_all()
+",exp_v08,ddsim_b86c86,35,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,measure_all,FP,,,"measure_all adds a new register. IDEA: disable this warning when there is a measure all on the same circuit,"," disable this warning when there is a measure all on the same circuit,",,,,,,,,,
+08_ad2488_60,https://github.com/kevinwlu/iot/blob/07e72de2c5d3dbd36475e2b06f4fab1c9aa07c85/lesson9/magic_square.py,"aliceQR = QuantumRegister(2)
+x1CR = ClassicalRegister(1)
+x2CR = ClassicalRegister(1)
+bobQR = QuantumRegister(2)
+y1CR = ClassicalRegister(1)
+y2CR = ClassicalRegister(1)
+magicsquare_circuit = QuantumCircuit(aliceQR,bobQR,x1CR,x2CR,y1CR,y2CR)
+#Generate the Bell state on the circuit
+share_bell_state(magicsquare_circuit,0,1,2,3)",exp_v08,magic_square_ad2488,60,18-mar-23,codeql_2023-03-17_19-08-02,ql-oversized-circuit,routine,FP,,,The gates are invisible to the modeling because added in a subroutine. IDEA: disable warning if the circuit is used in at least a subroutine., disable warning if the circuit is used in at least a subroutine.,,,,,,,,,
+08_ea07b8_146,https://github.com/Qiskit/platypus/blob/18a7ff5748dbdb74d075b15fa9b49cd81a34f1e8/translations/ja/ch-applications/qaoa.ipynb,"qc_qaoa = QuantumCircuit(nqubits)
+qc_qaoa.append(qc_0, [i for i in range(0, nqubits)])
+qc_qaoa.append(qc_p, [i for i in range(0, nqubits)])
+qc_qaoa.append(qc_mix, [i for i in range(0, nqubits)])",exp_v08,qaoa_ea07b8,146,18-mar-23,codeql_2023-03-17_19-08-02,ql-unmeasurable-qubits,gate,FP,,,"We do not mode the addition of gates with iterator indices. IDEA: limitation, not supported. Or support simple list comprehension. Probaly too much."," limitation, not supported. Or support simple list comprehension. Probaly too much.",,,,,,,,,
+00_cc39a4_55,https://github.com/Glowman554/quantum-goodnes/blob/c474b958c132ac242221206d66be2e1e5006f171/python/Pytorch%20Hybrid%20Network.py,"def run(self, thetas):
+        job = qiskit.execute(self._circuit,
+                             self.backend,
+                             shots = self.shots,
+                             parameter_binds = [{self.theta: theta} for theta in thetas])",exp_v00,pytorch_20hybrid_20network_cc39a4,55,20-mar-23,,qsmell-nc,bind_parameters,FP,,,They use parameter_binds which is not recognised. IDEA: recognize parameter_binds. Detect only run and execute from the qiskit library., recognize parameter_binds. Detect only run and execute from the qiskit library.,,,,,,,,,
+00_1ac07d_21,https://github.com/ethanlee515/Hamiltonian-simulation-formalization/blob/1c2f88fa848472c9821957f57c2d147213c0e905/tests/simulate-qasm.py,"# Execute the circuit on the qasm simulator
+job = simulator.run(compiled_circuit, shots=1000)
+result = job.result()",exp_v00,simulate_qasm_1ac07d,21,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_f4aa6a_35,https://github.com/lanl/Quantum-Telecloning/blob/783d854083cc01f52cdcf3f2124bb2b8cd1cffa0/classical_simulation_code/run_classical_feed_forward_Qiskit_local_APCC.py,"tomography_circuits = parallel_qubit_state_tomography_general(clone_indices, copy.deepcopy(qc_tc), angle_ry, angle_rz)
+        job = backend.run(tomography_circuits, shots=N_shots)
+        result = job.result()",exp_v00,run_classical_feed_forward_qiskit_local_apcc_f4aa6a,35,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_8c385a_28,https://github.com/JaiderArleyGonzalez/ImplementacionDeutschyDeutsch-Josza/blob/ba7951b49be78c741058a92e6b74718cefac16bf/Implementaci%C3%B3n%20Deutsch-Jozsa/Deutsch-Jozsa/Deutsch-JozsaCircuito2.py,"compiled_circuit = transpile(circuit, simulator)
+job = simulator.run(compiled_circuit, shots=1000)",exp_v00,deutsch_jozsacircuito2_8c385a,28,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_425771_56,https://github.com/hello-roderickwang/CourseWork/blob/ea0ca361e3c47c3b38d6e5bcbe69762ab18a1262/Quantum%20Computing%20Programs%20and%20Systems/Assignment/VQE%20on%20Qiskit/H2_noise_VQE.py,"exact_solution = NumPyEigensolver(qubitOp).run()
+...
+vqe = VQE(qubitOp, var_form, optimizer=optimizer)
+noise_ret = vqe.run(quantum_noise_instance)
+non_noise_ret = vqe.run(quantum_non_noise_instance)",exp_v00,h2_noise_vqe_425771,56,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The run is called on a different obkect, not a backend. IDEA: make sure that the run and execute are legitimate quantum execution and not some other domain specific thing.", make sure that the run and execute are legitimate quantum execution and not some other domain specific thing.,,,,,,,,,
+00_152d70_46,https://github.com/epiqc/PartialCompilation/blob/50d80f56efdf754e40a0b1dd00404788a03fdf3d/qiskit-terra/test/python/aer_provider_integration_test/test_aer_qobj_headers.py,"                qobj.experiments[0].header.some_field = 'extra info'
+                result = backend.run(qobj).result()",exp_v00,test_aer_qobj_headers_152d70,46,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_66c18b_43,https://github.com/keamanansiber/qiskit/blob/6f1459aa130100251201ea8f0a7d78f97134919e/3QuantumMachineLearning/Tutorial/QSVM%201%20-%20Quantum%20SVM%20for%20Classification.py,"quantum_instance = QuantumInstance(backend, shots=1024, seed_simulator=seed, seed_transpiler=seed)
+result = qsvm.run(quantum_instance)",exp_v00,qsvm_201_20_20quantum_20svm_20for_20classification_66c18b,43,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The run() belongs to another domain specific API. IDEA: model from qiskit.aqua.algorithms import QSVM since it also runs a circuit. Or easier, disable the warning on this comlex tird-party apis, detect only plain execute and backend run."," model from qiskit.aqua.algorithms import QSVM since it also runs a circuit. Or easier, disable the warning on this comlex tird-party apis, detect only plain execute and backend run.",,,,,,,,,
+00_7638e1_19,https://github.com/iQuHACK/2021_quanta/blob/964b24884b685cf374de2ddf377992f89996dd48/single_shot_measurement.py,"    qpu_job = qpu_backend.run(circ, shots = shots)
+    job_id = qpu_job.job_id()",exp_v00,single_shot_measurement_7638e1,19,20-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_39f294_36,https://github.com/Duumbo/pulse_scaler/blob/7704ec9eb30c24ccc87b25eafe93e8a7431b30ba/src/pulse_scaler/__main__.py,"import pulse_scaler.backends.load_ibmq as cons
+job = cons.IBMQBACKEND.run(
+        qc_sched,
+        meas_return='avg',
+        seed_simulator=cons.SEED,
+        shots=cons.SHOTS
+    )",exp_v00,main_39f294,36,20-mar-23,,qsmell-nc,bind_parameters,FP,,,They use an adhoc library. IDEA: do not model them, do not model them,,,,,,,,,
+00_6044f4_80,https://github.com/edwindj/qiskit/blob/92578da88525fb2802a36b0c55911818ccd23237/qiskit-iqx-tutorials/qiskit/advanced/aqua/chemistry/declarative_approach.ipynb,"solver = QiskitChemistry()
+result = solver.run(qiskit_chemistry_dict, backend=backend)",exp_v00,declarative_approach_6044f4,80,20-mar-23,,qsmell-nc,bind_parameters,FP,,,The run is on a solver. IDEA: model only simple run() or execute()., model only simple run() or execute().,,,,,,,,,
+00_f9d159_0,https://github.com/LilyHeAsamiko/QC/blob/216a52fb15464b238ca8f3903748b745af8f7682/puzzle/BO_gate_puzzle.py,"# Execute and see results
+emulator = Aer.get_backend('qasm_simulator')
+job1 = execute(qc, emulator, shots=1024)
+hist1 = job1.result().get_counts()
+plot_histogram(hist1)",qsmell_v00,bo_gate_puzzle_f9d159,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_4b844e_0,https://github.com/zoraizmohammad/BWSIQuantumSoftware-FinalProject/blob/da9a703e35ba746d2066955a5653205f26c70bdf/Raw%20Code/HHLAttempt9.py,"provider = IBMQ.load_account()
+backend = provider.get_backend('ibm_ozlo')
+run = execute(circuit, backend, shots=s)
+result = run.result()",qsmell_v00,hhlattempt9_4b844e,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_15b25c_0,https://github.com/qcware/qcware_transpile/blob/e1eaa5ba5fd274664557cd6eb401b17e1e24b4e8/tests/translations/quasar/test_to_qiskit.py,"def qiskit_statevector(circuit: qiskit.QuantumCircuit):
+    backend = AerSimulator(method=""statevector"")
+    c = circuit.copy()
+    c.save_state(""final_statevector"")
+    result_data = qiskit.execute(c, backend).result().data()
+    sv = result_data[""final_statevector""]
+    return sv",qsmell_v00,test_to_qiskit_15b25c,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_e7d8e1_0,https://github.com/UST-QuAntiL/qhana/blob/bf499d072dcc37f81efec1b8e17b7d5460db7a04/qhana/backend/QNNcircuitExecutor.py,"circuits = []
+        for parameterization in parameterizations:
+            parameterization = parameterization_from_parameter_names(circuit, parameterization)
+            curr_circuit = circuit.assign_parameters(parameterization)
+            circuits.append(curr_circuit)
+
+        results = QInstance.execute(circuits)",qsmell_v00,qnncircuitexecutor_e7d8e1,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,The circuit has parameters but uses a correct parameter assignment via assign_parameters not modelled by the rule. IDEA: model assign_parameters, model assign_parameters,,,,,,,,,
+00_de3af3_0,https://github.com/oimichiu/quantumGateModel/blob/fa1cb5ed751edbebe512ee299d5484949c856340/IBMQX/qiskit-tutorials/coduriCareNUcompileaza/tutoriale-QISKit/01-getting_started/test_Visualize_Circuit.py,"# Execute
+backend = 'local_qasm_simulator'
+# Create a Quantum Program for execution
+job = execute(circuit, backend)
+job.status
+result = job.result()",qsmell_v00,test_visualize_circuit_de3af3,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_162510_0,https://github.com/kerenavnery/qmail/blob/b6b329f355f8645b67358ec81a79766fcfb3a0d1/Teleport_Bob.py,"#check the teleported state:
+from qiskit import Aer
+backend = Aer.get_backend('statevector_simulator')
+job = execute(circ_bob,backend)
+result = job.result()
+outputstate = result.get_statevector(circ_bob,decimals=3)
+print(outputstate)",qsmell_v00,teleport_bob_162510,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_721cb4_0,https://github.com/GabrielPontolillo/Quantum_Algorithm_Implementations/blob/802d3fb426fd7d3597c69f8819d20223578a12cb/Shor's%20Algorithm/Qiskit%20Code/Shor's%20Algorithm%20Qiskit.ipynb,"backend = Aer.get_backend('aer_simulator')
+    job = execute(qc, backend, shots=1, memory=True)
+    readings = job.result().get_memory()",qsmell_v00,shor_s_20algorithm_20qiskit_721cb4,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_f0529e_0,https://github.com/rubenandrebarreiro/semi-quantum-conference-key-agreement-prototype/blob/fd24b8df32f22fcf6f0b0caf6422d2a2ea46e792/test/ibm_qiskit/entanglements/multipartite/TestQiskitGHZState.py,"        # Execute the Quantum Circuit and store the Quantum State in a final state vector
+        final_state_vector = \
+            execute(qiskit_quantum_circuit_ghz_state_3_qubits.quantum_circuit,
+                    state_vector_backend).result().get_statevector()",qsmell_v00,testqiskitghzstate_f0529e,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_03b3c2_0,https://github.com/hchsu/quantumcomp/blob/184631a7a6eed736bb22db69203cc8696f2ad6a8/wave_function.ipynb,"# for running getting statevector from statevector_sim, there can not be measurement gate
+job_statevector_sim=execute(circ, backend=statevectorsim_backend, shots=1024)
+result_statevector_sim=job_statevector_sim.result()",qsmell_v00,wave_function_03b3c2,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_4264b6_0,https://github.com/kevin-orellana/quantum_computing/blob/e3c0f9b81ec2ea7e1d6eea38d7f5f90bce243e97/code/kevin_practice/qiskit-tutorials-master/community/hello_world/laurel_or_yanny.ipynb,"job_sim = execute(qc, backend_Aer, shots=shots_sim) #Run job on chosen backend for chosen number of shots
+stats_sim = job_sim.result().get_counts() #Retrieve results ",qsmell_v00,laurel_or_yanny_4264b6,0,21-mar-23,,qsmell-nc,bind_parameters,FP,,,"The circuit has a simple run. IDEA: raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter "," raise the warnings when the circuit is using the parameters, e.g. there is a from qiskit.circuit import Parameter ",,,,,,,,,
+00_8bf403_0,https://github.com/Avhijit-codeboy/Portfolio-Diversification/blob/2654aa4869bea4bb5d6afc4eb9d6354bbef1a5df/qiskit-runtime/tutorials/02_uploading_program.ipynb,"    circuit = random_circuit(num_qubits=5, depth=4, measure=True,
+                             seed=random.randint(0, 1000))
+    return transpile(circuit, backend)",qsmell_v00,02_uploading_program_8bf403,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,The transpilation has no layout because the circuit is randomly created. It cannot be known a priori.,#N/A,,,,,,,,,
+00_b43184_0,https://github.com/VashuKochar/QiskitProjects/blob/c16ba4e4e0832f4ba5678e3ee7899163b27fd7a1/Basics/deutschProblem.py,"def deutsch(function):
+    """"""Implements Deutsch's algorithm.
+
+    Args:
+        function (QuantumCircuit): Deutsch function to solve.
+            Must be a 2-qubit circuit, and either balanced,
+            or constant.
+    Returns:
+        bool: True if the circuit is balanced, otherwise False.
+    """"""
+    solution_circuit = QuantumCircuit(2,1)
+...
+    sim = Aer.get_backend('aer_simulator')
+    circ_trans = transpile(final_circuit, sim)
+    count = list(sim.run(circ_trans).result().get_counts().keys())",qsmell_v00,deutschproblem_b43184,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_395371_0,https://github.com/pnnl/SV-Sim/blob/0553ba9f859e7416761af02fc6b8a6482e1e7767/svsim/compare/sc21_compare/qiskit/qiskit_bench.py,"apps.append(""seca_n11"")
+apps.append(""sat_n11"")
+apps.append(""cc_n12"")
+apps.append(""multiply_n13"")
+apps.append(""bv_n14"")
+apps.append(""qf21_n15"")
+apps.append(""qft_n15"")
+apps.append(""multiplier_n15"")
+for app in apps:
+    #print('Starting program...')
+    path = str(pathlib.Path().absolute())
+    with open(path+'/'+app+"".qasm"") as file:
+        qasm = file.read()
+    qiskit_circuit = qiskit.circuit.QuantumCircuit().from_qasm_file(app+"".qasm"")
+    simulator = Aer.get_backend('aer_simulator')
+    #simulator = qiskit.providers.aer.QasmSimulator()
+    circ = qiskit.compiler.transpile(qiskit_circuit, simulator)",qsmell_v00,qiskit_bench_395371,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_cda95f_0,https://github.com/EeshGupta/VQE_Research/blob/98a0674eca203119b0c9ae358ce0379ba0a869fa/Coding%20Runs/Experiments/November/Pulse%20and%20Gate%20Comparison%20VQE%20H2%20(Nov%2017)/newPulseFuncs.py,"def stretcher(circ, machine, factor):
+    '''
+    Input: A circ (without measurement) which is to be converted to a schedule, machine to be
+    transpiled upon, and the factor to be stretched by
+    Output: The stretched schedule with measurement
+    '''
+    num_qubits = circ.num_qubits
+    circ_device = transpile(circ, machine)
+
+...
+
+
+def scheduler(scales, circuits, machine):
+    scaled_schedules = []
+
+    for scale in scales:
+        scale_schedules = []
+        for circ in circuits:
+            circ_ = circ.copy()
+            scaled_schedule= stretcher(circ_, machine, scale)
+            scale_schedules.append(scaled_schedule)
+        scaled_schedules.append(scale_schedules)
+    return scaled_schedules",qsmell_v00,newpulsefuncs_cda95f,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"Circuit executed as schedule, the code writer has no knowledge about the circuit under execution, thus the layout cannot be properly chosed in general.",#N/A,,,,,,,,,
+00_817aaf_0,https://github.com/jorgeviegas/quantumalgorithms/blob/129ecdb61b54a9effd9caf16c2b25ed9b91d1030/qiskit/shor/PeriodFinding.ipynb,"    qasm_sim = Aer.get_backend('qasm_simulator')
+    # Setting memory=True below allows us to see a list of each sequential reading
+    t_qc = transpile(qc, qasm_sim)",qsmell_v00,periodfinding_817aaf,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_3d4c00_0,https://github.com/jeppevinkel/CompleteHHL/blob/a5359793c725f2307e197579c3b096b7fdc65126/tests.py,"backend = Aer.get_backend('aer_simulator')
+        t_circuit = transpile(circuit, backend)",qsmell_v00,tests_3d4c00,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_39325b_0,https://github.com/aesidau/quantum_adder/blob/628b979a00251f4d0484a324da64ba185e293e78/add.py,"simulator = QasmSimulator()
+# compile the circuit down to low-level QASM instructions
+# supported by the backend (not needed for simple circuits)
+compiled_circuit = transpile(circuit, simulator)",qsmell_v00,add_39325b,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_351f3c_0,https://github.com/abhishekagarwal2301/isl/blob/5e40f3cd0d36af1ce0a2a09b3a5a22a6c015eb7d/isl/utils/circuit_operations/circuit_operations_running.py,"QASM_SIM = Aer.get_backend(""qasm_simulator"")
+SV_SIM = Aer.get_backend(""statevector_simulator"")
+def run_circuit_with_transpilation(
+    circuit: QuantumCircuit,
+    backend=QASM_SIM,
+    backend_options=None,
+    execute_kwargs=None,
+    return_statevector=False,
+):
+    if backend == ""qulacs"":
+        transpiled_circuit = unroll_to_basis_gates(circuit)
+    else:
+        transpiled_circuit = transpile(circuit, backend)
+    return run_circuit_without_transpilation(
+        transpiled_circuit, backend, backend_options, execute_kwargs, return_statevector
+    )",qsmell_v00,circuit_operations_running_351f3c,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_056311_0,https://github.com/Radket27/Quantum-tic-tac-toe/blob/53fb3ba4d4439ffb4c65641d189391b2932d0464/tic_tac_toe_quantum.py,"    from qiskit import QuantumCircuit, transpile
+    from qiskit.providers.aer import QasmSimulator
+    simulator = QasmSimulator()
+    k = []
+    circut = QuantumCircuit(1,1)
+    circut.h(0)
+    circut.measure([0],[0])
+    compile = transpile(circut,simulator)",qsmell_v00,tic_tac_toe_quantum_056311,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The circuit is run on a simulator, no need for a layout. IDEA: disable the warning when a simulator backend is used.", disable the warning when a simulator backend is used.,,,,,,,,,
+00_f15a90_0,https://github.com/JQub/quantum_seismic_detection/blob/941d83225ab733535ceb7cfa18f5206d40799dce/modified/qiskit_processor.py,"    def transpile(self, circs):
+        if not self.transpile_with_ancilla and self.coupling_map is not None:
+            # only use same number of physical qubits as virtual qubits
+            # !! the risk is that the remaining graph is not a connected graph,
+            # need fix this later
+            coupling_map = []
+            for pair in self.coupling_map:
+                if all([p_wire < len(circs.qubits) for p_wire in pair]):
+                    coupling_map.append(pair)
+        else:
+            coupling_map = self.coupling_map
+        transpiled_circs = transpile(circuits=circs,
+                                     backend=self.backend,
+                                     basis_gates=self.basis_gates,
+                                     coupling_map=coupling_map,
+                                     initial_layout=self.initial_layout,
+                                     seed_transpiler=self.seed_transpiler,
+                                     optimization_level=self.optimization_level
+                                     )
+        return transpiled_circs
+...
+transpiled_circ = self.transpile(circ)",qsmell_v00,qiskit_processor_f15a90,0,21-mar-23,,qsmell-lpq,tanspile,FP,,,"The object has another function which is used as wrapper of the tranpile function, this wrapper calls the qiskit tranpile with initial layout. The detector detects a tranpile non-qiskit. IDEA: limit only to transpile of the qiskit library.", limit only to transpile of the qiskit library.,,,,,,,,,
+08_89a6ef_11,https://github.com/epiqc/PartialCompilation/blob/50d80f56efdf754e40a0b1dd00404788a03fdf3d/qiskit-terra/test/python/transpiler/test_stochastic_swap.py,"qr = QuantumRegister(2, 'q')
+        ar = QuantumRegister(2, 'a')
+        cr = ClassicalRegister(4, 'c')
+        circ = QuantumCircuit(qr, ar, cr)
+        circ.h(qr)
+        circ.h(ar)
+        circ.s(qr)
+        circ.s(ar)
+        circ.t(qr)
+        circ.t(ar)
+        circ.measure(qr[0], cr[0])  # intentional duplicate
+        circ.measure(qr[0], cr[0])",exp_v08,test_stochastic_swap_89a6ef,11,22-mar-23,codeql_2023-03-20_19-13-27,ql-double-measurement,measure,FP,,,"The detector is correct, but the developer was testing a function the she left the duplicate for testing purposes.",,,,,,,,,,
+08_e52934_29,https://github.com/jbasinger/QuantumComputing/blob/0887aeacd6d70956a6f9599de2677601a3b8a663/sandbox.py,"i=-1
+qr = QuantumRegister(2)
+cr = ClassicalRegister(8)
+c = QuantumCircuit(qr,cr)
+c.x(qr[1])
+c.measure(qr[0],(i:=i+1))
+c.measure(qr[1],(i:=i+1))
+c.z(qr[0])
+c.measure(qr[0],(i:=i+1))
+c.measure(qr[1],(i:=i+1))",exp_v08,sandbox_e52934,29,22-mar-23,codeql_2023-03-20_19-13-27,ql-double-measurement,measure,TP,,,The user repeats the measurement twice on the same bit,,,,,,,,,,
+08_caae3b_58,https://github.com/ArfatSalman/qc-test/blob/9ec9efff192318b71e8cd06a49abc676196315cb/miscellanea/intersting_cases/metamorphic_testing/06_948f90/source_948f90de9947418289b220bd2e61caa3.py,"from qiskit import transpile
+qc = transpile(qc, basis_gates=None, optimization_level=3, coupling_map=None)
+qc.measure(qr, cr)",exp_v08,source_948f90de9947418289b220bd2e61caa3_caae3b,58,22-mar-23,codeql_2023-03-20_19-13-27,ql-op-after-optimization,transpile,TP,,,"The program is incorrect, but it has been generated with MorphQ, thus it is not natural.",,,,,,,,,,
+08_9b8ba7_34,https://github.com/ArfatSalman/qc-test/blob/9ec9efff192318b71e8cd06a49abc676196315cb/warnings/program_pairs/06_59a0eb/source_59a0eb956a0d4e6b8720f272136f2799.py,"from qiskit import transpile
+qc = transpile(qc, basis_gates=None, optimization_level=3, coupling_map=None)
+qc.measure(qr, cr)",exp_v08,source_59a0eb956a0d4e6b8720f272136f2799_9b8ba7,34,22-mar-23,codeql_2023-03-20_19-13-27,ql-op-after-optimization,transpile,TP,,,"The program is incorrect, but it has been generated with MorphQ, thus it is not natural.",,,,,,,,,,
+08_9232ea_55,https://github.com/JaimePSantos/Dissertation-Tex-Code/blob/15544a4334f61e670d1eeee9849fd168c468863d/Coding/Qiskit/AllSearch/groverFuncs.py,"    qcOracle = oracleGrover(markedListGrover(marked,N),N)
+    qcDiffusion = diffusionGrover(N)
+    qc.h(range(N))
+    for i in range(steps):
+        qc.append(qcOracle,range(N))
+        qc.barrier()
+        qc.append(qcDiffusion,range(N))
+        qc.barrier()
+    qc = transpile(qc,basis_gates=['cx','u3','u2','u1','id'],backend=backend,optimization_level=3)
+    qc.barrier()
+    qc.measure(range(N),range(N))",exp_v08,groverfuncs_9232ea,55,22-mar-23,codeql_2023-03-20_19-13-27,ql-op-after-optimization,transpile,TP,,,The circuit has a measurment added after the tranpilation.,,22-mar-23,,BUG: measurement after transpilation level 3 in Grover circuit,https://github.com/JaimePSantos/Dissertation-Tex-Code/issues/25,,,,,
+08_c4c34f_59,https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/blob/e97de3d2fb81b2057a1e45d1be82b8d9444792a3/Paulihedral/real_system.py,"    qc1 = synth_qaoa1(a2, graph=graph, gamma=gamma, beta=beta)
+    qc1 = transpile(qc1, basis_gates=['u3', 'cx'], backend=backend, coupling_map=coup, optimization_level=3)
+    qc1.measure_all()",exp_v08,real_system_c4c34f,59,22-mar-23,codeql_2023-03-20_19-13-27,ql-op-after-optimization,transpile (lv3) + measure,TP,silent,,"The transpilation lvl 3 might remove final swaps if there is no measurement after it, thus it is necessary to transpile the final circuit only.",#N/A,22-mar-23,,BUG: measurement after transpilation level 3 (C),https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/issues/1,,,transpilation,,reported
+08_c4c34f_64,https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/blob/e97de3d2fb81b2057a1e45d1be82b8d9444792a3/Paulihedral/real_system.py,"    qc3 = qiskit_synthesis(a2, graph=graph, gamma=gamma, beta=beta)
+    qc3 = transpile(qc3, basis_gates=['u3', 'cx'], backend=backend, coupling_map=coup, optimization_level=3)
+    qc3.measure_all()",exp_v08,real_system_c4c34f,64,22-mar-23,codeql_2023-03-20_19-13-27,ql-op-after-optimization,transpile (lv3) + measure,TP,silent,,"The transpilation lvl 3 might remove final swaps if there is no measurement after it, thus it is necessary to transpile the final circuit only.",#N/A,22-mar-23,,BUG: measurement after transpilation level 3 (D),https://github.com/DiracMG3/Circuit-Optimization-for-Hamiltonian-Simulation/issues/1,,,transpilation,,reported
+08_56dff3_37,https://github.com/LucianoPereiraValenzuela/HEEM/blob/1e74fd7e93aa615dc22feb0052b68e7532e2c1d6/Codes/deprecated/test_VQE.py,"    # Create variational circuit (without classical register), and substitute the parameters of each gate
+    qc_temp = EfficientSU2(num_qubits, entanglement='full', reps=n_rep).bind_parameters(params)
+    return qc.compose(qc_temp) ",exp_v08,test_vqe_56dff3,37,22-mar-23,codeql_2023-03-20_19-13-27,ql-ghost-composition,compose,FP,,,"Composed circuit is returned, thus it is valid. IDEA: check if the cirucit is reurned and disable the warning.",,,,,,,,,,
+08_0e29a1_109,https://github.com/gblazq/cVQE/blob/5a566103c35696ec0cf2b016c38d71de696e0e29/cVQE/variational_forms/cfgs.py,"        ansatz =  self._circuit_constructors[self._method](parameters, derivative, shift)
+
+        return circuit.compose(ansatz, self._son_registers + derivative_ancilla*[len(q) - 1])",exp_v08,cfgs_0e29a1,109,22-mar-23,codeql_2023-03-20_19-13-27,ql-ghost-composition,compose,FP,,,"Composed circuit is returned, thus it is valid. IDEA: check if the cirucit is reurned and disable the warning.",,,,,,,,,,
+08_e94ab1_303,https://github.com/Qiskit/platypus/blob/57c19e59c7e87e2000f0c158dc2bb0da42bf90ce/notebooks/quantum-hardware/error-correction-repetition-code.ipynb ,"qc_init = QuantumCircuit(cq, lq, sb)
+qc_init.h(cq[0])
+qc_init.cx(cq[0],cq[1])
+qc_init.x(cq[0])
+
+qc_init.compose(qc).draw()",exp_v08,error_correction_repetition_code_e94ab1,303,22-mar-23,codeql_2023-03-20_19-13-27,ql-ghost-composition,compose,FP,,,"Composed just before the function draw(), we may handle this similarly to the execute() in an ad hoc manner",,,,,,,,,,
+08_c22d6b_84,https://github.com/PCesteban/QCHACKIBM/blob/9add295536b78e68e3cc0c5a5f724f70a56d2461/Different%20drafts/INTERFERIBMC.ipynb,"    circuit = QuantumCircuit(1,1)
+    H_prime = Operator([[0.648640115686581, 0.7610952636313663], [0.7610952636313663, -0.648640115686581]])
+    circuit.unitary(H_prime, 0, label='H_prime')
+    circuit.measure_all()",exp_v08,interferibmc_c22d6b,84,24-mar-23,codeql_2023-03-20_19-13-27,ql-measure-all-abuse,measure_all,TP,,,They use measure_all when they have already a bit to measure. They also run the simulator.,,,,,,,,,,
+08_dd2c4f_110,https://github.com/dreaming-panda/quantum-ml/blob/109436d1aea5e15c856b7400cefa4e4d43723098/mnist.py,"    qc = QuantumCircuit(31, 1)
+    train = torch.Tensor([1 for _ in range(64)]).long()
+    train[62:64] = 0
+    mnist_dataset = MNISTDataset(address_qubits=address_bits,qc=qc,dataset_qubits=dataset_bits,train=train)
+    mnist_model = MNISTMODEL(qc=qc,ancilla_bits=ancillas,dataset_qubits=dataset_bits, weights=weights_bits,output=output)
+    optimizer = QOptimizer(qc=qc,dataset_qubits=dataset_bits,output=output,data=mnist_dataset,model=mnist_model,allqubits=allqubits)
+    mnist_dataset.encode()
+    mnist_dataset.decode()
+    qc.measure_all()
+    aer_sim = Aer.get_backend('aer_simulator')
+    job = execute(qc, aer_sim, shots=1000000)
+    counts = job.result().get_counts()
+    print(counts)",exp_v08,mnist_dd2c4f,110,24-mar-23,codeql_2023-03-20_19-13-27,ql-measure-all-abuse,measure_all,TP,,,They use measure_all when they have already a bit to measure. They also run the simulator.,,,,,,,,,,
+08_ff6131_117,https://github.com/noahmaasaw/nqubitgrovers/blob/62bcf46ccc400775622a9204c2311eccabcb75e9/n_qubit_grovers_algorithm.py,"    qc = QuantumCircuit(q,q)
+    pi = math.pi
+    qr = QuantumRegister(q, 'qc')
+    qc.add_register(qr)
+    qc.qregs
+
+    cr = ClassicalRegister(4 , 'cr')
+    qc.add_register(cr)
+    ...
+    for i in range(0, q%(q-3), 4):
+        qc.measure(qr[i], cr[i])
+        qc.measure(qr[i+1], cr[i+1])
+        qc.measure(qr[i+2], cr[i+2])
+        qc.measure(qr[i+3], cr[i+3])
+    qc.measure_all()
+    job = execute(qc, backend, shots=shots)",exp_v08,n_qubit_grovers_algorithm_ff6131,117,24-mar-23,codeql_2023-03-20_19-13-27,ql-measure-all-abuse,measure_all,TP,,,They use measure_all when they have already a bit to measure. They also run the simulator.,,,,,,,,,,
+08_0953d6_113,https://github.com/mgrzesiuk/qiskit_utils/blob/3666b3ea2074ce6ee75fa22a8165880ca147c71d/tst/test_parse_counts.py,"    def test_parse_3_registers_and_measure_all(self):
+        qr1, qr2, qr3 = QuantumRegister(1), QuantumRegister(2), QuantumRegister(3)
+        cr1, cr2, cr3 = ClassicalRegister(1), ClassicalRegister(2), ClassicalRegister(3)
+        qc = QuantumCircuit(qr1, cr1, qr2, cr2, qr3, cr3)
+
+        qc.x(qr2[0])
+        qc.x(qr3[0])
+        qc.x(qr3[2])
+
+        qc.measure(qr2[0], cr2[0])
+        qc.measure(qr2[1], cr2[1])
+
+        qc.measure(qr3[0], cr3[0])
+        qc.measure(qr3[1], cr3[1])
+        qc.measure(qr3[2], cr3[2])
+
+        qc.measure_all()
+        result = self._get_counts(qc)
+        parsed_counts = parse_counts(result, qc)
+        assert parsed_counts == {""010101"": 1024}",exp_v08,test_parse_counts_0953d6,113,24-mar-23,codeql_2023-03-20_19-13-27,ql-measure-all-abuse,measure_all,TP,,,They use measure_all when they have already a bit to measure. They also run the simulator. They somehow recover the correct result via a convoluted parsing of the result.,,,,,,,,,,
+08_a852d9_326,https://github.com/VoicuTomut/ChemistryOnQubits/blob/48584e8532014fe8660f5c9b47ff04145d50b5e8/Playground/.ipynb_checkpoints/matchgate_tools_MudGround-checkpoint.ipynb,"demo=QuantumCircuit(6,6)
+demo.x(3)
+demo.h(4)
+demo.h(5)
+demo.cx(5,1)
+demo.h(1)
+demo.measure_all()
+print(execute(demo,backend=Aer.get_backend('qasm_simulator'),shots=100).result().get_counts(demo))",exp_v08,matchgate_tools_mudground_checkpoint_a852d9,326,24-mar-23,codeql_2023-03-20_19-13-27,ql-measure-all-abuse,measure_all,TP,,,They use measure_all when they have already a bit to measure.,,,,,,,,,,
+#N/A,,,,,,,,,,,,,,,,,,,,,,,
+#N/A,,,,,,,,,,,,,,,,,,,,,,,
