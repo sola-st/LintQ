@@ -1,5 +1,6 @@
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit import execute, Aer
+from qiskit.circuit.library import HGate
 
 # last piece of the circuit
 q = QuantumRegister(4)
@@ -25,3 +26,12 @@ qc_complete = qc_front.compose(
     clbits=[0, 1, 2, 3],
 )
 qc_complete.draw()
+
+
+# same register but different way to refer to it
+qregA = QuantumRegister(3)
+creg = ClassicalRegister(1)
+qregB = QuantumRegister(2)
+qc = QuantumCircuit(qregA, qregB, creg)
+qc.append(HGate(), 1)
+qc.y(qregA[1])
