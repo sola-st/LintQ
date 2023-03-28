@@ -33,6 +33,7 @@ flake8==5.0.4
 fonttools==4.37.4
 gitdb==4.0.10
 GitPython==3.1.30
+greenlet==2.0.2
 idna==3.4
 importlib-metadata==5.0.0
 importlib-resources==5.9.0
@@ -80,6 +81,7 @@ ntlm-auth==1.5.0
 numpy==1.23.3
 oauthlib==3.2.2
 packaging==21.3
+palettable==3.3.0
 pandarallel==1.6.3
 pandas==1.5.0
 pandocfilters==1.5.0
@@ -105,6 +107,7 @@ PyJWT==2.6.0
 pylatexenc==2.10
 pyparsing==3.0.9
 pyrsistent==0.18.1
+pySankey==0.0.1
 pytest==7.2.2
 python-dateutil==2.8.2
 python-docx==0.8.11
@@ -115,6 +118,7 @@ pyzmq==24.0.1
 qiskit==0.41.1
 qiskit-aer==0.11.2
 qiskit-ibmq-provider==0.20.1
+qiskit-ignis==0.7.1
 qiskit-terra==0.23.2
 QSmell==0.0.1
 qtconsole==5.3.2
@@ -134,6 +138,7 @@ SetSimilaritySearch==1.0.1
 six==1.16.0
 smmap==5.0.0
 soupsieve==2.3.2.post1
+SQLAlchemy==2.0.6
 stack-data==0.5.1
 stevedore==4.1.0
 symengine==0.9.2

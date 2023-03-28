@@ -11,3 +11,5 @@ zenodo/*
 
 datasets/tmp_test_db/*
 datasets/exp_v*/*
+datasets/Bugs4Q*/
+datasets/qsmell_benchmark/*
