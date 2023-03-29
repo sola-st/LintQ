@@ -75,6 +75,8 @@ private class GateNameObj extends string {
         this = "RYYGate" or
         this = "RZZGate" or
         this = "RZXGate" or
+        this = "RCCXGate" or
+        this = "ECRGate" or
         this = "Measure"
     }
 }
@@ -335,6 +337,12 @@ private class GenericGateCall extends Gate {
                 or
                 this.(API::CallNode).getParameter(4, "target_qubit") = p
             )) or
+        (this.getGateName() = "cu" and
+        (
+            this.(API::CallNode).getParameter(4, "control_qubit") = p
+            or
+            this.(API::CallNode).getParameter(5, "target_qubit") = p
+        )) or
         ((
             this.getGateName() = "h" or this.getGateName() = "x" or
             this.getGateName() = "y" or this.getGateName() = "z" or
@@ -436,6 +444,7 @@ class MeasurementAll extends GenericGateCall {
     }
 
 
+    // TODO rename createsNewRegister
     predicate hasDefaultArgs() {
         not this.(API::CallNode).getParameter(
             1, "add_bits").getAValueReachingSink().asExpr().(
