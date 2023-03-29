@@ -17,7 +17,7 @@ dir_analysis_output=../data/analysis_results/
 
 # query for the dataset name to use among the ones in the dataset folder.
 # consider only the folders
-dataset_names=$(ls -d $dir_all_datasets/exp_v* | xargs -n 1 basename)
+dataset_names=$(ls -d $dir_all_datasets/* | xargs -n 1 basename)
 # query the user with a numeric list of the available datasets
 echo "Available datasets:"
 i=1
