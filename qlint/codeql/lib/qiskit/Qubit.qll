@@ -1,6 +1,8 @@
 
 
 import qiskit.Circuit
+import qiskit.Register
+import tutorial
 
 
 // QubitUsed
@@ -9,6 +11,8 @@ import qiskit.Circuit
 // e.g. qc.h(0)
 // or explicitely connected to a QuantumRegister via quantum_register[0]
 // e.g. qc.h(quantum_register[0])
+
+// TODO rename QubitAccess
 class QubitUsedInteger extends IntegerLiteral {
     QubitUsedInteger() {
         exists(

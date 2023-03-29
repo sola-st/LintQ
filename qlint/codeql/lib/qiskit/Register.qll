@@ -21,6 +21,7 @@ abstract class Register extends DataFlow::CallCfgNode {
         )
     }
 
+    // TODO rename hasKnownSize
     //* Holds if the circuit has integer parameter. */
     predicate hasIntegerParameter() {
         exists(DataFlow::LocalSourceNode source
@@ -52,15 +53,16 @@ abstract class Register extends DataFlow::CallCfgNode {
         // reg is the name of the register
         exists(
             Variable var,
-            AssignStmt assignStmt,
-            Scope same_scope
+            AssignStmt assignStmt
+            // ,
+            // Scope same_scope
             |
             //var.getAStore() = this.asExpr()
             //and
             assignStmt.getValue() = this.asExpr()
-            and this.getScope() = same_scope
-            and var.getScope() = same_scope
-            and assignStmt.getScope() = same_scope
+            // and this.getScope() = same_scope
+            // and var.getScope() = same_scope
+            // and assignStmt.getScope() = same_scope
             and assignStmt.getATarget() = var.getAStore()
             |
             // return the left side of the assignment, namely the reference
@@ -89,7 +91,6 @@ class ClassicalRegister extends Register {
     ClassicalRegister() {
         this = API::moduleImport("qiskit").getMember("ClassicalRegister").getACall()
     }
-
 }
 
 class QuantumRegister extends Register {
