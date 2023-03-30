@@ -27,7 +27,7 @@ The current research work contains and shares the following resources:
     - Found at the path: [`<repo_root>/data/datasets/exp_v08/qsmell/`](data/datasets/exp_v08/qsmell/)
 1. **Manual annotations** of the warnings:
     - Download: not needed, already in this repo.
-    - To place at the path: [`<repo_root>/data/annotations/manual_inspection/warnings_until_23_03_28.csv`](data/annotations/manual_inspection/warnings_until_23_03_28.csv)
+    - To place at the path: [`<repo_root>/data/annotations/manual_inspection/warnings_until_23_03_29.csv`](data/annotations/manual_inspection/warnings_until_23_03_29.csv)
 1. **True Positives Issues**:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found`](bug_reports/true_positives_found)
