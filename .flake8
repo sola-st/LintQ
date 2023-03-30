@@ -1,7 +1,0 @@
-[flake8]
-# other options
-
-[flake8:local-plugins]
-extension =
-    QL = flake8_lint:QuantumLinterPlugin
-paths = qlint/linter
