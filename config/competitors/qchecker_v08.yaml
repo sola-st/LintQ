@@ -1,0 +1,27 @@
+# ALL THE SETUP OF THE QCHECKER
+
+
+# STATIC ONLY
+
+# Input of the analysis containing parsable python files
+input_folder: data/datasets/exp_v08/files_selected
+#input_folder: data/datasets/sample_dataset/files_selected
+
+# output_folder: where to store the individual csv of the metrics
+output_folder: data/datasets/exp_v08/qchecker
+# output_folder: data/datasets/sample_dataset/qchecker
+
+# metrics: each must have a .py file with the same name
+# and should expose a method compute_metric(ast, output_file_path)
+# a new subfolder will be created for each metric
+metrics_to_compute:
+  - IIS
+  - PE
+  - CE
+  - CM
+  - IM
+  - QE
+  - IG
+  - DO
+  - MI
+
