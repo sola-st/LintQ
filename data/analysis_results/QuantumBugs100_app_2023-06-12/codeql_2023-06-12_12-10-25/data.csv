@@ -1,0 +1,50 @@
+Tool,Severity,Code,Location,Line
+CodeQL,warning,"ql-ghost-composition Ghost composition at location: (8, 1)",STE-31508_buggy.py,8
+CodeQL,warning,"ql-measure-all-abuse measure_all() on the circuit 'qc' (at location:3, 6)  when it has already 1 classical bits.",STE-20750_buggy.py,5
+CodeQL,warning,"ql-measure-all-abuse measure_all() on the circuit 'qc' (at location:6, 6)  when it has already 2 classical bits.",TER-6571_buggy.py,8
+CodeQL,warning,"ql-operation-after-measurement Operation 'cx' on qubit 1 after measurement at location: (18, 1).",STO-60918011_buggy.py,19
+CodeQL,warning,"ql-operation-after-measurement Operation 'cz' on qubit 0 after measurement at location: (17, 1).",STO-60918011_buggy.py,20
+CodeQL,warning,ql-oversized-circuit Circuit 'Qc' never manipulates some of its 2qubits.,STO-69245836_buggy.py,6
+CodeQL,warning,ql-oversized-circuit Circuit 'circuit' never manipulates some of its 1qubits.,STE-5557_buggy.py,5
+CodeQL,warning,ql-oversized-circuit Circuit 'circuit' never manipulates some of its 2qubits.,STO-64707625_buggy.py,5
+CodeQL,warning,ql-oversized-circuit Circuit 'circuit' never manipulates some of its 4qubits.,TER-3799_buggy.py,13
+CodeQL,warning,ql-oversized-circuit Circuit 'meas_x' never manipulates some of its 1qubits.,STE-9224_buggy.py,19
+CodeQL,warning,ql-oversized-circuit Circuit 'meas_y' never manipulates some of its 1qubits.,STE-9224_buggy.py,24
+CodeQL,warning,ql-oversized-circuit Circuit 'meas_z' never manipulates some of its 1qubits.,STE-9224_buggy.py,30
+CodeQL,warning,ql-oversized-circuit Circuit 'middle' never manipulates some of its 1qubits.,STE-9224_buggy.py,39
+CodeQL,warning,ql-oversized-circuit Circuit 'pre' never manipulates some of its 1qubits.,STE-9224_buggy.py,15
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 2qubits.,TER-6571_buggy.py,6
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 4qubits.,TER-3410_buggy.py,10
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 4qubits.,TER-5580_buggy.py,15
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 4qubits.,TER-5580_buggy.py,24
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 5qubits.,STE-6697_buggy.py,10
+CodeQL,warning,ql-oversized-circuit Circuit 'qpe' never manipulates some of its 4qubits.,STE-9246_buggy.py,35
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circ' has more qubits (3) than classical  bits (0),STE-31736_buggy.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circ' has more qubits (3) than classical  bits (0),TER-5580_buggy.py,7
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),STE-15966_buggy.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),STE-5557_buggy.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (2) than classical  bits (0),STE-32326_buggy.py,31
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (2) than classical  bits (0),STE-32326_buggy.py,41
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (2) than classical  bits (0),STE-7129_buggy.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (2) than classical  bits (0),STO-62661255_buggy.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (2) than classical  bits (1),STE-32326_buggy.py,7
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (4) than classical  bits (0),TER-3799_buggy.py,13
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (8) than classical  bits (4),STE-5959_buggy.py,8
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'ghz_circuit' has more qubits (3) than classical  bits (0),TER-3799_buggy.py,7
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'mycircuit' has more qubits (2) than classical  bits (0),STE-15925_buggy.py,6
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'outer_level' has more qubits (2) than classical  bits (0),TER-6540_buggy.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'q1' has more qubits (2) than classical  bits (0),STE-20894_buggy.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (1) than classical  bits (0),TER-4144_buggy.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (2) than classical  bits (0),STE-17651_buggy.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),STE-31508_buggy.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),TER-6540_buggy.py,2
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (4) than classical  bits (0),STE-9871_buggy.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (4) than classical  bits (0),TER-5580_buggy.py,15
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (4) than classical  bits (0),TER-5580_buggy.py,24
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qpe' has more qubits (4) than classical  bits (3),STE-9246_buggy.py,35
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qr' has more qubits (8) than classical  bits (0),STE-9943_buggy.py,16
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'state' has more qubits (2) than classical  bits (0),TER-6255_buggy.py,6
+CodeQL,warning,qsmell-lpq transpile call without initial_layout,STO-62661255_buggy.py,12
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",STO-62661255_buggy.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",STE-17651_buggy.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",STE-6697_buggy.py,1
