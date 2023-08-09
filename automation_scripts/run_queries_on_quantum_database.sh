@@ -33,11 +33,22 @@ dataset_name=$(echo $dataset_names | cut -d " " -f $((dataset_index)))
 dir_dataset=$dir_all_datasets/$dataset_name
 echo "Using dataset $dir_dataset."
 
-# check that it has a codeql folder inside, otherwise abort
-if [ ! -d "$dir_dataset/codeql" ]; then
-    echo "The dataset does not have a codeql folder. Aborting."
+# check that it has a codeql or codeql_db folder inside,
+# if yes use store the folder in a variable,
+# otherwise abort
+if [ ! -d "$dir_dataset/codeql_db" ] && [ ! -d "$dir_dataset/codeql" ]; then
+    echo "The dataset $dir_dataset does not contain a codeql_db or codeql folder."
+    echo "Aborting."
     exit 1
 fi
+if [ -d "$dir_dataset/codeql_db" ]; then
+    codeql_folder=$dir_dataset/codeql_db
+else
+    codeql_folder=$dir_dataset/codeql
+fi
+
+echo "The dataset $codeql_folder contains a codeql folder. Using it."
+
 
 # create the output folder if it does not exist
 dir_output=$dir_analysis_output/$dataset_name
@@ -57,7 +68,7 @@ screen \
         --threads=10 \
         --output=$dir_output_specific_analysis/data.sarif \
         --rerun \
-        -- $dir_dataset/codeql \
+        -- $codeql_folder \
         ../qlint/codeql/src
 
 
