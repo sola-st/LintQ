@@ -5,12 +5,190 @@ import qiskit.Register
 import qiskit.Gate
 
 
-class QuantumCircuit extends DataFlow::CallCfgNode {
-    QuantumCircuit() {
+class ComposeCall extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call is a compose call.
+     */
+    ComposeCall() {
+        exists(QuantumCircuit parentCirc
+            |
+            this = parentCirc.getAnAttributeRead("compose").getACall()
+        )
+    }
+}
 
+class ReturnsNewValue extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call has not inplace=True
+     */
+    ReturnsNewValue() {
+        // Holds it is a compose call without inplace=True
+        // Because if inplace=True, the circuit is modified in place,
+        // thus the call represent nothing.
+        not exists(
+            DataFlow::Node parameterInplace
+            |
+            parameterInplace = this.getArgByName("inplace")
+            |
+            parameterInplace.asExpr().(ImmutableLiteral).booleanValue() = true
+        )
+    }
+}
+
+
+class BuiltinParametrizedCircuitsConstructors extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call is a predefined parametrized circuit.
+     * e.g. TwoLocal(3, ['h', 'cx'], 'cz', 'full', reps=3)
+     * e.g. NLocal(3, ['h', 'cx'], 'cz', 'full', reps=3)
+     * e.g. RealAmplitudes(3, reps=3)
+     * e.g. EfficientSU2(3, reps=3)
+     * e.g. ExcitationPreserving(3, reps=3)
+     * e.g. PauliTwoDesign(3, reps=3)
+     * e.g. QAOAAnsatz(3, reps=3)
+     * They are generally imported as follows:
+     * from qiskit.circuit.library import TwoLocal, NLocal, RealAmplitudes, EfficientSU2, ExcitationPreserving, PauliTwoDesign, QAOAAnsatz
+     */
+    BuiltinParametrizedCircuitsConstructors() {
+        exists(
+            string importName
+            |
+            importName in ["TwoLocal", "NLocal", "RealAmplitudes", "EfficientSU2", "ExcitationPreserving", "PauliTwoDesign", "QAOAAnsatz"]
+            |
+            this = API::moduleImport("qiskit").getMember("circuit").getMember("library").getMember(importName).getACall()
+        )
+    }
+}
+
+
+class TranspileCall extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call is a transpile call.
+     */
+    TranspileCall() {
         this = API::moduleImport("qiskit").getMember("transpile").getACall()
-        or
+    }
+}
+
+
+class QuantumCircuitConstructor extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call is a QuantumCircuit constructor call.
+     */
+    QuantumCircuitConstructor() {
         this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
+    }
+}
+
+
+class CopyCircuitCall extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call is a clone call.
+     */
+    CopyCircuitCall() {
+        exists(QuantumCircuit parentCirc
+            |
+            this = parentCirc.getAnAttributeRead("copy").getACall()
+        )
+    }
+}
+
+
+/** A def statement returning a quantum circuit. */
+class UDFFunctionDefReturningAQuantumCircuit extends FunctionDef {
+    /**
+     * Holds if the function def returns a quantum circuit.
+     */
+    UDFFunctionDefReturningAQuantumCircuit() {
+        exists(
+            FunctionDef fd, Return ret, QuantumCircuit qc
+            |
+            // the function definition has a return statement
+            fd.contains(ret)
+            and
+            (
+                // the return statement returns a QuantumCircuit
+                ret.contains(qc.asExpr())
+                or
+                // in the return statement flows an object that is a QuantumCircuit (use local flow)
+                exists(
+                    DataFlow::Node objectInReturnStatement
+                    |
+                    ret.contains(objectInReturnStatement.asExpr())
+                    and
+                    qc.flowsTo(objectInReturnStatement)
+                )
+            )
+            |
+            this = fd
+        )
+    }
+}
+
+/** A call to a UDF returning a quantum circuit. */
+class UDFCallReturningAQuantumCircuit extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call returns a QuantumCircuit
+     */
+    UDFCallReturningAQuantumCircuit() {
+        exists(
+            DataFlow::CallCfgNode call,
+            UDFFunctionDefReturningAQuantumCircuit fd
+            |
+            call.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName()
+            and
+            // same scope
+            call.getScope() = fd.getScope()
+            |
+            this = call
+        )
+    }
+}
+
+
+/** A function call returning a quantum circuit object. */
+class CallReturningAQuantumCircuit extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the call returns a QuantumCircuit
+     */
+    CallReturningAQuantumCircuit() {
+        (
+            this instanceof ComposeCall
+            or
+            this instanceof CopyCircuitCall
+            or
+            this instanceof BuiltinParametrizedCircuitsConstructors
+            or
+            this instanceof TranspileCall
+            or
+            this instanceof QuantumCircuitConstructor
+            or
+            this instanceof UDFCallReturningAQuantumCircuit
+        )
+        and
+        this instanceof ReturnsNewValue
+    }
+}
+
+
+
+
+class QuantumCircuit extends DataFlow::CallCfgNode {
+    /**
+     * Holds if the circuit has been initialized with QuantumCircuit:
+     * e.g. qc = QuantumCircuit(2, 3)
+     * or if it is the target value of an assignment statement which assignes
+     * the reutrn value of a function call to a variable, and this return value
+     * is a QuantumCircuit:
+     * e.g. qc = transpile(circuit, backend)
+     * e.g. qc = qc1 + qc2
+     * e.g. qc = qc1.compose(qc2)
+     * e.g. qc = qc1.copy()
+     * e.g. qc = qc1.decompose()
+     * e.g. qc = TwoLocal(3, ['h', 'cx'], 'cz', 'full', reps=3)
+     */
+    QuantumCircuit() {
+        this instanceof CallReturningAQuantumCircuit
     }
 
     string getName() {
