@@ -1,0 +1,5 @@
+| concept_circuit_subcircuit.py:6:17:6:42 | ControlFlowNode for QuantumCircuit() | Sub-circuit detected: 'qc_subcircuit' |
+| concept_circuit_subcircuit.py:11:12:11:27 | ControlFlowNode for QuantumCircuit() | Sub-circuit detected: 'qc_macro' |
+| concept_circuit_subcircuit.py:32:10:32:29 | ControlFlowNode for QuantumCircuit() | Sub-circuit detected: 'qc' |
+| concept_circuit_subcircuit.py:48:17:48:36 | ControlFlowNode for QuantumCircuit() | Sub-circuit detected: 'qc_second' |
+| concept_circuit_subcircuit.py:53:32:53:50 | ControlFlowNode for create_subcircuit() | Sub-circuit detected: 'qc_subcircuit_via_subroutine' |

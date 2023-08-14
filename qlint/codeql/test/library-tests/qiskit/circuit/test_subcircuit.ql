@@ -1,8 +1,8 @@
 import python
-import qiskit.circuit
+import qiskit.Circuit
 
 from QuantumCircuit circ
 where
     not circ.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
-    and circ.is_subcircuit()
-select circ, "Sub-circuit detected: '" + circ.get_name() + "'"
+    and circ.isSubCircuit()
+select circ, "Sub-circuit detected: '" + circ.getName() + "'"

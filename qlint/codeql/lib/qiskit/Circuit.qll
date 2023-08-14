@@ -109,6 +109,39 @@ class SubCircuit extends QuantumCircuit {
   }
 }
 
+/** Circuit that is called with assign_parameters. */
+class ParametrizedCircuit extends DataFlow::CallCfgNode {
+  /**
+   * Holds if the circuit is called with assign_parameters() api.
+   * TODO: support also the case where a Parameter() object is used by a gate
+   * of the current circuit.
+   */
+  ParametrizedCircuit() {
+    exists(
+      QuantumCircuit qc, DataFlow::CallCfgNode actualCall
+      |
+      this = qc and
+      actualCall = qc.getAnAttributeRead("assign_parameters").getACall()
+    )
+  }
+}
+
+/** Circuit created by a assign_parameters call. */
+class InstanceOfParameterizedCircuit extends DataFlow::CallCfgNode {
+  /**
+   * Holds if the call is an assign_parameters call.
+   */
+  InstanceOfParameterizedCircuit() {
+    exists(
+      DataFlow::CallCfgNode unknownQc
+      // this works even if the assign_parameters call is not directly on the a
+      // known circuit object.
+      |
+      this  = unknownQc.getAnAttributeRead("assign_parameters").getACall()
+    )
+  }
+}
+
 /** Call to any function call which has inplace=False or the default value. */
 class ReturnsNewValue extends DataFlow::CallCfgNode {
   /**
@@ -153,6 +186,8 @@ class BuiltinParametrizedCircuitsConstructor extends DataFlow::CallCfgNode {
       |
       this = API::moduleImport("qiskit").getMember("circuit")
         .getMember("library").getMember(importName).getACall()
+      or
+      this = API::moduleImport("qiskit").getMember(importName).getACall()
     )
   }
 }
@@ -174,6 +209,9 @@ class QuantumCircuitConstructor extends DataFlow::CallCfgNode {
      */
     QuantumCircuitConstructor() {
         this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
+        or
+        // from qiskit.circuit import QuantumCircuit
+        this = API::moduleImport("qiskit").getMember("circuit").getMember("QuantumCircuit").getACall()
     }
 }
 
@@ -186,6 +224,16 @@ class CopyCircuitCall extends DataFlow::CallCfgNode {
         exists(QuantumCircuit parentCirc
             |
             this = parentCirc.getAnAttributeRead("copy").getACall()
+        )
+    }
+
+    /** Returns the original circuit that is copied. */
+    QuantumCircuit getOriginalCircuit() {
+        exists(QuantumCircuit parentCirc
+            |
+            this = parentCirc.getAnAttributeRead("copy").getACall()
+            and
+            result = parentCirc
         )
     }
 }
@@ -268,6 +316,8 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
       this instanceof QuantumCircuitConstructor
       or
       this instanceof UDFCallReturningAQuantumCircuit
+      or
+      this instanceof InstanceOfParameterizedCircuit
     )
     and
     this instanceof ReturnsNewValue
@@ -281,135 +331,204 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     )
   }
 
+  /** Returns the number of classical bits of the circuit (via intger), 0 if none. */
   private int get_num_bits_with_integers() {
     // get the number of bits as created with integrer literals
     // e.g. QuantumCircuit(2, 3)
     // the number of bits is 3
     // e.g. n = 4, QuantumCircuit(2, n)
     // the number of bits is 4
-    exists(IntegerLiteral num_bits, DataFlow::LocalSourceNode source |
-      source.flowsTo(this.getArg(1)) and
-      source.asExpr() = num_bits |
-      result = num_bits.getValue()
-    )
+    if
+      not exists(IntegerLiteral num_bits, DataFlow::LocalSourceNode source |
+        source.flowsTo(this.getArg(1)) and
+        source.asExpr() = num_bits
+      )
+    then
+      result = 0
+    else
+      exists(IntegerLiteral num_bits, DataFlow::LocalSourceNode source |
+        source.flowsTo(this.getArg(1)) and
+        source.asExpr() = num_bits |
+        result = num_bits.getValue()
+      )
   }
 
+  /** Returns the number of classical bits of the circuit (via registers), 0 if none. */
   private int get_num_bits_from_registers() {
     // get the number of bits as created with initialized registers
     // creg = ClassicalRegister(3, 'c')
     // qc = QuantumCircuit(2, creg)
     // the number of bits is 3
-    result = sum(
-      ClassicalRegister clsReg
-      |
-        clsReg.flowsTo(this.getArg(_))
-        or
-        // there is a this.add_register() call with clsReg as argument
-        exists(
-          DataFlow::CallCfgNode addRegisterCall
-          |
-          addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-          clsReg.flowsTo(addRegisterCall.getArg(0)))
-      |
-      clsReg.getSize())
+    if
+      not exists(ClassicalRegister clsReg |
+          clsReg.flowsTo(this.getArg(_))
+          or
+          // there is a this.add_register() call with clsReg as argument
+          exists(
+            DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            clsReg.flowsTo(addRegisterCall.getArg(0)))
+      )
+    then
+      result = 0
+    else
+      result = sum(
+        ClassicalRegister clsReg
+        |
+          clsReg.flowsTo(this.getArg(_))
+          or
+          // there is a this.add_register() call with clsReg as argument
+          exists(
+            DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            clsReg.flowsTo(addRegisterCall.getArg(0)))
+        |
+        clsReg.getSize())
   }
 
   int getNumberOfClassicalBits() {
-    exists(
-      int num_bits_from_registers, int num_bits_with_integers |
-      num_bits_from_registers = this.get_num_bits_from_registers() and
-      num_bits_with_integers = this.get_num_bits_with_integers() |
-      result = num_bits_from_registers + num_bits_with_integers
-    ) or
-    // if there is only a classical register
-    exists(
-      int num_bits_from_registers
-      |
-      num_bits_from_registers = this.get_num_bits_from_registers() and
-      not exists(int num_bits_with_integers |
-        num_bits_with_integers = this.get_num_bits_with_integers())
-      |
-      result = num_bits_from_registers
-    ) or
-    // if there is only a number of bits
-    exists(
-      int num_bits_with_integers
-      |
-      num_bits_with_integers = this.get_num_bits_with_integers() and
-      not exists(int num_bits_from_registers |
-        num_bits_from_registers = this.get_num_bits_from_registers())
-      |
-      result = num_bits_with_integers
-    )
+    if
+      this instanceof CopyCircuitCall and
+      this.get_num_bits_from_registers() = 0 and
+      this.get_num_bits_with_integers() = 0
+    then
+      // if it is a copy of another circuit, return the number of classical bits
+      // of the original circuit
+      exists(QuantumCircuit originalCirc |
+        originalCirc = this.(CopyCircuitCall).getOriginalCircuit() |
+        result = originalCirc.getNumberOfClassicalBits()
+      )
+    else
+      exists(
+        int num_bits_from_registers, int num_bits_with_integers |
+        num_bits_from_registers = this.get_num_bits_from_registers() and
+        num_bits_with_integers = this.get_num_bits_with_integers() |
+        result = num_bits_from_registers + num_bits_with_integers
+      ) or
+      // if there is only a classical register
+      exists(
+        int num_bits_from_registers
+        |
+        num_bits_from_registers = this.get_num_bits_from_registers() and
+        not exists(int num_bits_with_integers |
+          num_bits_with_integers = this.get_num_bits_with_integers())
+        |
+        result = num_bits_from_registers
+      ) or
+      // if there is only a number of bits
+      exists(
+        int num_bits_with_integers
+        |
+        num_bits_with_integers = this.get_num_bits_with_integers() and
+        not exists(int num_bits_from_registers |
+          num_bits_from_registers = this.get_num_bits_from_registers())
+        |
+        result = num_bits_with_integers
+      )
   }
 
+  /** Returns the number of qubits of the circuit (via intger), 0 if none. */
   private int get_num_qubits_with_integers() {
-    exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
-      source.flowsTo(this.getArg(0)) and
-      source.asExpr() = num_qubits |
-      result = num_qubits.getValue()
-    )
+    // if there is no integer literal, return 0
+    if
+      not exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
+        source.flowsTo(this.getArg(0)) and
+        source.asExpr() = num_qubits
+      )
+    then
+      result = 0
+    else
+      exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
+        source.flowsTo(this.getArg(0)) and
+        source.asExpr() = num_qubits |
+        result = num_qubits.getValue()
+      )
   }
 
+  /** Returns the number of qubits of the circuit (via registers), 0 if none. */
   private int get_num_qubits_from_registers() {
-    result = sum(
-      QuantumRegister qntReg
-      |
-        exists(int i | qntReg.flowsTo(this.getArg(i)))
-        or
-        // there is a this.add_register() call with qntReg as argument
-        exists(
-          DataFlow::CallCfgNode addRegisterCall
-          |
-          addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-          qntReg.flowsTo(addRegisterCall.getArg(0)))
-      |
-      qntReg.getSize())
+    // if there is no quantum register, return 0
+    if
+      not exists(QuantumRegister qntReg |
+          exists(int i | qntReg.flowsTo(this.getArg(i)))
+          or
+          // there is a this.add_register() call with qntReg as argument
+          exists(
+            DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            qntReg.flowsTo(addRegisterCall.getArg(0)))
+      )
+    then
+      result = 0
+    else
+      result = sum(
+        QuantumRegister qntReg
+        |
+          exists(int i | qntReg.flowsTo(this.getArg(i)))
+          or
+          // there is a this.add_register() call with qntReg as argument
+          exists(
+            DataFlow::CallCfgNode addRegisterCall
+            |
+            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+            qntReg.flowsTo(addRegisterCall.getArg(0)))
+        |
+        qntReg.getSize())
   }
 
   int getNumberOfQubits() {
-    exists(
-      int num_qubits_from_registers, int num_qubits_with_integers |
-      num_qubits_from_registers = this.get_num_qubits_from_registers() and
-      num_qubits_with_integers = this.get_num_qubits_with_integers() |
-      result = num_qubits_from_registers + num_qubits_with_integers
-    ) or
-    // if there is only a quantum register
-    exists(
-      int num_qubits_from_registers
-      |
-      num_qubits_from_registers = this.get_num_qubits_from_registers() and
-      not exists(int num_qubits_with_integers |
-        num_qubits_with_integers = this.get_num_qubits_with_integers())
-      |
-      result = num_qubits_from_registers
-    ) or
-    // if there is only a number of qubits
-    exists(
-      int num_qubits_with_integers
-      |
-      num_qubits_with_integers = this.get_num_qubits_with_integers() and
-      not exists(int num_qubits_from_registers |
-        num_qubits_from_registers = this.get_num_qubits_from_registers())
-      |
-      result = num_qubits_with_integers
-    )
+    if
+      this instanceof CopyCircuitCall and
+      this.get_num_qubits_from_registers() = 0 and
+      this.get_num_qubits_with_integers() = 0
+    then
+      // if it is a copy of another circuit, return the number of quantum bits
+      // of the original circuit
+      exists(QuantumCircuit originalCirc |
+        originalCirc = this.(CopyCircuitCall).getOriginalCircuit() |
+        result = originalCirc.getNumberOfQubits()
+      )
+    else
+      exists(
+        int num_qubits_from_registers, int num_qubits_with_integers |
+        num_qubits_from_registers = this.get_num_qubits_from_registers() and
+        num_qubits_with_integers = this.get_num_qubits_with_integers() |
+        result = num_qubits_from_registers + num_qubits_with_integers
+      ) or
+      // if there is only a quantum register
+      exists(
+        int num_qubits_from_registers
+        |
+        num_qubits_from_registers = this.get_num_qubits_from_registers() and
+        not exists(int num_qubits_with_integers |
+          num_qubits_with_integers = this.get_num_qubits_with_integers())
+        |
+        result = num_qubits_from_registers
+      ) or
+      // if there is only a number of qubits
+      exists(
+        int num_qubits_with_integers
+        |
+        num_qubits_with_integers = this.get_num_qubits_with_integers() and
+        not exists(int num_qubits_from_registers |
+          num_qubits_from_registers = this.get_num_qubits_from_registers())
+        |
+        result = num_qubits_with_integers
+      )
   }
 
   predicate isSubCircuit() {
-    exists(QuantumCircuit qc |
-      this.isSubCircuitOf(qc)
-    )
+    this instanceof SubCircuit
   }
 
   predicate isSubCircuitOf(QuantumCircuit other) {
     this != other and
-    // this circuit is the argument of the append() or compose() called on
-    // another circuit
-    exists(DataFlow::CallCfgNode appendOrComposeCall |
-      appendOrComposeCall = other.getAnAttributeRead("append").getACall()
-      or appendOrComposeCall = other.getAnAttributeRead("compose").getACall()|
-      this.flowsTo(appendOrComposeCall.getArg(0))
+    exists(DataFlow::CallCfgNode parent |
+      this instanceof SubCircuit and
+      this.(SubCircuit).getAParentCircuit() = parent
     )
   }
 
