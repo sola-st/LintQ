@@ -1,0 +1,14 @@
+provide:
+  - "**/qlpack.yml"
+  - "qlint/codeql/lib/qlpack.yml"
+
+ignore:
+  - "data/**"
+  - ".vscode/**"
+  - ".pytest_cache/**"
+  - "competitors/**"
+  - "notebooks/**"
+  - "rdlib/**"
+  - "venv38/**"
+  - "virtualenv/**"
+

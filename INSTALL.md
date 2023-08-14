@@ -80,12 +80,16 @@ Follow these steps:
     codeql pack install
     ```
     Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
-4. Move to the `qlint/codeql` directory and run the following command including this path:
+4. Move to the repo root and run the following command including this path:
     ```bash
-    cd qlint/codeql
-    codeql test run test/query-tests/Measurement --additional-packs=/home/<username>/.codeql/packages --threads=10
+    codeql test run qlint/codeql/test/query-tests/Measurement --additional-packs=~/.codeql/packages --threads=10
     ```
     This will run the tests of the specific folder `query-tests/Measurement` and will use the dependencies installed in the previous step.
+    Note, change path to test the library concept, e.g. `codeql test run qlint/codeql/test/library-test/qiskit/circuit --additional-packs=~/.codeql/packages --threads=10`.
+
+## F. Performance TroubleShooting
+
+
 
 ## E. Run the Query on the Full Dataset
 
@@ -119,8 +123,16 @@ You can see an example of the configuration file in `config/annotations/inspecti
 
 ## Troubleshooting
 
-1. if you run the quick evaluation in the VSCode environment, be sure to have opened the folder `/home/<username>/.codeql/packages` in your VSCode workspace. Otherwise, the CodeQL extension will not be able to find the dependencies.
+1. **missing packages**: if you run the quick evaluation in the VSCode environment, be sure to have opened the folder `/home/<username>/.codeql/packages` in your VSCode workspace. Otherwise, the CodeQL extension will not be able to find the dependencies.
 This operation will create a file named `qlint.code-workspace` in the repo folder, it will not uploaded to git but it is important you keep it.
+
+2. **performance**: for historic reason CodeQL looks for codeql libraries (`qlpack.yml`) in the sibling directories of the one you are running it, thus if you clone this repo in a directory with many other folders (e.g. `~/Documents/`) the codeql run will be significantly slower (see [this issue](https://github.com/github/vscode-codeql/issues/1259)).
+To solve the problem you can clone the repo in a brand new empty folder, following these steps:
+```shell
+mkdir lintq_home
+cd lintq_home
+git clone <this repo url>
+```
 
 # Miscellanea
 
