@@ -1,0 +1,20 @@
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '0',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '1',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '2',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '3',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '4',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '5',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '6',  circuit: 'qc' |
+| concept_bit_def.py:6:8:6:27 | ControlFlowNode for ClassicalRegister() | clbit in reg: 'creg', index: '7',  circuit: 'qc' |
+| concept_bit_def.py:12:14:12:27 | ControlFlowNode for Clbit() | clbit in reg: 'creg', index: '2',  circuit: 'qc' |
+| concept_bit_def.py:13:17:13:23 | ControlFlowNode for Clbit() | clbit in reg: 'anonymous register', index: '-1',  circuit: 'anonymous circuit' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '0',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '1',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '2',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '3',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '4',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '5',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:7:24:7:24 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '6',  circuit: 'qc' |
+| concept_bit_def_via_circuit.py:12:40:12:40 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '0',  circuit: 'qc_mostly_quantum' |
+| concept_bit_def_via_circuit.py:12:40:12:40 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '1',  circuit: 'qc_mostly_quantum' |
+| concept_bit_def_via_circuit.py:12:40:12:40 | ControlFlowNode for IntegerLiteral | clbit in reg: 'anonymous register', index: '2',  circuit: 'qc_mostly_quantum' |

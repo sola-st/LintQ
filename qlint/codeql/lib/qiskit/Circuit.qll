@@ -331,7 +331,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     )
   }
 
-  /** Returns the number of classical bits of the circuit (via intger), 0 if none. */
+  /** Returns the number of classical bits of the circuit (via integer), 0 if none. */
   private int get_num_bits_with_integers() {
     // get the number of bits as created with integrer literals
     // e.g. QuantumCircuit(2, 3)

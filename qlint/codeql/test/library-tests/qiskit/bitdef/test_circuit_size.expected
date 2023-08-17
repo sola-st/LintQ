@@ -1,0 +1,9 @@
+| concept_bit_def.py:7:6:7:31 | ControlFlowNode for QuantumCircuit() | number of classical bits 8 - number of quantum bits 8 |
+| concept_bit_def_via_circuit.py:7:6:7:25 | ControlFlowNode for QuantumCircuit() | number of classical bits 7 - number of quantum bits 2 |
+| concept_bit_def_via_circuit.py:12:21:12:41 | ControlFlowNode for QuantumCircuit() | number of classical bits 3 - number of quantum bits 10 |
+| concept_bit_def_via_circuit.py:19:10:19:26 | ControlFlowNode for QuantumCircuit() | number of classical bits 0 - number of quantum bits 2 |
+| concept_bit_def_via_circuit.py:26:6:26:23 | ControlFlowNode for unknown_api_call() | number of classical bits 0 - number of quantum bits 0 |
+| concept_bit_def_via_circuit.py:27:12:27:38 | ControlFlowNode for Attribute() | number of classical bits 0 - number of quantum bits 0 |
+| concept_bit_def_via_circuit.py:30:10:30:32 | ControlFlowNode for EfficientSU2() | number of classical bits 0 - number of quantum bits 3 |
+| concept_bit_def_via_circuit.py:33:11:33:35 | ControlFlowNode for RealAmplitudes() | number of classical bits 0 - number of quantum bits 4 |
+| concept_bit_def_via_circuit.py:36:9:36:46 | ControlFlowNode for TwoLocal() | number of classical bits 0 - number of quantum bits 3 |

@@ -1,0 +1,4 @@
+| concept_bit_def.py:9:16:9:29 | ControlFlowNode for Qubit() | Generic Bit :'single_qubit' |
+| concept_bit_def.py:10:19:10:35 | ControlFlowNode for Qubit() | Generic Bit :'anonymous_qubit' |
+| concept_bit_def.py:12:14:12:27 | ControlFlowNode for Clbit() | Generic Bit :'single_bit' |
+| concept_bit_def.py:13:17:13:23 | ControlFlowNode for Clbit() | Generic Bit :'anonymous_bit' |
