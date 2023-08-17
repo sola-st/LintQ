@@ -1,5 +1,3 @@
-
-
 import qiskit.Circuit
 import qiskit.Register
 import semmle.python.dataflow.new.DataFlow
@@ -7,87 +5,66 @@ import semmle.python.ApiGraphs
 
 /** Definition of a qubit or bit. */
 abstract class BitDefinition extends DataFlow::LocalSourceNode {
+  int getAnIndex() {
+    if exists(int i | i = this.getAnIndexIfAny())
+    then exists(int i | i = this.getAnIndexIfAny() | result = i)
+    else result = -1
+  }
 
+  string getARegisterName() {
+    if exists(RegisterV2 reg | reg = this.getARegister())
+    then exists(RegisterV2 reg | reg = this.getARegister() | result = reg.getName())
+    else result = "anonymous register"
+  }
 
-    int getAnIndex() {
-      if
-        exists(int i | i = this.getAnIndexIfAny())
-      then
-        exists(int i | i = this.getAnIndexIfAny() | result = i)
-      else
-        result = -1
-    }
+  string getACircuitName() {
+    if exists(QuantumCircuit circ | circ = this.getACircuit())
+    then exists(QuantumCircuit circ | circ = this.getACircuit() | result = circ.getName())
+    else result = "anonymous circuit"
+  }
 
-    string getARegisterName() {
-      if
-        exists(RegisterV2 reg | reg = this.getARegister())
-      then
-        exists(RegisterV2 reg | reg = this.getARegister() | result = reg.getName())
-      else
-        result = "anonymous register"
-    }
+  abstract string getTypeName();
 
-    string getACircuitName() {
-      if
-        exists(QuantumCircuit circ | circ = this.getACircuit())
-      then
-        exists(QuantumCircuit circ | circ = this.getACircuit() | result = circ.getName())
-      else
-        result = "anonymous circuit"
-    }
+  abstract int getAnIndexIfAny();
 
-    abstract string getTypeName();
-    abstract int getAnIndexIfAny();
-    abstract RegisterV2 getARegister();
-    abstract QuantumCircuit getACircuit();
+  abstract RegisterV2 getARegister();
 
-    boolean equals(BitDefinition other) {
-      if
-        this.getARegisterName() = other.getARegisterName() and
-        this.getAnIndexIfAny() = other.getAnIndexIfAny() and
-        this.getACircuitName() = other.getACircuitName() and
-        this.getARegister() = other.getARegister() and
-        this.getACircuit() = other.getACircuit() and
-        this.getTypeName() = other.getTypeName()
-      then
-        result = true
-      else
-        result = false
-    }
+  abstract QuantumCircuit getACircuit();
 
+  boolean equals(BitDefinition other) {
+    if
+      this.getARegisterName() = other.getARegisterName() and
+      this.getAnIndexIfAny() = other.getAnIndexIfAny() and
+      this.getACircuitName() = other.getACircuitName() and
+      this.getARegister() = other.getARegister() and
+      this.getACircuit() = other.getACircuit() and
+      this.getTypeName() = other.getTypeName()
+    then result = true
+    else result = false
+  }
 }
 
-
 abstract class QubitDefinition extends BitDefinition {
-  override string getTypeName() {
-    result = "qubit"
-  }
+  override string getTypeName() { result = "qubit" }
 }
 
 abstract class ClbitDefinition extends BitDefinition {
-  override string getTypeName() {
-    result = "clbit"
-  }
+  override string getTypeName() { result = "clbit" }
 }
-
 
 predicate isIntegerParameterOfCall(
-    DataFlow::LocalSourceNode integerParameter,
-    DataFlow::CallCfgNode call,
-    int indexParam) {
-      exists(
-        IntegerLiteral intLit |
-        integerParameter.flowsTo(call.getArg(indexParam)) and
-        integerParameter.asExpr() = intLit
-      )
+  DataFlow::LocalSourceNode integerParameter, DataFlow::CallCfgNode call, int indexParam
+) {
+  exists(IntegerLiteral intLit |
+    integerParameter.flowsTo(call.getArg(indexParam)) and
+    integerParameter.asExpr() = intLit
+  )
 }
-
 
 /** Qubit generated implicitly by QuantumCircuit(). */
 class ImplicitCircuitQubitDefinition extends BitDefinition, QubitDefinition {
-
   ImplicitCircuitQubitDefinition() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor or
       qc instanceof BuiltinParametrizedCircuitsConstructor
     |
@@ -112,7 +89,7 @@ class ImplicitCircuitQubitDefinition extends BitDefinition, QubitDefinition {
   }
 
   override RegisterV2 getARegister() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor or
       qc instanceof BuiltinParametrizedCircuitsConstructor
     |
@@ -123,7 +100,7 @@ class ImplicitCircuitQubitDefinition extends BitDefinition, QubitDefinition {
   }
 
   override QuantumCircuit getACircuit() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor or
       qc instanceof BuiltinParametrizedCircuitsConstructor
     |
@@ -132,14 +109,12 @@ class ImplicitCircuitQubitDefinition extends BitDefinition, QubitDefinition {
       result = qc
     )
   }
-
 }
 
 /** Clbit generated implicitly by QuantumCircuit(). */
 class ImplicitCircuitClbitDefinition extends BitDefinition, ClbitDefinition {
-
   ImplicitCircuitClbitDefinition() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor
     |
       this = locSource and
@@ -162,7 +137,7 @@ class ImplicitCircuitClbitDefinition extends BitDefinition, ClbitDefinition {
   }
 
   override RegisterV2 getARegister() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor
     |
       this = locSource and
@@ -170,8 +145,9 @@ class ImplicitCircuitClbitDefinition extends BitDefinition, ClbitDefinition {
       result = qc
     )
   }
+
   override QuantumCircuit getACircuit() {
-    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource|
+    exists(QuantumCircuit qc, DataFlow::LocalSourceNode locSource |
       qc instanceof QuantumCircuitConstructor
     |
       this = locSource and
@@ -179,24 +155,17 @@ class ImplicitCircuitClbitDefinition extends BitDefinition, ClbitDefinition {
       result = qc
     )
   }
-
 }
-
 
 /** Bits generated implicitly by QuantumRegister() and ClassicalRegister(). */
 abstract class ImplicitRegisterBitDefinition extends BitDefinition {
-
   /** Returns an index of the bit in the register. */
   override int getAnIndexIfAny() {
-    exists(int i |
-      i in [0 .. this.(RegisterV2).getSize() - 1] | result = i
-    )
+    exists(int i | i in [0 .. this.(RegisterV2).getSize() - 1] | result = i)
   }
 
   /** Returns the register of the bit. */
-  override RegisterV2 getARegister() {
-    result = this
-  }
+  override RegisterV2 getARegister() { result = this }
 
   /** Returns the circuit in which the bit is added. */
   override QuantumCircuit getACircuit() {
@@ -208,27 +177,20 @@ abstract class ImplicitRegisterBitDefinition extends BitDefinition {
 /** Qubit generated implicitly by QuantumRegister(). */
 class ImplicitRegisterQubitDefinition extends ImplicitRegisterBitDefinition, QubitDefinition {
   ImplicitRegisterQubitDefinition() {
-    exists(QuantumRegisterV2 qreg, int i |
-      i in [0 .. qreg.getSize() - 1] | this = qreg
-    )
+    exists(QuantumRegisterV2 qreg, int i | i in [0 .. qreg.getSize() - 1] | this = qreg)
   }
 }
 
 /** Clbit generated implicity by ClassicalRegister() */
 class ImplicitRegisterClbitDefinition extends ImplicitRegisterBitDefinition, ClbitDefinition {
   ImplicitRegisterClbitDefinition() {
-    exists(ClassicalRegisterV2 creg, int i |
-      i in [0 .. creg.getSize() - 1] | this = creg
-    )
+    exists(ClassicalRegisterV2 creg, int i | i in [0 .. creg.getSize() - 1] | this = creg)
   }
 }
 
-
 // EXPLICIT INITIALIZATION OF SINGLE BITS
-
-/** Bits generated by Qubit() or Clbit().*/
+/** Bits generated by Qubit() or Clbit(). */
 abstract class ExplicitSingleBitDefinition extends BitDefinition {
-
   /** Returns the name of the identifier of the bit. */
   string getName() {
     exists(AssignStmt a |
@@ -237,20 +199,25 @@ abstract class ExplicitSingleBitDefinition extends BitDefinition {
     )
   }
 
-  /** Return the index paramer of the current bit.*/
+  /** Return the index paramer of the current bit. */
   override int getAnIndexIfAny() {
     // single_bit = Clbit(register=creg, index=2)
-    result = this.( API::CallNode ).getParameter(1, "index")
-          .getAValueReachingSink().asExpr().(IntegerLiteral).getValue()
+    result =
+      this.(API::CallNode)
+          .getParameter(1, "index")
+          .getAValueReachingSink()
+          .asExpr()
+          .(IntegerLiteral)
+          .getValue()
   }
 
-  /** Returns the register of the current bit.*/
+  /** Returns the register of the current bit. */
   override RegisterV2 getARegister() {
     // single_bit = Clbit(register=creg, index=2)
     exists(RegisterV2 reg |
-      reg.asExpr() = this.( API::CallNode ).getParameter(0, "register")
-        .getAValueReachingSink().asExpr()
-      |
+      reg.asExpr() =
+        this.(API::CallNode).getParameter(0, "register").getAValueReachingSink().asExpr()
+    |
       result = reg
     )
   }
@@ -260,10 +227,9 @@ abstract class ExplicitSingleBitDefinition extends BitDefinition {
     // get the circuit from the register
     result = this.getARegister().getACircuit()
   }
-
 }
 
-/** Qubit generated by Qubit().*/
+/** Qubit generated by Qubit(). */
 class ExplicitSingleQubitDefinition extends ExplicitSingleBitDefinition, QubitDefinition {
   ExplicitSingleQubitDefinition() {
     this = API::moduleImport("qiskit").getMember("Qubit").getACall()
@@ -272,7 +238,7 @@ class ExplicitSingleQubitDefinition extends ExplicitSingleBitDefinition, QubitDe
   }
 }
 
-/** Clbit generated by Clbit().*/
+/** Clbit generated by Clbit(). */
 class ExplicitSingleClbitDefinition extends ExplicitSingleBitDefinition, ClbitDefinition {
   ExplicitSingleClbitDefinition() {
     this = API::moduleImport("qiskit").getMember("Clbit").getACall()
@@ -280,4 +246,3 @@ class ExplicitSingleClbitDefinition extends ExplicitSingleBitDefinition, ClbitDe
     this = API::moduleImport("qiskit").getMember("circuit").getMember("Clbit").getACall()
   }
 }
-

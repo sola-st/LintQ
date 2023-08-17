@@ -4,17 +4,13 @@ import semmle.python.ApiGraphs
 import qiskit.Register
 import qiskit.Gate
 
-
 /** Call to the compose() api on a circuit. */
 class ComposeCall extends DataFlow::CallCfgNode {
   /**
    * Holds if the call is a compose call.
    */
   ComposeCall() {
-    exists(QuantumCircuit parentCirc
-      |
-      this = parentCirc.getAnAttributeRead("compose").getACall()
-    )
+    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("compose").getACall())
   }
 }
 
@@ -24,10 +20,7 @@ class AppendCall extends DataFlow::CallCfgNode {
    * Holds if the call is a append call.
    */
   AppendCall() {
-    exists(QuantumCircuit parentCirc
-      |
-      this = parentCirc.getAnAttributeRead("append").getACall()
-    )
+    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("append").getACall())
   }
 }
 
@@ -38,20 +31,18 @@ class SubCircuit extends QuantumCircuit {
    */
   SubCircuit() {
     exists(AppendCall appendCall |
-      appendCall.( API::CallNode ).getParameter(0, "instruction")
-      .getAValueReachingSink().asExpr() = this.asExpr()
+      appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink().asExpr() =
+        this.asExpr()
     )
     or
     exists(ComposeCall composeCall |
-      composeCall.( API::CallNode ).getParameter(0, "other")
-      .getAValueReachingSink().asExpr() = this.asExpr()
+      composeCall.(API::CallNode).getParameter(0, "other").getAValueReachingSink().asExpr() =
+        this.asExpr()
     )
     or
     // holds if the circuit returned by a function is appended to another/composed
     // to another circuit
-    exists(
-      FunctionDef fd, Return ret, QuantumCircuit qc, DataFlow::CallCfgNode actualCall
-      |
+    exists(FunctionDef fd, Return ret, QuantumCircuit qc, DataFlow::CallCfgNode actualCall |
       // the function definition has a return statement
       fd.contains(ret) and
       // the fd is actually used somewhere
@@ -59,34 +50,32 @@ class SubCircuit extends QuantumCircuit {
       // same scope
       actualCall.getScope() = fd.getScope() and
       // the call reaches the append or compose call as sink
-      exists(
-        DataFlow::CallCfgNode appendOrComposeCall|
-        (
-          appendOrComposeCall instanceof AppendCall and
-          appendOrComposeCall.( API::CallNode ).getParameter(0, "instruction")
-          .getAValueReachingSink().asExpr() = actualCall.asExpr()
-        )
+      exists(DataFlow::CallCfgNode appendOrComposeCall |
+        appendOrComposeCall instanceof AppendCall and
+        appendOrComposeCall
+            .(API::CallNode)
+            .getParameter(0, "instruction")
+            .getAValueReachingSink()
+            .asExpr() = actualCall.asExpr()
         or
-        (
-          appendOrComposeCall instanceof ComposeCall and
-          appendOrComposeCall.( API::CallNode ).getParameter(0, "other")
-          .getAValueReachingSink().asExpr() = actualCall.asExpr()
-        )
+        appendOrComposeCall instanceof ComposeCall and
+        appendOrComposeCall
+            .(API::CallNode)
+            .getParameter(0, "other")
+            .getAValueReachingSink()
+            .asExpr() = actualCall.asExpr()
       ) and
       (
         // the return statement returns a QuantumCircuit
         ret.contains(qc.asExpr())
         or
         // in the return statement flows an object that is a QuantumCircuit (use local flow)
-        exists(
-          DataFlow::Node objectInReturnStatement
-          |
-          ret.contains(objectInReturnStatement.asExpr())
-          and
+        exists(DataFlow::Node objectInReturnStatement |
+          ret.contains(objectInReturnStatement.asExpr()) and
           qc.flowsTo(objectInReturnStatement)
         )
       )
-      |
+    |
       this = qc
     )
   }
@@ -94,15 +83,15 @@ class SubCircuit extends QuantumCircuit {
   /** Returns one of the circuit that uses the current subcircuit. */
   QuantumCircuit getAParentCircuit() {
     exists(AppendCall appendCall, QuantumCircuit parent |
-      appendCall.( API::CallNode ).getParameter(0, "instruction")
-      .getAValueReachingSink().asExpr() = this.asExpr() and
+      appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink().asExpr() =
+        this.asExpr() and
       parent.getAnAttributeRead("append").getACall().asExpr() = appendCall.asExpr() and
       result = parent
     )
     or
     exists(ComposeCall composeCall, QuantumCircuit parent |
-      composeCall.( API::CallNode ).getParameter(0, "other")
-      .getAValueReachingSink().asExpr() = this.asExpr() and
+      composeCall.(API::CallNode).getParameter(0, "other").getAValueReachingSink().asExpr() =
+        this.asExpr() and
       parent.getAnAttributeRead("compose").getACall().asExpr() = composeCall.asExpr() and
       result = parent
     )
@@ -117,9 +106,7 @@ class ParametrizedCircuit extends DataFlow::CallCfgNode {
    * of the current circuit.
    */
   ParametrizedCircuit() {
-    exists(
-      QuantumCircuit qc, DataFlow::CallCfgNode actualCall
-      |
+    exists(QuantumCircuit qc, DataFlow::CallCfgNode actualCall |
       this = qc and
       actualCall = qc.getAnAttributeRead("assign_parameters").getACall()
     )
@@ -132,12 +119,10 @@ class InstanceOfParameterizedCircuit extends DataFlow::CallCfgNode {
    * Holds if the call is an assign_parameters call.
    */
   InstanceOfParameterizedCircuit() {
-    exists(
-      DataFlow::CallCfgNode unknownQc
+    exists(DataFlow::CallCfgNode unknownQc |
       // this works even if the assign_parameters call is not directly on the a
       // known circuit object.
-      |
-      this  = unknownQc.getAnAttributeRead("assign_parameters").getACall()
+      this = unknownQc.getAnAttributeRead("assign_parameters").getACall()
     )
   }
 }
@@ -151,11 +136,7 @@ class ReturnsNewValue extends DataFlow::CallCfgNode {
     // Holds it is a compose call without inplace=True
     // Because if inplace=True, the circuit is modified in place,
     // thus the call represent nothing.
-    not exists(
-      DataFlow::Node parameterInplace
-      |
-      parameterInplace = this.getArgByName("inplace")
-      |
+    not exists(DataFlow::Node parameterInplace | parameterInplace = this.getArgByName("inplace") |
       parameterInplace.asExpr().(ImmutableLiteral).booleanValue() = true
     )
   }
@@ -177,15 +158,18 @@ class BuiltinParametrizedCircuitsConstructor extends DataFlow::CallCfgNode {
    * ExcitationPreserving, PauliTwoDesign, QAOAAnsatz
    */
   BuiltinParametrizedCircuitsConstructor() {
-    exists(
-      string importName
-      |
+    exists(string importName |
       importName in [
-        "TwoLocal", "NLocal", "RealAmplitudes", "EfficientSU2",
-        "ExcitationPreserving", "PauliTwoDesign", "QAOAAnsatz"]
-      |
-      this = API::moduleImport("qiskit").getMember("circuit")
-        .getMember("library").getMember(importName).getACall()
+          "TwoLocal", "NLocal", "RealAmplitudes", "EfficientSU2", "ExcitationPreserving",
+          "PauliTwoDesign", "QAOAAnsatz"
+        ]
+    |
+      this =
+        API::moduleImport("qiskit")
+            .getMember("circuit")
+            .getMember("library")
+            .getMember(importName)
+            .getACall()
       or
       this = API::moduleImport("qiskit").getMember(importName).getACall()
     )
@@ -197,73 +181,60 @@ class TranspileCall extends DataFlow::CallCfgNode {
   /**
    * Holds if the call is a transpile call.
    */
-  TranspileCall() {
-    this = API::moduleImport("qiskit").getMember("transpile").getACall()
-  }
+  TranspileCall() { this = API::moduleImport("qiskit").getMember("transpile").getACall() }
 }
 
-/** A constructor to QuantumCircuit API.*/
+/** A constructor to QuantumCircuit API. */
 class QuantumCircuitConstructor extends DataFlow::CallCfgNode {
-    /**
-     * Holds if the call is a QuantumCircuit constructor call.
-     */
-    QuantumCircuitConstructor() {
-        this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
-        or
-        // from qiskit.circuit import QuantumCircuit
-        this = API::moduleImport("qiskit").getMember("circuit").getMember("QuantumCircuit").getACall()
-    }
+  /**
+   * Holds if the call is a QuantumCircuit constructor call.
+   */
+  QuantumCircuitConstructor() {
+    this = API::moduleImport("qiskit").getMember("QuantumCircuit").getACall()
+    or
+    // from qiskit.circuit import QuantumCircuit
+    this = API::moduleImport("qiskit").getMember("circuit").getMember("QuantumCircuit").getACall()
+  }
 }
 
 /** A call to .copy() on a circuit object. */
 class CopyCircuitCall extends DataFlow::CallCfgNode {
-    /**
-     * Holds if the call is a clone call.
-     */
-    CopyCircuitCall() {
-        exists(QuantumCircuit parentCirc
-            |
-            this = parentCirc.getAnAttributeRead("copy").getACall()
-        )
-    }
+  /**
+   * Holds if the call is a clone call.
+   */
+  CopyCircuitCall() {
+    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("copy").getACall())
+  }
 
-    /** Returns the original circuit that is copied. */
-    QuantumCircuit getOriginalCircuit() {
-        exists(QuantumCircuit parentCirc
-            |
-            this = parentCirc.getAnAttributeRead("copy").getACall()
-            and
-            result = parentCirc
-        )
-    }
+  /** Returns the original circuit that is copied. */
+  QuantumCircuit getOriginalCircuit() {
+    exists(QuantumCircuit parentCirc |
+      this = parentCirc.getAnAttributeRead("copy").getACall() and
+      result = parentCirc
+    )
+  }
 }
 
 /** A function definition that returns a circuit object. */
 class UDFFunctionDefReturningAQuantumCircuit extends FunctionDef {
-    /**
-     * Holds if the function def returns a quantum circuit.
-     */
+  /**
+   * Holds if the function def returns a quantum circuit.
+   */
   UDFFunctionDefReturningAQuantumCircuit() {
-    exists(
-      FunctionDef fd, Return ret, QuantumCircuit qc
-      |
+    exists(FunctionDef fd, Return ret, QuantumCircuit qc |
       // the function definition has a return statement
-      fd.contains(ret)
-      and
+      fd.contains(ret) and
       (
         // the return statement returns a QuantumCircuit
         ret.contains(qc.asExpr())
         or
         // in the return statement flows an object that is a QuantumCircuit (use local flow)
-        exists(
-          DataFlow::Node objectInReturnStatement
-          |
-          ret.contains(objectInReturnStatement.asExpr())
-          and
+        exists(DataFlow::Node objectInReturnStatement |
+          ret.contains(objectInReturnStatement.asExpr()) and
           qc.flowsTo(objectInReturnStatement)
         )
       )
-      |
+    |
       this = fd
     )
   }
@@ -275,15 +246,11 @@ class UDFCallReturningAQuantumCircuit extends DataFlow::CallCfgNode {
    * Holds if the call returns a QuantumCircuit
    */
   UDFCallReturningAQuantumCircuit() {
-    exists(
-      DataFlow::CallCfgNode call,
-      UDFFunctionDefReturningAQuantumCircuit fd
-      |
-      call.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName()
-      and
+    exists(DataFlow::CallCfgNode call, UDFFunctionDefReturningAQuantumCircuit fd |
+      call.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
       // same scope
       call.getScope() = fd.getScope()
-      |
+    |
       this = call
     )
   }
@@ -318,8 +285,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
       this instanceof UDFCallReturningAQuantumCircuit
       or
       this instanceof InstanceOfParameterizedCircuit
-    )
-    and
+    ) and
     this instanceof ReturnsNewValue
   }
 
@@ -343,12 +309,12 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         source.flowsTo(this.getArg(1)) and
         source.asExpr() = num_bits
       )
-    then
-      result = 0
+    then result = 0
     else
       exists(IntegerLiteral num_bits, DataFlow::LocalSourceNode source |
         source.flowsTo(this.getArg(1)) and
-        source.asExpr() = num_bits |
+        source.asExpr() = num_bits
+      |
         result = num_bits.getValue()
       )
   }
@@ -361,72 +327,72 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     // the number of bits is 3
     if
       not exists(ClassicalRegister clsReg |
-          clsReg.flowsTo(this.getArg(_))
-          or
-          // there is a this.add_register() call with clsReg as argument
-          exists(
-            DataFlow::CallCfgNode addRegisterCall
-            |
-            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-            clsReg.flowsTo(addRegisterCall.getArg(0)))
+        clsReg.flowsTo(this.getArg(_))
+        or
+        // there is a this.add_register() call with clsReg as argument
+        exists(DataFlow::CallCfgNode addRegisterCall |
+          addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+          clsReg.flowsTo(addRegisterCall.getArg(0))
+        )
       )
-    then
-      result = 0
+    then result = 0
     else
-      result = sum(
-        ClassicalRegister clsReg
-        |
+      result =
+        sum(ClassicalRegister clsReg |
           clsReg.flowsTo(this.getArg(_))
           or
           // there is a this.add_register() call with clsReg as argument
-          exists(
-            DataFlow::CallCfgNode addRegisterCall
-            |
+          exists(DataFlow::CallCfgNode addRegisterCall |
             addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-            clsReg.flowsTo(addRegisterCall.getArg(0)))
+            clsReg.flowsTo(addRegisterCall.getArg(0))
+          )
         |
-        clsReg.getSize())
+          clsReg.getSize()
+        )
   }
 
   int getNumberOfClassicalBits() {
-    if
-      this instanceof CopyCircuitCall and
-      this.get_num_bits_from_registers() = 0 and
-      this.get_num_bits_with_integers() = 0
-    then
-      // if it is a copy of another circuit, return the number of classical bits
-      // of the original circuit
-      exists(QuantumCircuit originalCirc |
-        originalCirc = this.(CopyCircuitCall).getOriginalCircuit() |
-        result = originalCirc.getNumberOfClassicalBits()
+    (
+      if
+        this instanceof CopyCircuitCall and
+        this.get_num_bits_from_registers() = 0 and
+        this.get_num_bits_with_integers() = 0
+      then
+        // if it is a copy of another circuit, return the number of classical bits
+        // of the original circuit
+        exists(QuantumCircuit originalCirc |
+          originalCirc = this.(CopyCircuitCall).getOriginalCircuit()
+        |
+          result = originalCirc.getNumberOfClassicalBits()
+        )
+      else
+        exists(int num_bits_from_registers, int num_bits_with_integers |
+          num_bits_from_registers = this.get_num_bits_from_registers() and
+          num_bits_with_integers = this.get_num_bits_with_integers()
+        |
+          result = num_bits_from_registers + num_bits_with_integers
+        )
+    )
+    or
+    // if there is only a classical register
+    exists(int num_bits_from_registers |
+      num_bits_from_registers = this.get_num_bits_from_registers() and
+      not exists(int num_bits_with_integers |
+        num_bits_with_integers = this.get_num_bits_with_integers()
       )
-    else
-      exists(
-        int num_bits_from_registers, int num_bits_with_integers |
-        num_bits_from_registers = this.get_num_bits_from_registers() and
-        num_bits_with_integers = this.get_num_bits_with_integers() |
-        result = num_bits_from_registers + num_bits_with_integers
-      ) or
-      // if there is only a classical register
-      exists(
-        int num_bits_from_registers
-        |
-        num_bits_from_registers = this.get_num_bits_from_registers() and
-        not exists(int num_bits_with_integers |
-          num_bits_with_integers = this.get_num_bits_with_integers())
-        |
-        result = num_bits_from_registers
-      ) or
-      // if there is only a number of bits
-      exists(
-        int num_bits_with_integers
-        |
-        num_bits_with_integers = this.get_num_bits_with_integers() and
-        not exists(int num_bits_from_registers |
-          num_bits_from_registers = this.get_num_bits_from_registers())
-        |
-        result = num_bits_with_integers
+    |
+      result = num_bits_from_registers
+    )
+    or
+    // if there is only a number of bits
+    exists(int num_bits_with_integers |
+      num_bits_with_integers = this.get_num_bits_with_integers() and
+      not exists(int num_bits_from_registers |
+        num_bits_from_registers = this.get_num_bits_from_registers()
       )
+    |
+      result = num_bits_with_integers
+    )
   }
 
   /** Returns the number of qubits of the circuit (via intger), 0 if none. */
@@ -437,12 +403,12 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
         source.flowsTo(this.getArg(0)) and
         source.asExpr() = num_qubits
       )
-    then
-      result = 0
+    then result = 0
     else
       exists(IntegerLiteral num_qubits, DataFlow::LocalSourceNode source |
         source.flowsTo(this.getArg(0)) and
-        source.asExpr() = num_qubits |
+        source.asExpr() = num_qubits
+      |
         result = num_qubits.getValue()
       )
   }
@@ -452,77 +418,75 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     // if there is no quantum register, return 0
     if
       not exists(QuantumRegister qntReg |
-          exists(int i | qntReg.flowsTo(this.getArg(i)))
-          or
-          // there is a this.add_register() call with qntReg as argument
-          exists(
-            DataFlow::CallCfgNode addRegisterCall
-            |
-            addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-            qntReg.flowsTo(addRegisterCall.getArg(0)))
+        exists(int i | qntReg.flowsTo(this.getArg(i)))
+        or
+        // there is a this.add_register() call with qntReg as argument
+        exists(DataFlow::CallCfgNode addRegisterCall |
+          addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
+          qntReg.flowsTo(addRegisterCall.getArg(0))
+        )
       )
-    then
-      result = 0
+    then result = 0
     else
-      result = sum(
-        QuantumRegister qntReg
-        |
+      result =
+        sum(QuantumRegister qntReg |
           exists(int i | qntReg.flowsTo(this.getArg(i)))
           or
           // there is a this.add_register() call with qntReg as argument
-          exists(
-            DataFlow::CallCfgNode addRegisterCall
-            |
+          exists(DataFlow::CallCfgNode addRegisterCall |
             addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
-            qntReg.flowsTo(addRegisterCall.getArg(0)))
+            qntReg.flowsTo(addRegisterCall.getArg(0))
+          )
         |
-        qntReg.getSize())
+          qntReg.getSize()
+        )
   }
 
   int getNumberOfQubits() {
-    if
-      this instanceof CopyCircuitCall and
-      this.get_num_qubits_from_registers() = 0 and
-      this.get_num_qubits_with_integers() = 0
-    then
-      // if it is a copy of another circuit, return the number of quantum bits
-      // of the original circuit
-      exists(QuantumCircuit originalCirc |
-        originalCirc = this.(CopyCircuitCall).getOriginalCircuit() |
-        result = originalCirc.getNumberOfQubits()
+    (
+      if
+        this instanceof CopyCircuitCall and
+        this.get_num_qubits_from_registers() = 0 and
+        this.get_num_qubits_with_integers() = 0
+      then
+        // if it is a copy of another circuit, return the number of quantum bits
+        // of the original circuit
+        exists(QuantumCircuit originalCirc |
+          originalCirc = this.(CopyCircuitCall).getOriginalCircuit()
+        |
+          result = originalCirc.getNumberOfQubits()
+        )
+      else
+        exists(int num_qubits_from_registers, int num_qubits_with_integers |
+          num_qubits_from_registers = this.get_num_qubits_from_registers() and
+          num_qubits_with_integers = this.get_num_qubits_with_integers()
+        |
+          result = num_qubits_from_registers + num_qubits_with_integers
+        )
+    )
+    or
+    // if there is only a quantum register
+    exists(int num_qubits_from_registers |
+      num_qubits_from_registers = this.get_num_qubits_from_registers() and
+      not exists(int num_qubits_with_integers |
+        num_qubits_with_integers = this.get_num_qubits_with_integers()
       )
-    else
-      exists(
-        int num_qubits_from_registers, int num_qubits_with_integers |
-        num_qubits_from_registers = this.get_num_qubits_from_registers() and
-        num_qubits_with_integers = this.get_num_qubits_with_integers() |
-        result = num_qubits_from_registers + num_qubits_with_integers
-      ) or
-      // if there is only a quantum register
-      exists(
-        int num_qubits_from_registers
-        |
-        num_qubits_from_registers = this.get_num_qubits_from_registers() and
-        not exists(int num_qubits_with_integers |
-          num_qubits_with_integers = this.get_num_qubits_with_integers())
-        |
-        result = num_qubits_from_registers
-      ) or
-      // if there is only a number of qubits
-      exists(
-        int num_qubits_with_integers
-        |
-        num_qubits_with_integers = this.get_num_qubits_with_integers() and
-        not exists(int num_qubits_from_registers |
-          num_qubits_from_registers = this.get_num_qubits_from_registers())
-        |
-        result = num_qubits_with_integers
+    |
+      result = num_qubits_from_registers
+    )
+    or
+    // if there is only a number of qubits
+    exists(int num_qubits_with_integers |
+      num_qubits_with_integers = this.get_num_qubits_with_integers() and
+      not exists(int num_qubits_from_registers |
+        num_qubits_from_registers = this.get_num_qubits_from_registers()
       )
+    |
+      result = num_qubits_with_integers
+    )
   }
 
-  predicate isSubCircuit() {
-    this instanceof SubCircuit
-  }
+  predicate isSubCircuit() { this instanceof SubCircuit }
 
   predicate isSubCircuitOf(QuantumCircuit other) {
     this != other and
@@ -532,54 +496,45 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     )
   }
 
-  Gate getAGate() {
-    exists(Gate g | g.getQuantumCircuit() = this |
-      result = g
-    )
-  }
+  Gate getAGate() { exists(Gate g | g.getQuantumCircuit() = this | result = g) }
 
-    //* Returns a QuantumRegister added to a circuit. */
+  //* Returns a QuantumRegister added to a circuit. */
   QuantumRegister getAQuantumRegister() {
-    exists(QuantumRegister qntReg, int i |
-      qntReg.flowsTo(this.getArg(i)) |
-      result = qntReg
-    ) or
+    exists(QuantumRegister qntReg, int i | qntReg.flowsTo(this.getArg(i)) | result = qntReg)
+    or
     // there is a this.add_register() call with qntReg as argument
-    exists(
-      QuantumRegister qntReg, DataFlow::CallCfgNode addRegisterCall
-      |
+    exists(QuantumRegister qntReg, DataFlow::CallCfgNode addRegisterCall |
       addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
       qntReg.flowsTo(addRegisterCall.getArg(0))
-      |
+    |
       result = qntReg
     )
   }
 
   ClassicalRegister getAClassicalRegister() {
-    exists(ClassicalRegister clsReg, int i |
-      clsReg.flowsTo(this.getArg(i)) |
-      result = clsReg
-    ) or
+    exists(ClassicalRegister clsReg, int i | clsReg.flowsTo(this.getArg(i)) | result = clsReg)
+    or
     // there is a this.add_register() call with clsReg as argument
-    exists(
-      ClassicalRegister clsReg, DataFlow::CallCfgNode addRegisterCall
-      |
+    exists(ClassicalRegister clsReg, DataFlow::CallCfgNode addRegisterCall |
       addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
       clsReg.flowsTo(addRegisterCall.getArg(0))
-      |
+    |
       result = clsReg
     )
   }
-
 }
 
 /** A circuit generated by a transpile API. */
-class TranspiledCircuit extends QuantumCircuit{
-  TranspiledCircuit () {
-    this instanceof TranspileCall
-  }
+class TranspiledCircuit extends QuantumCircuit {
+  TranspiledCircuit() { this instanceof TranspileCall }
+
   int getOptimizationLvl() {
-      result = this.( API::CallNode ).getParameter(7, "optimization_level")
-          .getAValueReachingSink().asExpr().(IntegerLiteral).getValue()
+    result =
+      this.(API::CallNode)
+          .getParameter(7, "optimization_level")
+          .getAValueReachingSink()
+          .asExpr()
+          .(IntegerLiteral)
+          .getValue()
   }
 }

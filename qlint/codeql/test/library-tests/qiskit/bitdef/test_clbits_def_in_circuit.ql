@@ -1,13 +1,8 @@
 import python
 import qiskit.BitDef
 
-from
-  ImplicitCircuitClbitDefinition df
-where
-  not df.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
-select
-  df, "bit " +
-  "in reg: '" + df.getARegisterName() + "'," +
-  " index: '" + df.getAnIndex() + "', " +
-  " circuit: '" + df.getACircuitName() + "', " +
-  " type: '" + df.getTypeName() + "'"
+from ImplicitCircuitClbitDefinition df
+where not df.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
+select df,
+  "bit " + "in reg: '" + df.getARegisterName() + "'," + " index: '" + df.getAnIndex() + "', " +
+    " circuit: '" + df.getACircuitName() + "', " + " type: '" + df.getTypeName() + "'"
