@@ -5,4 +5,5 @@ import qiskit.Circuit
 from QubitUseViaAttribute bu
 where not bu.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
 select bu,
-  "but use : circuit: " + bu.getACircuitName() + " - reg: " + bu.getARegisterName() + " - index: " + bu.getAnIndex() + " - gate: " + bu.getAGateName()
+  "but use : circuit: " + bu.getACircuitName() + " - reg: " + bu.getARegisterName() + " - index: " +
+    bu.getAnIndex() + " - gate: " + bu.getAGateName()
