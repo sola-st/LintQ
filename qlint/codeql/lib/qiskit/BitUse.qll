@@ -68,57 +68,8 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   }
 }
 
-// private predicate isGateCall(DataFlow::CallCfgNode call) {
-//   exists(
-//       QuantumCircuit circ,
-//       GateNameCall gate_name_call
-//       |
-//       // detect qc.h(0)
-//       call = circ.getAnAttributeRead(gate_name_call).getACall()
-//   )
-// }
-// private predicate isGateObj(DataFlow::CallCfgNode call) {
-//   exists(
-//       QuantumCircuit circ,
-//       GateNameObj gate_name_obj
-//       |
-//       // detect from qiskit.circuit.library import HGate
-//       call = API::moduleImport("qiskit")
-//           .getMember("circuit").getMember("library")
-//           .getMember(gate_name_obj).getACall()
-//       and
-//       // make sure that the gate is used in a circuit using the append()
-//       circ.getAnAttributeRead("append").getACall()
-//           .(API::CallNode).getParameter(0, "instruction")
-//           .getAValueReachingSink() = call
-//   )
-// }
 /** Use of a qubit. */
-abstract class QubitUse extends BitUse { }
-
-/** Use of a clbit. */
-abstract class ClbitUse extends BitUse { }
-
-/** Use of a qubit. */
-class QubitUseViaAttribute extends QubitUse {
-  QubitUseViaAttribute() {
-    exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode locSource,
-      DataFlow::CallCfgNode call
-    |
-      // detect qc.h(0)
-      call = circ.getAnAttributeRead(gs).getACall() and
-      this = locSource
-    |
-      exists(int i | i = gs.getAnArgumentIndexOfQubit() |
-        call.(API::CallNode).getParameter(i).getAValueReachingSink() = locSource
-      )
-      or
-      exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
-        call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = locSource
-      )
-    )
-  }
+abstract class QubitUse extends BitUse {
 
   override int getAnIndexIfAny() {
     // case: qc.h(0)
@@ -192,23 +143,32 @@ class QubitUseViaAttribute extends QubitUse {
       else result instanceof EmptySetForRegisterV2
   }
 
-  override QuantumCircuit getACircuit() {
-    exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
+}
+
+/** Use of a clbit. */
+abstract class ClbitUse extends BitUse { }
+
+/** Use of a qubit as attribute call on the circuit object. */
+class QubitUseViaAttribute extends QubitUse {
+  QubitUseViaAttribute() {
+    exists(
+      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode locSource,
+      DataFlow::CallCfgNode call
+    |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
-      (
-        exists(int i | i = gs.getAnArgumentIndexOfQubit() |
-          call.(API::CallNode).getParameter(i).getAValueReachingSink() = this
-        )
-        or
-        exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
-          call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = this
-        )
-      )
+      this = locSource
     |
-      result = circ
+      exists(int i | i = gs.getAnArgumentIndexOfQubit() |
+        call.(API::CallNode).getParameter(i).getAValueReachingSink() = locSource
+      )
+      or
+      exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
+        call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = locSource
+      )
     )
   }
+
 
   override string getAGateName() {
     exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
@@ -227,7 +187,97 @@ class QubitUseViaAttribute extends QubitUse {
       result = gs
     )
   }
+
+  override QuantumCircuit getACircuit() {
+    exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
+      // detect qc.h(0)
+      call = circ.getAnAttributeRead(gs).getACall() and
+      (
+        exists(int i | i = gs.getAnArgumentIndexOfQubit() |
+          call.(API::CallNode).getParameter(i).getAValueReachingSink() = this
+        )
+        or
+        exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
+          call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = this
+        )
+      )
+    |
+      result = circ
+    )
+  }
+
 }
+
+/** Use of a qubit as appended call on the circuit object. */
+class QubitUseViaAppend extends QubitUse {
+
+  QubitUseViaAppend() {
+    exists(
+      QuantumCircuit circ, GateSpecification gs,
+      DataFlow::LocalSourceNode locSource, DataFlow::LocalSourceNode qubitListSource,
+      DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
+    |
+      // detect qc.append(CXGate(), [0, 1])
+      appendCall = circ.getAnAttributeRead("append").getACall() and
+      gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
+      gateCall = API::moduleImport("qiskit")
+          .getMember("circuit").getMember("library")
+          .getMember(gs).getACall() and
+      qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
+      this = locSource
+    |
+      if qubitListSource.asExpr() instanceof List
+      then qubitListSource.asExpr().(List).getAnElt() = locSource.asExpr()
+      else qubitListSource.asExpr() = locSource.asExpr()
+    )
+  }
+
+
+  override string getAGateName() {
+    exists(
+      QuantumCircuit circ, GateSpecification gs,
+      DataFlow::LocalSourceNode qubitListSource,
+      DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
+    |
+      // detect qc.append(CXGate(), [0, 1])
+      appendCall = circ.getAnAttributeRead("append").getACall() and
+      gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
+      gateCall = API::moduleImport("qiskit")
+          .getMember("circuit").getMember("library")
+          .getMember(gs).getACall() and
+      qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
+      // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+      if qubitListSource.asExpr() instanceof List
+      then qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+      else qubitListSource.asExpr() = this.asExpr()
+    |
+      result = gs
+    )
+  }
+
+  override QuantumCircuit getACircuit() {
+    exists(
+      QuantumCircuit circ, GateSpecification gs,
+      DataFlow::LocalSourceNode qubitListSource,
+      DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
+    |
+      // detect qc.append(CXGate(), [0, 1])
+      appendCall = circ.getAnAttributeRead("append").getACall() and
+      gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
+      gateCall = API::moduleImport("qiskit")
+          .getMember("circuit").getMember("library")
+          .getMember(gs).getACall() and
+      qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
+      // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+      if qubitListSource.asExpr() instanceof List
+      then qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+      else qubitListSource.asExpr() = this.asExpr()
+    |
+      result = circ
+    )
+  }
+}
+
 
 class OldQubitUsedInteger extends IntegerLiteral {
   OldQubitUsedInteger() { exists(Gate gate | this = gate.getATargetQubit()) }
@@ -287,7 +337,8 @@ class OldQubitUsedInteger extends IntegerLiteral {
   }
 }
 
-//
+// GATE SPECIFICATIONS
+
 abstract class GateSpecification extends string {
   GateSpecification() {
     this instanceof GateSpecificationObjectName or
