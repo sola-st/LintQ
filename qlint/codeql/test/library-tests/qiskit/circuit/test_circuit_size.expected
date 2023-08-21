@@ -16,6 +16,9 @@
 | concept_circuit_subcircuit.py:56:29:56:58 | ControlFlowNode for crete_subcircuit_via_compose() | Quantum Circuit 'qc_subcircuit_via_compose' with 0 bits and 0 qubits |
 | concept_circuit_transpile.py:5:11:5:30 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'circuit' with 1 bits and 1 qubits |
 | concept_circuit_transpile.py:8:22:8:50 | ControlFlowNode for transpile() | Quantum Circuit 'transpiled_circuit' with 0 bits and 0 qubits |
+| concept_subcircuit_as_gate_instr.py:4:12:4:28 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'qc_instr' with 0 bits and 3 qubits |
+| concept_subcircuit_as_gate_instr.py:15:10:15:38 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'qc_maj' with 0 bits and 3 qubits |
+| concept_subcircuit_as_gate_instr.py:22:11:22:30 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'main_qc' with 3 bits and 3 qubits |
 | pred_circuit_gate.py:6:6:6:31 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'qc' with 8 bits and 8 qubits |
 | pred_circuit_size.py:5:15:5:40 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'qc_only_reg' with 3 bits and 3 qubits |
 | pred_circuit_size.py:7:20:7:39 | ControlFlowNode for QuantumCircuit() | Quantum Circuit 'qc_only_integers' with 1 bits and 2 qubits |

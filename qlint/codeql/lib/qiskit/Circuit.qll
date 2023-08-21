@@ -24,17 +24,39 @@ class AppendCall extends DataFlow::CallCfgNode {
   }
 }
 
+/** Call to to_instruction. */
+class ToInstructionCall extends DataFlow::CallCfgNode {
+  /**
+   * Holds if the call is a to_instruction call.
+   */
+  ToInstructionCall() {
+    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("to_instruction").getACall())
+  }
+}
+
+/** Call to to_gate. */
+class ToGateCall extends DataFlow::CallCfgNode {
+  /**
+   * Holds if the call is a to_gate call.
+   */
+  ToGateCall() {
+    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("to_gate").getACall())
+  }
+}
+
 /** Circuit that is appended/composed to another circuit. */
 class SubCircuit extends QuantumCircuit {
   /**
    * Holds if the circuit is appended to another circuit.
    */
   SubCircuit() {
+    // qc1.append(qc_this)
     exists(AppendCall appendCall |
       appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink().asExpr() =
         this.asExpr()
     )
     or
+    // qc1.compose(qc_this)
     exists(ComposeCall composeCall |
       composeCall.(API::CallNode).getParameter(0, "other").getAValueReachingSink().asExpr() =
         this.asExpr()
@@ -78,6 +100,10 @@ class SubCircuit extends QuantumCircuit {
     |
       this = qc
     )
+    or
+    // qc_this.to_gate()
+    // qc_this.to_instruction()
+    this instanceof InstructionCircuit
   }
 
   /** Returns one of the circuit that uses the current subcircuit. */
@@ -96,6 +122,22 @@ class SubCircuit extends QuantumCircuit {
       result = parent
     )
   }
+}
+
+/** Circuit that is used as insturction/gate. */
+class InstructionCircuit extends QuantumCircuit {
+  /** Holds for objects that have to_instruction of to_gate calls.  */
+  InstructionCircuit() {
+    exists(ToInstructionCall instrCall, QuantumCircuit qc |
+      instrCall = qc.getAnAttributeRead("to_instruction").getACall() |
+      this = qc
+    ) or
+    exists(ToGateCall gateCall, QuantumCircuit qc |
+      gateCall = qc.getAnAttributeRead("to_gate").getACall() |
+      this = qc
+    )
+  }
+
 }
 
 /** Circuit that is called with assign_parameters. */
