@@ -19,20 +19,13 @@ import qiskit.Gate
 import qiskit.Qubit
 
 
-// IMPROVEMENT:
-// - check that there is no reset() after the measurement
-
 from MeasureGate measure, Gate gate, int shared_qubit
 where
-    not gate instanceof MeasureGate and
-    gate.isAppliedAfterOn(measure, shared_qubit)
+    gate.isUnitary() and
+    gate.isAppliedAfterOn(measure, shared_qubit) and
+    not exists(ResetGate reset | gate.mayFollowVia(measure, reset, shared_qubit))
 select
     gate, "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
     " after measurement at location: (" +
     measure.getLocation().getStartLine() + ", " +
     measure.getLocation().getStartColumn() + ")."
-
-// from Gate gate
-// // where gate.getLocation().getFile().getBaseName() = "op_after_measurement.py"
-// where gate.getLocation().getFile().getBaseName() = "gate_addition.py"
-// select gate
