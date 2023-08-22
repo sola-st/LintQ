@@ -30,7 +30,9 @@ class ToInstructionCall extends DataFlow::CallCfgNode {
    * Holds if the call is a to_instruction call.
    */
   ToInstructionCall() {
-    exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("to_instruction").getACall())
+    exists(QuantumCircuit parentCirc |
+      this = parentCirc.getAnAttributeRead("to_instruction").getACall()
+    )
   }
 }
 
@@ -126,18 +128,20 @@ class SubCircuit extends QuantumCircuit {
 
 /** Circuit that is used as insturction/gate. */
 class InstructionCircuit extends QuantumCircuit {
-  /** Holds for objects that have to_instruction of to_gate calls.  */
+  /** Holds for objects that have to_instruction of to_gate calls. */
   InstructionCircuit() {
     exists(ToInstructionCall instrCall, QuantumCircuit qc |
-      instrCall = qc.getAnAttributeRead("to_instruction").getACall() |
+      instrCall = qc.getAnAttributeRead("to_instruction").getACall()
+    |
       this = qc
-    ) or
+    )
+    or
     exists(ToGateCall gateCall, QuantumCircuit qc |
-      gateCall = qc.getAnAttributeRead("to_gate").getACall() |
+      gateCall = qc.getAnAttributeRead("to_gate").getACall()
+    |
       this = qc
     )
   }
-
 }
 
 /** Circuit that is called with assign_parameters. */
