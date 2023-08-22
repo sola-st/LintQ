@@ -6,8 +6,7 @@ import qiskit.Gate
 import qiskit.Qubit
 
 from ResetGate reset
-where
-  not reset.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
-select
-  reset, "Reset gate in circuit: '" + reset.getQuantumCircuit().getName() +
-  "' on qubit: " + reset.getATargetQubit()
+where not reset.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
+select reset,
+  "Reset gate in circuit: '" + reset.getQuantumCircuit().getName() + "' on qubit: " +
+    reset.getATargetQubit()

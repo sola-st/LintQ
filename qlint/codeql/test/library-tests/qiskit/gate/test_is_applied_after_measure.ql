@@ -11,6 +11,6 @@ where
   not gateAfter.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
   gateAfter.isAppliedAfterOn(gateBefore, shared_qubit) and
   gateBefore instanceof MeasureGate
-select
-    gateBefore, gateAfter, "Gate: '" + gateBefore.getGateName() + "' on qubit "
-    + shared_qubit + " is followed by gate: '" + gateAfter.getGateName() + "'."
+select gateBefore, gateAfter,
+  "Gate: '" + gateBefore.getGateName() + "' on qubit " + shared_qubit + " is followed by gate: '" +
+    gateAfter.getGateName() + "'."

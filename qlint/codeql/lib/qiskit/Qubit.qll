@@ -1,17 +1,13 @@
 
-
 // import qiskit.Circuit
 // import qiskit.Register
 // import tutorial
-
-
 // // QubitUsed
 // // derived from a Quantum gate used and its argument
 // // implicitely connected to a default QuantumRegister via an index
 // // e.g. qc.h(0)
 // // or explicitely connected to a QuantumRegister via quantum_register[0]
 // // e.g. qc.h(quantum_register[0])
-
 // // TODO rename QubitAccess
 // class QubitUsedInteger extends IntegerLiteral {
 //     QubitUsedInteger() {
@@ -21,7 +17,6 @@
 //             this = gate.getATargetQubit()
 //         )
 //     }
-
 //     Gate getGate() {
 //         exists(
 //             Gate gate
@@ -31,11 +26,9 @@
 //             result = gate
 //         )
 //     }
-
 //     int getQubitIndex() {
 //         result = this.getValue()
 //     }
-
 //     QuantumRegister getQuantumRegister() {
 //         // OLD
 //         // exists(
@@ -88,10 +81,7 @@
 //         //     result = qr
 //         // )
 //     }
-
 // }
-
-
 // QubitUsed
 // derived from a Quantum gate used and its argument
 // implicitely connected to a default QuantumRegister via an index
@@ -118,8 +108,6 @@
 //             reg_var.getAUse() = this.getObject()
 //         )
 //     }
-
-
 //     // get the index of the qubit used in the quantum gate
 //     // qc.h(quantum_register[0])
 //     int getQubitIndex() {
@@ -131,7 +119,6 @@
 //             result = index.getValue()
 //         )
 //     }
-
 //     QuantumRegister getQuantumRegister() {
 //         exists(
 //             QuantumRegister qr
@@ -141,15 +128,9 @@
 //             result = qr
 //         )
 //     }
-
-
 // }
-
-
 // QubitSpace
 // derived from a QuantumRegister declaration used in a QuantumCircuit
 // e.g. quantum_register = QuantumRegister(2)
-
-
 // Detector improvements
 // find if there is any register with QubitSpace that is not used in any QubitUsed

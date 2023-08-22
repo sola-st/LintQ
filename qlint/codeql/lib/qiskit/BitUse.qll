@@ -60,30 +60,24 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   abstract string getAGateName();
 
   // boolean mayFollow(BitUse other) {
-
   // }
-
-  /** Holds if the current bit follows the other qubit in any scenario.*/
+  /** Holds if the current bit follows the other qubit in any scenario. */
   predicate mustFollow(BitUse other) {
     // case: qc.h(0); qc.rx(3.14, 0)
     exists(
-      Gate currentGate, Gate otherGate,
-      int commontIndex,
-      string commonCircuitName,
+      Gate currentGate, Gate otherGate, int commontIndex, string commonCircuitName,
       string commonRegisterName
     |
-      (
-        // either they act on the same register
-        this.getARegisterName() = commonRegisterName and
-        other.getARegisterName() = commonRegisterName
-      ) or (
-        // they act on different ones, but one is anonymous
-        this.getARegisterName() = "anonymous register" and
-        other.getARegisterName() = commonRegisterName
-      ) or (
-        this.getARegisterName() = commonRegisterName and
-        other.getARegisterName() = "anonymous register"
-      )
+      // either they act on the same register
+      this.getARegisterName() = commonRegisterName and
+      other.getARegisterName() = commonRegisterName
+      or
+      // they act on different ones, but one is anonymous
+      this.getARegisterName() = "anonymous register" and
+      other.getARegisterName() = commonRegisterName
+      or
+      this.getARegisterName() = commonRegisterName and
+      other.getARegisterName() = "anonymous register"
     |
       // they act on the same index in the register
       this.getAnIndex() = commontIndex and
@@ -98,11 +92,7 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     )
     or
     // case: qc.h(0); qc.ch(0, 2); qc.x(2)
-    exists(
-      Gate intermediateGate,
-      BitUse intermediateBitUseA,
-      BitUse intermediateBitUseB
-    |
+    exists(Gate intermediateGate, BitUse intermediateBitUseA, BitUse intermediateBitUseB |
       intermediateBitUseA.getAGate() = intermediateGate and
       intermediateBitUseB.getAGate() = intermediateGate and
       intermediateBitUseA.mustFollow(other) and
@@ -139,24 +129,19 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     //     this.likelySameCircuit(other)
     //   )
     // )
-
   }
 
   // boolean mayFollowDirectly(BitUse other) {
-
   // }
-
   // boolean mustFollowDirectly(BitUse other) {
-
   // }
-
   /** Holds if the current bit refers to a specific BitDef. */
   predicate refersTo(BitDefinition referencedBitDef) {
-      this.getARegisterName() = referencedBitDef.getARegisterName() and
-      this.getAnIndexIfAny() = referencedBitDef.getAnIndexIfAny() and
-      this.getACircuitName() = referencedBitDef.getACircuitName() and
-      this.getARegister() = referencedBitDef.getARegister() and
-      this.getACircuit() = referencedBitDef.getACircuit()
+    this.getARegisterName() = referencedBitDef.getARegisterName() and
+    this.getAnIndexIfAny() = referencedBitDef.getAnIndexIfAny() and
+    this.getACircuitName() = referencedBitDef.getACircuitName() and
+    this.getARegister() = referencedBitDef.getARegister() and
+    this.getACircuit() = referencedBitDef.getACircuit()
   }
 
   /** Holds if the two BitUse refer to the same position and circuit. */
@@ -170,33 +155,25 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
 
   /** Holds if the two BitUse refer to the same circuit. */
   predicate likelySameCircuit(BitUse other) {
-    (
-      this.getACircuitName() = "anonymous circuit" and
-      other.getACircuitName() = "anonymous circuit" and
-      // check that they are at least part of the same register
-      this.likelySameRegister(other)
-    ) or (
-      this.getACircuitName() = other.getACircuitName() and
-      this.getACircuit() = other.getACircuit()
-    )
+    this.getACircuitName() = "anonymous circuit" and
+    other.getACircuitName() = "anonymous circuit" and
+    // check that they are at least part of the same register
+    this.likelySameRegister(other)
+    or
+    this.getACircuitName() = other.getACircuitName() and
+    this.getACircuit() = other.getACircuit()
   }
 
   /** Holds if the two BitUse refer to the same register. */
   predicate likelySameRegister(BitUse other) {
-    (
-      this.getARegisterName() = "anonymous register" and
-      other.getARegisterName() = "anonymous register" and
-      // check that they are at least part of the same circuit
-      this.likelySameCircuit(other)
-    ) or (
-      this.getARegisterName() = other.getARegisterName() and
-      this.getARegister() = other.getARegister()
-    )
+    this.getARegisterName() = "anonymous register" and
+    other.getARegisterName() = "anonymous register" and
+    // check that they are at least part of the same circuit
+    this.likelySameCircuit(other)
+    or
+    this.getARegisterName() = other.getARegisterName() and
+    this.getARegister() = other.getARegister()
   }
-
-
-
-
 }
 
 /** Use of a qubit. */
@@ -453,10 +430,8 @@ class QubitUseViaAppend extends QubitUse {
 }
 
 // GATE SPECIFICATIONS
-
 // TODO: support mcrx, mcry, mcrz
 // TODO: cu1 and cu3 are deprecated, support different versions of Qiskit
-
 abstract class GateSpecification extends string {
   GateSpecification() {
     this instanceof GateSpecificationObjectName or
@@ -523,8 +498,8 @@ class GateSpecificationAttributeName extends string {
         "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id",
         "i", "sx",
         // controlled operations
-        "cx", "cnot", "cy", "cz", "ch", "cs", "csdg", "csx", "crz", "cry", "crx", "cu1", "cu3", "cu",
-        "ccx", "ccz", "toffoli", "cswap", "fredkin", "mct", "rccx", "rcccx",
+        "cx", "cnot", "cy", "cz", "ch", "cs", "csdg", "csx", "crz", "cry", "crx", "cu1", "cu3",
+        "cu", "ccx", "ccz", "toffoli", "cswap", "fredkin", "mct", "rccx", "rcccx",
         // multi bit operations
         "rxx", "ryy", "rzz", "rzx", "swap", "iswap", "ms", "cr", "r", "rccx", "ecr",
         // measurements
@@ -552,16 +527,13 @@ class GateSpecificationObjectName extends string {
   }
 }
 
-
 /** Specification of gates that are unitary / reversible gates. */
 abstract class GateSpecificationUnitary extends GateSpecification { }
-
 
 /** Specification of gates that are not unitary and destroy the quantum state. */
 abstract class GateSpecificationNonUnitary extends GateSpecification { }
 
 // NON-UNITARY GATES
-
 class GateSpecificationReset extends GateSpecificationNonUnitary {
   GateSpecificationReset() { this in ["reset", "Reset"] }
 
@@ -581,7 +553,6 @@ class GateSpecificationMeasure extends GateSpecificationNonUnitary {
 }
 
 // UNITARY GATES
-
 class GateSpecificationSingleQubitNoParam extends GateSpecificationUnitary {
   GateSpecificationSingleQubitNoParam() {
     this in [
@@ -650,7 +621,6 @@ class GateSpecificationU3Gate extends GateSpecificationUnitary {
 }
 
 // TODO: CHECK IF ALL GATES WITH PARAMS ARE PRESENT
-
 class GateSpecificationCXGate extends GateSpecificationUnitary {
   GateSpecificationCXGate() { this in ["cx", "CXGate", "cnot"] }
 
@@ -694,7 +664,6 @@ class GateSpecificationCSXGate extends GateSpecificationUnitary {
 }
 
 // CONTROL WITH PARAMS
-
 class GateSpecificationCRZGate extends GateSpecificationUnitary {
   GateSpecificationCRZGate() { this in ["crz", "CRZGate"] }
 
@@ -742,5 +711,4 @@ class GateSpecificationCUGate extends GateSpecificationUnitary {
 
   override string getAnArgumentNameOfParam() { result in ["theta", "phi", "lam", "gamma"] }
 }
-
 // TODO: CONTINUE WITH double controls
