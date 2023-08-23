@@ -21,19 +21,20 @@ import qiskit.Circuit
 
 
 from
-    QuantumCircuit mother_circuit,
-    QuantumCircuit sub_circuit,
-    DataFlow::CallCfgNode compose_call
+  QuantumCircuit motherCircuit,
+  QuantumCircuit subCircuit
 where
-    // mother_circuit is the circuit that contains the sub_circuit
-    // e.g. mother_circuit.compose(sub_circuit)
-    compose_call = mother_circuit.getAnAttributeRead("compose").getACall() and
-    sub_circuit.flowsTo(compose_call.getArg(0))
-    // check that the sub_circuit has less qubits than the mother_circuit
-    and
-    sub_circuit.getNumberOfQubits() > mother_circuit.getNumberOfQubits()
+  // PROBLEMATIC PATTERN
+  subCircuit.isSubCircuitOf(motherCircuit) and
+  // check that the sub_circuit has less qubits than the mother_circuit
+  subCircuit.getNumberOfQubits() > motherCircuit.getNumberOfQubits() and
+
+  // INTENDED USAGE PATTERN
+  // when the subcircuit has unknown number of qubits, such as when the size is specified
+  // by a parameter which is unknon in the current context
+  not motherCircuit.hasUnknonNumberOfQubits()
 select
-    compose_call, "The subcircuit '" +sub_circuit.getName() + "' " +
-        "has more qubits (" + sub_circuit.getNumberOfQubits() + ") than " +
-        "the main circuit '" + mother_circuit.getName() + "' (" +
-        mother_circuit.getNumberOfQubits() + ")"
+motherCircuit, "The subcircuit '" + subCircuit.getName() + "' " +
+    "has more qubits (" + subCircuit.getNumberOfQubits() + ") than " +
+    "the main circuit '" + motherCircuit.getName() + "' (" +
+    motherCircuit.getNumberOfQubits() + ")"

@@ -18,28 +18,21 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.Circuit
 
-
 from
-    QuantumCircuit mother_circuit,
-    DataFlow::CallCfgNode compose_call
+  ComposeCall composeCall
 where
-    // mother_circuit is the circuit that contains the sub_circuit
-    // e.g. mother_circuit.compose(sub_circuit)
-    compose_call = mother_circuit.getAnAttributeRead("compose").getACall()
-    // check that the compose has no named argument inplace=True
-    // e.g. mother_circuit.compose(sub_circuit, inplace=True)
-    // or if it exists, that it is False
-    and ((not exists(compose_call.getArgByName("inplace")))
-        or
-        (compose_call.getArgByName("inplace").asExpr().(Name).getId()="False"))
-    // check that the return value of the compose() method is not stored
-    // e.g. composed_circuit = mother_circuit.compose(sub_circuit)
-    and not exists(AssignStmt a | a.getValue() = compose_call.asExpr())
-    // check that it is not used as argument of another method
-    // e.g. qiskit.execute(mother_circuit.compose(sub_circuit))
-    and not exists(DataFlow::CallCfgNode execute_call |
-        execute_call.getArg(_).asExpr() = compose_call.asExpr())
+  // PROBLEMATIC PATTERN
+  // check that the compose has argument inplace=False or inplace is not present
+  // e.g. mother_circuit.compose(sub_circuit, inplace=False)
+  composeCall instanceof ReturnsNewValue and
+
+  // INTENDED USAGE PATTERN
+  // the return value of the compose() method is not stored
+  // there is no assignment with it as value or subexpression of the value
+  not exists(AssignStmt a |  a.getValue().getASubExpression*() = composeCall.asExpr()) and
+  // the return value of the compose() is not in a return statement
+  not exists(Return r | r.getValue().(Expr).getASubExpression*() = composeCall.asExpr())
 select
-    compose_call, "Ghost composition at location: (" +
-    compose_call.getLocation().getStartLine() + ", " +
-    compose_call.getLocation().getStartColumn() + ")"
+  composeCall, "Ghost composition at location: (" +
+    composeCall.getLocation().getStartLine() + ", " +
+    composeCall.getLocation().getStartColumn() + ")"
