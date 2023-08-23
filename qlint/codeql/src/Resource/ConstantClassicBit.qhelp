@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds circuits there is at least one qubit which is never used but it is measured (either via a <code>measure()</code> or <code>measure_all()</code>), leading to a constant classic bit in the result.
+</p>
+</overview>
+
+<recommendation>
+<p>Remove the measurement on the unused qubits.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the circuit has a register with three qubits but only two are used: qubit 0 and 2. To fix it reduce the size of the register and move the update the index of the gates so that they operate only on the first two qubit of a register size two.</p>
+<sample src="ConstantClassicBit.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.Measure.html">Measure()</a>.</li>
+</references>
+
+</qhelp>

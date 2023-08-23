@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds when there are gates that have no <code>measure()</code> calls on them.
+Modifying a qubit without measuring it could point to a mistake, because it means that the result of the computation is never used.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure that all qubits that are modified are also measured, otherwise remove those extra gates on qubits that you do not need to measure.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, the <code>h()</code> and <code>cx()</code> gate calls acting on the same qubit 0 which is never measured.
+<sample src="SuperfluousOp.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.measure.html">QuantumCircuit.measure()</a>.</li>
+</references>
+
+</qhelp>
