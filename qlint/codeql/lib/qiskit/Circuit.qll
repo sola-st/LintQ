@@ -110,6 +110,7 @@ class SubCircuit extends QuantumCircuit {
 
   /** Returns one of the circuit that uses the current subcircuit. */
   QuantumCircuit getAParentCircuit() {
+
     exists(AppendCall appendCall, QuantumCircuit parent |
       appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink().asExpr() =
         this.asExpr() and
@@ -536,11 +537,15 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
 
   predicate isSubCircuitOf(QuantumCircuit other) {
     this != other and
-    exists(DataFlow::CallCfgNode parent |
-      this instanceof SubCircuit and
-      this.(SubCircuit).getAParentCircuit() = parent
-    )
+    this instanceof SubCircuit and
+    this.(SubCircuit).getAParentCircuit() = other
   }
+
+  /** Holds if the modeling was not able to derive the number of qubits. */
+  predicate hasUnknonNumberOfQubits() { this.getNumberOfQubits() = 0 }
+
+  /** Holds if the modeling was not able to derive the number of classical bits. */
+  predicate hasUnknonNumberOfClassicalBits() { this.getNumberOfClassicalBits() = 0 }
 
   Gate getAGate() { exists(Gate g | g.getQuantumCircuit() = this | result = g) }
 
