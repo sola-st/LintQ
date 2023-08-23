@@ -28,5 +28,4 @@ where
   // the circuit is not a subcircuit (usually without measurement)
   qc = op.getQuantumCircuit() and
   not qc.isSubCircuit()
-select
-  op, "The qubit '" + targetBit + "' is modified but never measured."
+select op, "The qubit '" + targetBit + "' is modified but never measured."

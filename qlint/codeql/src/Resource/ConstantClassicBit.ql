@@ -14,7 +14,6 @@ import python
 import qiskit.Circuit
 import qiskit.Qubit
 
-
 from QuantumCircuit circ, MeasureGate measure, int qubitIndex
 where
   // the circuit has a measurement
@@ -22,5 +21,5 @@ where
   measure.getATargetQubit() = qubitIndex and
   // there is no gate applied before
   not exists(Gate gate | gate.isAppliedAfterOn(measure, qubitIndex))
-select
-  circ, "Circuit '" + circ.getName() + "' measures qubit '" + qubitIndex + "' but never uses it."
+select circ,
+  "Circuit '" + circ.getName() + "' measures qubit '" + qubitIndex + "' but never uses it."
