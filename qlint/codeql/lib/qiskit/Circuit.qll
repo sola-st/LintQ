@@ -110,7 +110,6 @@ class SubCircuit extends QuantumCircuit {
 
   /** Returns one of the circuit that uses the current subcircuit. */
   QuantumCircuit getAParentCircuit() {
-
     exists(AppendCall appendCall, QuantumCircuit parent |
       appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink().asExpr() =
         this.asExpr() and

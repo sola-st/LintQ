@@ -495,8 +495,8 @@ class GateSpecificationAttributeName extends string {
   GateSpecificationAttributeName() {
     this in [
         // single bit operations
-        "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id", "iden",
-        "i", "sx",
+        "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id",
+        "iden", "i", "sx",
         // controlled operations
         "cx", "cnot", "cy", "cz", "ch", "cs", "csdg", "csx", "crz", "cry", "crx", "cu1", "cu3",
         "cu", "ccx", "ccz", "toffoli", "cswap", "fredkin", "mct", "rccx", "rcccx",
@@ -556,8 +556,8 @@ class GateSpecificationMeasure extends GateSpecificationNonUnitary {
 class GateSpecificationSingleQubitNoParam extends GateSpecificationUnitary {
   GateSpecificationSingleQubitNoParam() {
     this in [
-        "h", "x", "y", "z", "s", "sdg", "t", "tdg", "sx", "i", "id", "iden", "HGate", "XGate", "YGate",
-        "ZGate", "SGate", "SdgGate", "TGate", "TdgGate", "SXGate", "IGate"
+        "h", "x", "y", "z", "s", "sdg", "t", "tdg", "sx", "i", "id", "iden", "HGate", "XGate",
+        "YGate", "ZGate", "SGate", "SdgGate", "TGate", "TdgGate", "SXGate", "IGate"
       ]
   }
 
