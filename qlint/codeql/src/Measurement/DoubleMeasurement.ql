@@ -22,8 +22,7 @@ where
   not exists(ResetGate res | measureSecond.(Gate).mayFollowVia(measureFirst, res, sharedQubit)) and
   sharedQubit >= 0
 select measureSecond,
-  "Two consecutive measurements on qubit '" + sharedQubit + "' " +
-    "at locations: (" + measureFirst.getLocation().getStartLine() + ", " +
-    measureFirst.getLocation().getStartColumn() + ") and (" +
-    measureSecond.getLocation().getStartLine() + ", " + measureSecond.getLocation().getStartColumn()
-    + ")"
+  "Two consecutive measurements on qubit '" + sharedQubit + "' " + "at locations: (" +
+    measureFirst.getLocation().getStartLine() + ", " + measureFirst.getLocation().getStartColumn() +
+    ") and (" + measureSecond.getLocation().getStartLine() + ", " +
+    measureSecond.getLocation().getStartColumn() + ")"

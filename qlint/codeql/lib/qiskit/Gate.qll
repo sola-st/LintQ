@@ -49,11 +49,9 @@ class Gate extends DataFlow::CallCfgNode {
   /** Holds if this gate is applied after the other gate on the same qubit. */
   pragma[inline]
   predicate isAppliedAfterOn(Gate other, int qubit_index) {
-
     exists(
-      QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse,
-      ControlFlowNode thisNode, ControlFlowNode otherNode,
-      ControlFlowNode circNode
+      QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse, ControlFlowNode thisNode,
+      ControlFlowNode otherNode, ControlFlowNode circNode
     |
       // they are in the same file
       exists(File f |
@@ -81,21 +79,16 @@ class Gate extends DataFlow::CallCfgNode {
         or
         // or they act on the single quantum register of a circuit
         // experessed implicitely with e.g. QuantumCircuit(4)
-        (
-          count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0 and
-          circ.getNumberOfQubits() > 0
-        )
+        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0 and
+        circ.getNumberOfQubits() > 0
         or
         // or they act on the same quantum register but one uses the
         // integer only and the other uses the register object
         // this is unambiguous only with a single register
         // qc.h(0)
         // qc.x(qreg[0])
-        (
-          count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 1 and
-          circ.getNumberOfQubits() > 0
-        )
-
+        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 1 and
+        circ.getNumberOfQubits() > 0
       ) and
       // and they act on the same position
       // bind the qubit index
@@ -161,7 +154,8 @@ class Gate extends DataFlow::CallCfgNode {
   predicate isAppliedAfter(Gate other) {
     exists(int qubit_index |
       qubit_index != -1 and
-      this.isAppliedAfterOn(other, qubit_index))
+      this.isAppliedAfterOn(other, qubit_index)
+    )
   }
 
   predicate isAppliedBefore(Gate other) { other.isAppliedAfter(this) }
