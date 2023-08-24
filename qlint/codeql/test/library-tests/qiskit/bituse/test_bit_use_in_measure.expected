@@ -1,0 +1,8 @@
+| concept_gate_specification.py:45:12:45:18 | ControlFlowNode for Subscript | concept_gate_specification.py:45:1:45:28 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: qreg - index: 0 - gate: measure |
+| concept_gate_specification.py:78:29:78:29 | ControlFlowNode for IntegerLiteral | concept_gate_specification.py:78:11:78:19 | ControlFlowNode for Measure() | but use : circuit: qc - reg: anonymous register - index: 0 - gate: Measure |
+| concept_measure.py:3:6:3:23 | ControlFlowNode for QuantumRegister() | concept_measure.py:21:1:21:18 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:3:6:3:23 | ControlFlowNode for QuantumRegister() | concept_measure.py:21:1:21:18 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: qr - index: 1 - gate: measure |
+| concept_measure.py:8:12:8:16 | ControlFlowNode for Subscript | concept_measure.py:8:1:8:24 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:11:12:11:16 | ControlFlowNode for Subscript | concept_measure.py:11:1:11:20 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:12:12:12:12 | ControlFlowNode for IntegerLiteral | concept_measure.py:12:1:12:20 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: anonymous register - index: 0 - gate: measure |
+| concept_measure.py:16:12:16:12 | ControlFlowNode for IntegerLiteral | concept_measure.py:16:1:16:16 | ControlFlowNode for Attribute() | but use : circuit: qc - reg: anonymous register - index: 0 - gate: measure |

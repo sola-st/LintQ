@@ -181,7 +181,26 @@ private class GenericGateObj extends Gate {
     )
   }
 
-  override string getGateName() { result = this.(API::CallNode).getFunction().asVar().getName() }
+  override string getGateName() {
+    exists(QuantumCircuit circ, GateSpecificationObjectName a_supported_gate_name |
+      // detect from qiskit.circuit.library import HGate
+      this =
+        API::moduleImport("qiskit")
+            .getMember("circuit")
+            .getMember("library")
+            .getMember(a_supported_gate_name)
+            .getACall() and
+      // make sure that the gate is used in a circuit using the append()
+      circ.getAnAttributeRead("append")
+          .getACall()
+          .(API::CallNode)
+          .getParameter(0, "instruction")
+          .getAValueReachingSink() = this
+    |
+      result = a_supported_gate_name
+    )
+    // result = this.(API::CallNode).getFunction().asVar().getName()
+  }
 
   override QuantumCircuit getQuantumCircuit() {
     exists(QuantumCircuit circ |
@@ -393,25 +412,52 @@ private class GenericGateCall extends Gate {
   }
 }
 
-class MeasureGate extends GenericGateCall {
-  MeasureGate() { this.getGateName() = "measure" }
+class MeasureGateCall extends GenericGateCall {
+  MeasureGateCall() { this.getGateName() = "measure" }
+  // int getATargetBit() {
+  //   exists(API::Node p, int i |
+  //     p = this.(API::CallNode).getParameter(1, "cbit") and
+  //     (
+  //       // qc.measure(0, 1)
+  //       p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
+  //       or
+  //       // qc.measure(qreg[0], creg[1])
+  //       p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
+  //       or
+  //       // qc.measure([0, 1], [0, 1])
+  //       p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
+  //     )
+  //   |
+  //     result = i
+  //   )
+  // }
+}
 
-  int getATargetBit() {
-    exists(API::Node p, int i |
-      p = this.(API::CallNode).getParameter(1, "cbit") and
-      (
-        // qc.measure(0, 1)
-        p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
-        or
-        // qc.measure(qreg[0], creg[1])
-        p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
-        or
-        // qc.measure([0, 1], [0, 1])
-        p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
-      )
-    |
-      result = i
-    )
+class MeasureGateObj extends GenericGateObj {
+  MeasureGateObj() { this.getGateName() = "Measure" }
+  // int getATargetBit() {
+  //   exists(API::Node p, int i |
+  //     p = this.(API::CallNode).getParameter(1, "cbit") and
+  //     (
+  //       // qc.measure(0, 1)
+  //       p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
+  //       or
+  //       // qc.measure(qreg[0], creg[1])
+  //       p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
+  //       or
+  //       // qc.measure([0, 1], [0, 1])
+  //       p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
+  //     )
+  //   |
+  //     result = i
+  //   )
+  // }
+}
+
+class MeasureGate extends DataFlow::CallCfgNode {
+  MeasureGate() {
+    this instanceof MeasureGateCall or
+    this instanceof MeasureGateObj
   }
 }
 

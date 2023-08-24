@@ -523,6 +523,8 @@ class GateSpecificationObjectName extends string {
         // multi bit operations
         "RXXGate", "RYYGate", "RZZGate", "RZXGate", "SwapGate", "iSwapGate", "MSGate", "CRGate",
         "RGate", "RCCXGate", "ECRGate",
+        // measurements
+        "Measure"
       ]
   }
 }

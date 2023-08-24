@@ -26,6 +26,9 @@
 | concept_gate_specification.py:17:24:17:24 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: rx |
 | concept_gate_specification.py:18:24:18:24 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: ry |
 | concept_gate_specification.py:19:22:19:22 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: rz |
+| concept_gate_specification.py:20:24:20:24 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 3 - gate: u1 |
+| concept_gate_specification.py:22:31:22:31 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 4 - gate: u2 |
+| concept_gate_specification.py:24:42:24:42 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 5 - gate: u3 |
 | concept_gate_specification.py:25:7:25:13 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 0 - gate: cx |
 | concept_gate_specification.py:25:16:25:22 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 1 - gate: cx |
 | concept_gate_specification.py:26:7:26:13 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 1 - gate: cy |
@@ -34,3 +37,28 @@
 | concept_gate_specification.py:27:16:27:22 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 3 - gate: cz |
 | concept_gate_specification.py:28:21:28:27 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 3 - gate: ch |
 | concept_gate_specification.py:28:43:28:49 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 4 - gate: ch |
+| concept_gate_specification.py:29:33:29:39 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 4 - gate: crz |
+| concept_gate_specification.py:29:55:29:61 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 5 - gate: crz |
+| concept_gate_specification.py:30:33:30:39 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 4 - gate: crx |
+| concept_gate_specification.py:30:55:30:61 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 5 - gate: crx |
+| concept_gate_specification.py:31:13:31:13 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: crx |
+| concept_gate_specification.py:31:16:31:16 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: crx |
+| concept_gate_specification.py:32:33:32:39 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 4 - gate: cry |
+| concept_gate_specification.py:32:55:32:61 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 5 - gate: cry |
+| concept_gate_specification.py:33:33:33:39 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 5 - gate: cu1 |
+| concept_gate_specification.py:33:55:33:61 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 6 - gate: cu1 |
+| concept_gate_specification.py:35:51:35:57 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 6 - gate: cu3 |
+| concept_gate_specification.py:35:73:35:79 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 7 - gate: cu3 |
+| concept_gate_specification.py:36:61:36:67 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 6 - gate: cu |
+| concept_gate_specification.py:36:83:36:89 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 7 - gate: cu |
+| concept_gate_specification.py:45:12:45:18 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 0 - gate: measure |
+| concept_measure.py:3:6:3:23 | ControlFlowNode for QuantumRegister() | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:3:6:3:23 | ControlFlowNode for QuantumRegister() | but use : circuit: qc - reg: qr - index: 1 - gate: measure |
+| concept_measure.py:8:12:8:16 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:11:12:11:16 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qr - index: 0 - gate: measure |
+| concept_measure.py:12:12:12:12 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: measure |
+| concept_measure.py:15:6:15:6 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: h |
+| concept_measure.py:16:12:16:12 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: measure |
+| concept_measure.py:19:6:19:10 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qr - index: 0 - gate: h |
+| concept_measure.py:20:7:20:11 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qr - index: 0 - gate: cx |
+| concept_measure.py:20:14:20:14 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: cx |
