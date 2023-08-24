@@ -45,13 +45,29 @@ class Gate extends DataFlow::CallCfgNode {
   /** The integer of a target qubit (no information on the register). */
   int getATargetQubit() { exists(QubitUse bu | bu.getAGate() = this | result = bu.getAnIndex()) }
 
+  // pragma inline
   /** Holds if this gate is applied after the other gate on the same qubit. */
+  pragma[inline]
   predicate isAppliedAfterOn(Gate other, int qubit_index) {
-    exists(QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse |
+
+    exists(
+      QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse,
+      ControlFlowNode thisNode, ControlFlowNode otherNode,
+      ControlFlowNode circNode
+    |
       // they are in the same file
-      this.getLocation().getFile() = other.getLocation().getFile() and
+      exists(File f |
+        this.getLocation().getFile() = f and
+        other.getLocation().getFile() = f and
+        circ.getLocation().getFile() = f and
+        thisBitUse.getLocation().getFile() = f and
+        otherBitUse.getLocation().getFile() = f
+      ) and
+      // they are connected to the control flow
+      thisNode = this.getNode() and
+      otherNode = other.getNode() and
       // they are applied in the right order: other >> this
-      other.getNode().strictlyReaches(this.getNode()) and
+      otherNode.strictlyReaches(thisNode) and
       // they belong to the same circuit
       circ = this.getQuantumCircuit() and
       circ = other.getQuantumCircuit() and
@@ -65,8 +81,21 @@ class Gate extends DataFlow::CallCfgNode {
         or
         // or they act on the single quantum register of a circuit
         // experessed implicitely with e.g. QuantumCircuit(4)
-        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0 and
-        circ.getNumberOfQubits() > 0
+        (
+          count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0 and
+          circ.getNumberOfQubits() > 0
+        )
+        or
+        // or they act on the same quantum register but one uses the
+        // integer only and the other uses the register object
+        // this is unambiguous only with a single register
+        // qc.h(0)
+        // qc.x(qreg[0])
+        (
+          count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 1 and
+          circ.getNumberOfQubits() > 0
+        )
+
       ) and
       // and they act on the same position
       // bind the qubit index
@@ -74,16 +103,18 @@ class Gate extends DataFlow::CallCfgNode {
       otherBitUse.getAnIndex() = qubit_index and
       // EXTRA PRECISION
       // they refer to the same circuit instance
-      circ.getNode().strictlyReaches(this.getNode()) and
-      circ.getNode().strictlyReaches(other.getNode()) and
+      circNode = circ.getNode() and
+      circNode.strictlyReaches(thisNode) and
+      circNode.strictlyReaches(otherNode) and
       // we do not want a situation where the order is:
       // other >> initialization >> gate
       // because they would not refer to the same circuit anymore
-      not other.getNode().strictlyReaches(circ.getNode())
+      not otherNode.strictlyReaches(circNode)
     )
   }
 
   /** Holds if there is a path this gate to other gate via a different intermediate gate. */
+  pragma[inline]
   predicate mayFollowVia(Gate other, Gate intermediate, int qubitIndex) {
     // case: other >> intermediate >> this
     // exclude case: other >> this >> intermediate
@@ -93,6 +124,13 @@ class Gate extends DataFlow::CallCfgNode {
       ControlFlowNode thisNode, ControlFlowNode otherNode, ControlFlowNode intermediateNode,
       QuantumCircuit qc
     |
+      // they are all in the same file
+      exists(File f |
+        this.getLocation().getFile() = f and
+        other.getLocation().getFile() = f and
+        intermediate.getLocation().getFile() = f and
+        qc.getLocation().getFile() = f
+      ) and
       // the control flow and the gates are connected
       thisNode = this.getNode() and
       otherNode = other.getNode() and
@@ -119,8 +157,11 @@ class Gate extends DataFlow::CallCfgNode {
     // not intermediate.isAppliedAfterOn(this, qubitIndex)
   }
 
+  pragma[inline]
   predicate isAppliedAfter(Gate other) {
-    exists(int qubit_index | this.isAppliedAfterOn(other, qubit_index))
+    exists(int qubit_index |
+      qubit_index != -1 and
+      this.isAppliedAfterOn(other, qubit_index))
   }
 
   predicate isAppliedBefore(Gate other) { other.isAppliedAfter(this) }
