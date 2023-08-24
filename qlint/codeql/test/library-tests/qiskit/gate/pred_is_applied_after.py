@@ -35,3 +35,10 @@ qregB = QuantumRegister(2)
 qc = QuantumCircuit(qregA, qregB, creg)
 qc.append(HGate(), 1)
 qc.y(qregA[1])
+
+# mixed ref with register and integer,
+# on circuit with single register
+my_reg = QuantumRegister(3)
+my_qc = QuantumCircuit(my_reg)
+my_qc.measure(2)
+my_qc.h(my_reg[2])
