@@ -16,15 +16,14 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
 
-from MeasureGate measureFirst, MeasureGate measureSecond
-where measureSecond.isAppliedAfter(measureFirst)
-select
-    measureSecond, "Two consecutive measurements on qubit '" +
-        measureFirst.getATargetQubit() + "' " +
-    "at locations: (" +
-         measureFirst.getLocation().getStartLine() + ", " +
-         measureFirst.getLocation().getStartColumn() +
-         ") and (" +
-         measureSecond.getLocation().getStartLine() + ", " +
-         measureSecond.getLocation().getStartColumn() +
-    ")"
+from MeasureGate measureFirst, MeasureGate measureSecond, int sharedQubit
+where
+  measureSecond.isAppliedAfterOn(measureFirst, sharedQubit) and
+  not exists(ResetGate res | measureSecond.(Gate).mayFollowVia(measureFirst, res, sharedQubit)) and
+  sharedQubit >= 0
+select measureSecond,
+  "Two consecutive measurements on qubit '" + sharedQubit + "' " +
+    "at locations: (" + measureFirst.getLocation().getStartLine() + ", " +
+    measureFirst.getLocation().getStartColumn() + ") and (" +
+    measureSecond.getLocation().getStartLine() + ", " + measureSecond.getLocation().getStartColumn()
+    + ")"
