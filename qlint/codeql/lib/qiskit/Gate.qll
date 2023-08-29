@@ -152,16 +152,13 @@ class Gate extends DataFlow::CallCfgNode {
 
   /** Holds if there is at least a path from this to other (both acting on same bit). */
   pragma[inline]
-  predicate mayFollow(Gate other, int qubitIndex) {
-    this.isAppliedAfterOn(other, qubitIndex)
-  }
+  predicate mayFollow(Gate other, int qubitIndex) { this.isAppliedAfterOn(other, qubitIndex) }
 
   /** Holds if all paths to this gate contain other (other is a dominator). */
   // pragma[inline]
   // predicate mustFollow(Gate other, int qubitIndex) {
   //   // TODO
   // }
-
   pragma[inline]
   predicate isAppliedAfter(Gate other) {
     exists(int qubit_index |

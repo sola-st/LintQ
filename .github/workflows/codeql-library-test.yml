@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'qlint/codeql/**'
+    paths:
+      - 'qlint/codeql/**'
 
 jobs:
   codeql-library-test:
-    runs-on: ubuntu-latest
+    runs-on: donkey
     container:
       image: cloud.canister.io:5000/mattepalte/codeql
       options: --user root
@@ -39,4 +39,4 @@ jobs:
 
       - name: Run CodeQL test
         run: |
-          test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=40
+          test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=20
