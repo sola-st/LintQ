@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: cloud.canister.io:5000/mattepalte/codeql
+      options: --user root
       credentials:
         username: mattepalte
         password: ${{ secrets.CANISTER_PASSWORD }}
@@ -21,13 +22,13 @@ jobs:
         run: |
           codeql --version
 
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # - name: Setup CodeQL
-      #   uses: |
-      #     codeql pack install
+      - name: Setup CodeQL
+        uses: |
+          codeql pack install
 
-      # - name: Run CodeQL test
-      #   run: |
-      #     test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=40
+      - name: Run CodeQL test
+        run: |
+          test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=40
