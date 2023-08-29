@@ -27,4 +27,22 @@
 | concept_gate_specification.py:68:59:68:65 | ControlFlowNode for Subscript | but use : circuit: qc - reg: qreg - index: 6 - gate: CU1Gate |
 | concept_gate_specification.py:69:42:69:42 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 6 - gate: CU3Gate |
 | concept_gate_specification.py:69:45:69:45 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 7 - gate: CU3Gate |
+| concept_gate_specification.py:70:30:70:30 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: SwapGate |
+| concept_gate_specification.py:70:33:70:33 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: SwapGate |
+| concept_gate_specification.py:71:29:71:29 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: CCXGate |
+| concept_gate_specification.py:71:32:71:32 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: CCXGate |
+| concept_gate_specification.py:71:35:71:35 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: CCXGate |
+| concept_gate_specification.py:72:31:72:31 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: CSwapGate |
+| concept_gate_specification.py:72:34:72:34 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: CSwapGate |
+| concept_gate_specification.py:72:37:72:37 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: CSwapGate |
+| concept_gate_specification.py:73:38:73:38 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: RXXGate |
+| concept_gate_specification.py:73:41:73:41 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: RXXGate |
+| concept_gate_specification.py:74:38:74:38 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 1 - gate: RYYGate |
+| concept_gate_specification.py:74:41:74:41 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: RYYGate |
+| concept_gate_specification.py:75:38:75:38 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 2 - gate: RZZGate |
+| concept_gate_specification.py:75:41:75:41 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 3 - gate: RZZGate |
+| concept_gate_specification.py:76:38:76:38 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 3 - gate: RZXGate |
+| concept_gate_specification.py:76:41:76:41 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 4 - gate: RZXGate |
+| concept_gate_specification.py:77:38:77:38 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 4 - gate: RZZGate |
+| concept_gate_specification.py:77:41:77:41 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 5 - gate: RZZGate |
 | concept_gate_specification.py:78:29:78:29 | ControlFlowNode for IntegerLiteral | but use : circuit: qc - reg: anonymous register - index: 0 - gate: Measure |

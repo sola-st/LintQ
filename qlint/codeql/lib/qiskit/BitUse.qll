@@ -496,10 +496,10 @@ class GateSpecificationAttributeName extends string {
     this in [
         // single bit operations
         "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id",
-        "iden", "i", "sx",
+        "iden", "i", "sx", "p",
         // controlled operations
         "cx", "cnot", "cy", "cz", "ch", "cs", "csdg", "csx", "crz", "cry", "crx", "cu1", "cu3",
-        "cu", "ccx", "ccz", "toffoli", "cswap", "fredkin", "mct", "rccx", "rcccx",
+        "cu", "ccx", "ccz", "toffoli", "cswap", "fredkin", "mct", "rccx", "rcccx", "cp",
         // multi bit operations
         "rxx", "ryy", "rzz", "rzx", "swap", "iswap", "ms", "cr", "r", "rccx", "ecr",
         // measurements
@@ -515,11 +515,11 @@ class GateSpecificationObjectName extends string {
     this in [
         // single operations
         "XGate", "YGate", "ZGate", "HGate", "SGate", "SdgGate", "TGate", "TdgGate", "RXGate",
-        "RYGate", "RZGate", "RVGate", "U1Gate", "U2Gate", "U3Gate", "IGate", "SXGate",
+        "RYGate", "RZGate", "RVGate", "U1Gate", "U2Gate", "U3Gate", "IGate", "SXGate", "PhaseGate",
         // controlled operations
         "CXGate", "CYGate", "CZGate", "CHGate", "CSGate", "CSdgGate", "CSXGate", "CRZGate",
         "CRYGate", "CRXGate", "CU1Gate", "CU3Gate", "CCXGate", "CCZGate", "CSwapGate", "MCXGate",
-        "RCCXGate", "RC3XGate",
+        "RCCXGate", "RC3XGate", "CPhaseGate",
         // multi bit operations
         "RXXGate", "RYYGate", "RZZGate", "RZXGate", "SwapGate", "iSwapGate", "MSGate", "CRGate",
         "RGate", "RCCXGate", "ECRGate",
@@ -564,6 +564,14 @@ class GateSpecificationSingleQubitNoParam extends GateSpecificationUnitary {
   }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
+}
+
+class GateSpecificationPGate extends GateSpecificationUnitary {
+  GateSpecificationPGate() { this in ["p", "PhaseGate"] }
+
+  override string getAnArgumentNameOfQubit() { result = "qubit" }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
 class GateSpecificationRXGate extends GateSpecificationUnitary {
@@ -623,6 +631,14 @@ class GateSpecificationU3Gate extends GateSpecificationUnitary {
 }
 
 // TODO: CHECK IF ALL GATES WITH PARAMS ARE PRESENT
+class GateSpecificationCPGate extends GateSpecificationUnitary {
+  GateSpecificationCPGate() { this in ["cp", "CPhaseGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
+}
+
 class GateSpecificationCXGate extends GateSpecificationUnitary {
   GateSpecificationCXGate() { this in ["cx", "CXGate", "cnot"] }
 
@@ -663,6 +679,19 @@ class GateSpecificationCSXGate extends GateSpecificationUnitary {
   GateSpecificationCSXGate() { this in ["csx", "CSXGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
+}
+
+// GENERIC TWO-QUBIT GATES
+class GateSpecificationSwapGate extends GateSpecificationUnitary {
+  GateSpecificationSwapGate() { this in ["swap", "SwapGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
+}
+
+class GateSpecificationISwapGate extends GateSpecificationUnitary {
+  GateSpecificationISwapGate() { this in ["iswap", "iSwapGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 }
 
 // CONTROL WITH PARAMS
@@ -713,4 +742,60 @@ class GateSpecificationCUGate extends GateSpecificationUnitary {
 
   override string getAnArgumentNameOfParam() { result in ["theta", "phi", "lam", "gamma"] }
 }
+
 // TODO: CONTINUE WITH double controls
+class GateSpecificationCSwapGate extends GateSpecificationUnitary {
+  GateSpecificationCSwapGate() { this in ["cswap", "CSwapGate", "fredkin"] }
+
+  override string getAnArgumentNameOfQubit() {
+    result in ["control_qubit", "target_qubit1", "target_qubit2"]
+  }
+}
+
+class GateSpecificationCCXGate extends GateSpecificationUnitary {
+  GateSpecificationCCXGate() { this in ["ccx", "CCXGate", "toffoli"] }
+
+  override string getAnArgumentNameOfQubit() {
+    result in ["control_qubit1", "control_qubit2", "target_qubit"]
+  }
+}
+
+class GateSpecificationCCZGate extends GateSpecificationUnitary {
+  GateSpecificationCCZGate() { this in ["ccz", "CCZGate"] }
+
+  override string getAnArgumentNameOfQubit() {
+    result in ["control_qubit1", "control_qubit2", "target_qubit"]
+  }
+}
+
+class GateSpecificationRXXGate extends GateSpecificationUnitary {
+  GateSpecificationRXXGate() { this in ["rxx", "RXXGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
+}
+
+class GateSpecificationRYYGate extends GateSpecificationUnitary {
+  GateSpecificationRYYGate() { this in ["ryy", "RYYGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
+}
+
+class GateSpecificationRZZGate extends GateSpecificationUnitary {
+  GateSpecificationRZZGate() { this in ["rzz", "RZZGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
+}
+
+class GateSpecificationRZXGate extends GateSpecificationUnitary {
+  GateSpecificationRZXGate() { this in ["rzx", "RZXGate"] }
+
+  override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
+
+  override string getAnArgumentNameOfParam() { result = "theta" }
+}
