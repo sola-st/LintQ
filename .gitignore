@@ -13,3 +13,6 @@ qlint/codeql/src/**/**/*.md
 
 # generic logs from screen
 log*.txt
+
+# canister credential
+automation_scripts/*.canister.io
