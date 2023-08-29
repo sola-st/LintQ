@@ -33,9 +33,9 @@ jobs:
       #     cd qlint
       #     git checkout main
 
-      - name: Setup CodeQL
-        run: |
-          codeql pack install
+      # - name: Setup CodeQL
+      #   run: |
+      #     codeql pack install
 
       - name: Run CodeQL test
         run: |
