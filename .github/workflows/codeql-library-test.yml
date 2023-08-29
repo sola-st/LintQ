@@ -39,4 +39,4 @@ jobs:
 
       - name: Run CodeQL test
         run: |
-          test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=20
+          codeql test run qlint/codeql/test/library-tests/qiskit/bituse/ --threads=20

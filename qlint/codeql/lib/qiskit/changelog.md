@@ -1,3 +1,6 @@
+2023.08.29
+- `GateSpecification`, `BitUse`, `Circuit` with `SubCircuit` added to the qlint library
+
 2023.03.17
 - improve the efficiency of `isAppliedAfter` in the `Gate` class by checking that the two gates happen in the same file.
 
