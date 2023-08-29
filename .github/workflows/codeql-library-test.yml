@@ -22,8 +22,13 @@ jobs:
         run: |
           codeql --version
 
+      # use secrets.SECRET_TOKEN_FROM_GITHUB for private repos
+      # clone this repo
       - name: Checkout code
-        uses: actions/checkout@v2
+        run: |
+          git clone https://oauth2:${{ secrets.SECRET_TOKEN_FROM_GITHUB }}@github.com/${{ github.repository }}
+          cd qlint
+          git checkout main
 
       - name: Setup CodeQL
         uses: |
