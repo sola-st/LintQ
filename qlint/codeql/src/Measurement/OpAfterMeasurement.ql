@@ -22,8 +22,7 @@ import qiskit.QuantumDataFlow
 from Measurement measure, Gate gate, int shared_qubit
 where
   // gate.isAppliedAfterOn(measure, shared_qubit)
-  mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit)
-  and
+  mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit) and
   not exists(Reset reset |
     // gate.mayFollowVia(measure, reset, shared_qubit)
     sortedInOrder(measure, reset, gate, measure.getLocation().getFile(), shared_qubit)

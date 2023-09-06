@@ -20,5 +20,4 @@ from File file, int nGates
 where
   nGates = count(Gate gate | gate.getLocation().getFile() = file) and
   nGates > 1000
-select
-  file, "The number of gates is " + nGates
+select file, "The number of gates is " + nGates

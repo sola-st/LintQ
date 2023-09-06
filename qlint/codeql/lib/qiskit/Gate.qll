@@ -30,19 +30,16 @@ private predicate isGateObj(DataFlow::CallCfgNode call) {
   )
 }
 
-
 /** Quantum Operator either a gate, measurement or reset. */
 abstract class QuantumOperator extends DataFlow::CallCfgNode {
   // Gate() {
   //   isGateCall(this) or
   //   isGateObj(this)
   // }
-
   /** The name of the gate. */
   abstract string getGateName();
 
   /** The circuit where the gate is applied. */
-
   abstract QuantumCircuit getQuantumCircuit();
 
   /** The integer of a target qubit (no information on the register). */
@@ -155,7 +152,9 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
 
   /** Holds if there is at least a path from this to other (both acting on same bit). */
   pragma[inline]
-  predicate mayFollow(QuantumOperator other, int qubitIndex) { this.isAppliedAfterOn(other, qubitIndex) }
+  predicate mayFollow(QuantumOperator other, int qubitIndex) {
+    this.isAppliedAfterOn(other, qubitIndex)
+  }
 
   /** Holds if all paths to this gate contain other (other is a dominator). */
   // pragma[inline]
@@ -178,7 +177,9 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
   predicate isUnitary() { this.getGateName() instanceof OperatorSpecificationUnitary }
 
   /** Holds if this gate destroys the quantum state: e.g. measure, reset, measure_all */
-  predicate destroysTheQuantumState() { this.getGateName() instanceof OperatorSpecificationNonUnitary }
+  predicate destroysTheQuantumState() {
+    this.getGateName() instanceof OperatorSpecificationNonUnitary
+  }
 }
 
 private class GenericGateObj extends QuantumOperator {
@@ -213,7 +214,6 @@ private class GenericGateObj extends QuantumOperator {
     )
     // result = this.(API::CallNode).getFunction().asVar().getName()
   }
-
 
   override QuantumCircuit getQuantumCircuit() {
     exists(QuantumCircuit circ |
@@ -262,7 +262,6 @@ private class GenericGateCall extends QuantumOperator {
       result = a_supported_gate_name
     )
   }
-
 
   override QuantumCircuit getQuantumCircuit() {
     exists(QuantumCircuit circ | this = circ.getAnAttributeRead(_).getACall() | result = circ)
@@ -426,13 +425,9 @@ private class GenericGateCall extends QuantumOperator {
   }
 }
 
-
 /** A gate instruction (which is reversible). */
 class Gate extends QuantumOperator {
-
-  Gate() {
-    this.isUnitary()
-  }
+  Gate() { this.isUnitary() }
 
   override string getGateName() {
     result = this.(GenericGateCall).getGateName()
@@ -440,20 +435,15 @@ class Gate extends QuantumOperator {
     result = this.(GenericGateObj).getGateName()
   }
 
-
   override QuantumCircuit getQuantumCircuit() {
     result = this.(GenericGateCall).getQuantumCircuit()
     or
     result = this.(GenericGateObj).getQuantumCircuit()
   }
-
 }
-
-
 
 /** A measurement instruction. */
 abstract class Measurement extends QuantumOperator { }
-
 
 class MeasureGateCall extends Measurement, GenericGateCall {
   MeasureGateCall() { this.getGateName() = "measure" }
@@ -478,7 +468,6 @@ class MeasurementAll extends Measurement, GenericGateCall {
   }
 }
 
-
 /** A reset instruction (brings it back to 0 state). */
 abstract class Reset extends QuantumOperator { }
 
@@ -489,5 +478,3 @@ class ResetGateCall extends Reset, GenericGateCall {
 class ResetGateObj extends Reset, GenericGateObj {
   ResetGateObj() { this.getGateName() = "Reset" }
 }
-
-

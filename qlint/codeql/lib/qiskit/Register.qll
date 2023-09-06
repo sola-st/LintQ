@@ -25,7 +25,6 @@ abstract class Register extends DataFlow::CallCfgNode {
       source.asExpr() instanceof IntegerLiteral
     )
   }
-
   // int getAnAccessedPosition() {
   //   exists(
   //     DataFlow::Node nd, DataFlow::ExprNode targetSubscript, Subscript subscript,
@@ -39,7 +38,6 @@ abstract class Register extends DataFlow::CallCfgNode {
   //     result = position.getValue()
   //   )
   // }
-
   // Variable getVar() {
   //   // get the left side of the assignment
   //   // e.g. reg = QuantumRegister(2)

@@ -5,15 +5,11 @@
 // import qiskit.Circuit
 // import qiskit.BitUse
 // import qiskit.QuantumDataFlow
-
-
 // /** An Operator representing manipulation on a qubit, such as gates and measurements. */
 // abstract class QuantumOperator extends DataFlow::CallCfgNode {
-
 //   /** A bit use by the operator. */
 //   // abstract BitUseNode getBitUse();
 // }
-
 // /** An Operator added with append. */
 // class QuantumOperatorViaAppend extends QuantumOperator {
 //   QuantumOperatorViaAppend() {
@@ -34,12 +30,10 @@
 //           .getAValueReachingSink()
 //     )
 //   }
-
 //   // override BitUseNode getBitUse() {
 //   //   result = TBitUseAppend(this, nameOpObject)
 //   // }
 // }
-
 // /** An Operator added with an attribute call. */
 // class QuantumOperatorViaAttribute extends QuantumOperator {
 //   QuantumOperatorViaAttribute() {
@@ -49,4 +43,3 @@
 //     )
 //   }
 // }
-

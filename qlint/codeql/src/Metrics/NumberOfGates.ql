@@ -17,7 +17,5 @@ import qiskit.Circuit
 import qiskit.Gate
 
 from File file, int nGates
-where
-  nGates = count(Gate gate | gate.getLocation().getFile() = file)
-select
-  file, "The number of gates is " + nGates
+where nGates = count(Gate gate | gate.getLocation().getFile() = file)
+select file, "The number of gates is " + nGates

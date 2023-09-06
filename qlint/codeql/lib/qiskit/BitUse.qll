@@ -65,8 +65,8 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   predicate mustFollow(BitUse other) {
     // case: qc.h(0); qc.rx(3.14, 0)
     exists(
-      QuantumOperator currentGate, QuantumOperator otherGate, int commontIndex, string commonCircuitName,
-      string commonRegisterName
+      QuantumOperator currentGate, QuantumOperator otherGate, int commontIndex,
+      string commonCircuitName, string commonRegisterName
     |
       // either they act on the same register
       this.getARegisterName() = commonRegisterName and
@@ -92,7 +92,9 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     )
     or
     // case: qc.h(0); qc.ch(0, 2); qc.x(2)
-    exists(QuantumOperator intermediateGate, BitUse intermediateBitUseA, BitUse intermediateBitUseB |
+    exists(
+      QuantumOperator intermediateGate, BitUse intermediateBitUseA, BitUse intermediateBitUseB
+    |
       intermediateBitUseA.getAGate() = intermediateGate and
       intermediateBitUseB.getAGate() = intermediateGate and
       intermediateBitUseA.mustFollow(other) and
@@ -177,12 +179,15 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     // case QubitUse
     this instanceof QubitUse and
     this.getARegisterName() = "anonymous register" and
-    count(QuantumRegisterV2 qreg | qreg = this.getACircuit().(QuantumCircuit).getAQuantumRegister()) = 1
-    // case ClbitUse
+    count(QuantumRegisterV2 qreg | qreg = this.getACircuit().(QuantumCircuit).getAQuantumRegister()) =
+      1
     or
+    // case ClbitUse
     this instanceof ClbitUse and
     this.getARegisterName() = "anonymous register" and
-    count(ClassicalRegisterV2 creg | creg = this.getACircuit().(QuantumCircuit).getAClassicalRegister()) = 1
+    count(ClassicalRegisterV2 creg |
+      creg = this.getACircuit().(QuantumCircuit).getAClassicalRegister()
+    ) = 1
   }
 
   /** Holds if the other BitUse MUST refers to the same position, register and circuit. */
@@ -191,15 +196,15 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     this.getAnIndexIfAny() = other.getAnIndexIfAny()
   }
 
-  /** Holds if the other BitUse MAY refers to the same position, register and circuit.
+  /**
+   * Holds if the other BitUse MAY refers to the same position, register and circuit.
    *
    * Note that this caputre also cases where the variable might not be modeled
    * (e.g. qc.h(i) and qc.h(5 + 7)).
-   *
-  */
+   */
   predicate mayReferToSameBitOf(BitUse other) {
     this.mustReferToSameRegAndCircOf(other) and
-    this.getAnIndex() = other.getAnIndex()  // this might be -1 for both
+    this.getAnIndex() = other.getAnIndex() // this might be -1 for both
   }
 
   /** Holds if the other BitUse MUST refers to the same register and circuit. */
@@ -209,8 +214,7 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
       this instanceof QubitUse and other instanceof QubitUse
       or
       this instanceof ClbitUse and other instanceof ClbitUse
-    )
-    and
+    ) and
     // case: same circuit -> qc.h(0); qc.h(qreg[2])
     this.sameCircuit(other) and
     (
@@ -483,25 +487,18 @@ class QubitUseViaAppend extends QubitUse {
   }
 }
 
-
 /** Use of a qubit in a measure_all call. */
 class QubitUseViaMeasureAll extends QubitUse {
   QubitUseViaMeasureAll() {
-    exists(
-      QuantumCircuit circ
-    |
+    exists(QuantumCircuit circ |
       // detect qc.measure_all()
       this = circ.getAnAttributeRead("measure_all").getACall()
     )
   }
 
-  override string getAGateName() {
-    result = "measure_all"
-  }
+  override string getAGateName() { result = "measure_all" }
 
-  override QuantumOperator getAGate() {
-    result = this
-  }
+  override QuantumOperator getAGate() { result = this }
 
   override QuantumCircuit getACircuit() {
     exists(QuantumCircuit circ |
@@ -513,20 +510,12 @@ class QubitUseViaMeasureAll extends QubitUse {
   }
 
   override int getAnIndexIfAny() {
-    exists(
-      QuantumCircuit circ, int i
+    exists(QuantumCircuit circ, int i |
+      if circ.getNumberOfQubits() > 0 then i in [0 .. circ.getNumberOfQubits() - 1] else i = -1
     |
-      if
-        circ.getNumberOfQubits() > 0
-      then
-        i in [0 .. circ.getNumberOfQubits() - 1]
-      else
-        i = -1
-    |
-        result = i
+      result = i
     )
   }
-
 }
 
 // GATE SPECIFICATIONS

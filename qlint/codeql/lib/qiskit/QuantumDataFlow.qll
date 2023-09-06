@@ -1,10 +1,8 @@
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
-
 import qiskit.Circuit
 import qiskit.QuantumOperator
-
 
 bindingset[start, file]
 pragma[inline]
@@ -16,12 +14,8 @@ predicate mayFollow(QuantumOperator start, QuantumOperator end, File file, int q
   start.getQuantumCircuit() = end.getQuantumCircuit() and
   // they are connected via the control flow
   exists(
-    QuantumCircuit circ,
-    BitUse startBitUse,
-    BitUse endBitUse,
-    ControlFlowNode startNode,
-    ControlFlowNode endNode,
-    ControlFlowNode circNode
+    QuantumCircuit circ, BitUse startBitUse, BitUse endBitUse, ControlFlowNode startNode,
+    ControlFlowNode endNode, ControlFlowNode circNode
   |
     // they belong to the same circuit
     circ = start.getQuantumCircuit() and
@@ -68,10 +62,12 @@ predicate mayFollow(QuantumOperator start, QuantumOperator end, File file, int q
   )
 }
 
-
 bindingset[start, end, file, qubitIndex]
 pragma[inline]
-predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, QuantumOperator end, File file, int qubitIndex) {
+predicate sortedInOrder(
+  QuantumOperator start, QuantumOperator intermediate, QuantumOperator end, File file,
+  int qubitIndex
+) {
   // they are in the same file
   start.getLocation().getFile() = file and
   intermediate.getLocation().getFile() = file and
@@ -83,9 +79,7 @@ predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, Qua
   // exclude (loop) case: this >> other >> intermediate >> this
   // they are all in the same file
   exists(
-    ControlFlowNode startNode,
-    ControlFlowNode intermediateNode,
-    ControlFlowNode endNode,
+    ControlFlowNode startNode, ControlFlowNode intermediateNode, ControlFlowNode endNode,
     QuantumCircuit qc
   |
     // the control flow and the gates are connected
@@ -107,9 +101,6 @@ predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, Qua
     startNode != endNode
   )
 }
-
-
-
 // /** A node representing a use of a qubit in a DAG. */
 // newtype TBitUseNode =
 //   TBitUseAppend(QuantumOperatorViaAppend op, AppendCall appendCall, QuantumCircuit circ, OperatorSpecificationObjectName name, DataFlow::Node bitUse) {
@@ -136,7 +127,6 @@ predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, Qua
 //       .getParameter(1, "qargs")
 //       .asSink()
 //       // .getAValueReachingSink()
-
 //   }
 //   or
 //   TBitUseAttribute(QuantumOperatorViaAttribute op, OperatorSpecificationAttributeName name) {
@@ -145,18 +135,14 @@ predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, Qua
 //       op = circ.getAnAttributeRead(name).getACall()
 //     )
 //   }
-
-
 // /** A node representing a use of a qubit in a DAG. */
 // class BitUseNode extends TBitUseNode {
 //   // case: qc.append(HGate(), [0]) >> HGate
 //   QuantumOperatorViaAppend opAppend;
 //   OperatorSpecificationObjectName nameOpObject;
-
 //   // case: qc.h(0) >> h
 //   QuantumOperatorViaAttribute opAttribute;
 //   OperatorSpecificationAttributeName nameOpAttribute;
-
 //   string toString() {
 //     this instanceof TBitUseAppend and
 //     result = nameOpObject
@@ -164,5 +150,4 @@ predicate sortedInOrder(QuantumOperator start, QuantumOperator intermediate, Qua
 //     this instanceof TBitUseAttribute and
 //     result = nameOpAttribute
 //   }
-
 // }
