@@ -6,14 +6,14 @@ import qiskit.Circuit
 import qiskit.BitUse
 
 private predicate isGateCall(DataFlow::CallCfgNode call) {
-  exists(QuantumCircuit circ, GateSpecificationAttributeName gate_name_call |
+  exists(QuantumCircuit circ, OperatorSpecificationAttributeName gate_name_call |
     // detect qc.h(0)
     call = circ.getAnAttributeRead(gate_name_call).getACall()
   )
 }
 
 private predicate isGateObj(DataFlow::CallCfgNode call) {
-  exists(QuantumCircuit circ, GateSpecificationObjectName gate_name_obj |
+  exists(QuantumCircuit circ, OperatorSpecificationObjectName gate_name_obj |
     // detect from qiskit.circuit.library import HGate
     call =
       API::moduleImport("qiskit")
@@ -30,25 +30,27 @@ private predicate isGateObj(DataFlow::CallCfgNode call) {
   )
 }
 
-class Gate extends DataFlow::CallCfgNode {
-  Gate() {
-    isGateCall(this) or
-    isGateObj(this)
-  }
+
+/** Quantum Operator either a gate, measurement or reset. */
+abstract class QuantumOperator extends DataFlow::CallCfgNode {
+  // Gate() {
+  //   isGateCall(this) or
+  //   isGateObj(this)
+  // }
 
   /** The name of the gate. */
   abstract string getGateName();
 
   /** The circuit where the gate is applied. */
+
   abstract QuantumCircuit getQuantumCircuit();
 
   /** The integer of a target qubit (no information on the register). */
   int getATargetQubit() { exists(QubitUse bu | bu.getAGate() = this | result = bu.getAnIndex()) }
 
-  // pragma inline
   /** Holds if this gate is applied after the other gate on the same qubit. */
   pragma[inline]
-  predicate isAppliedAfterOn(Gate other, int qubit_index) {
+  predicate isAppliedAfterOn(QuantumOperator other, int qubit_index) {
     exists(
       QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse, ControlFlowNode thisNode,
       ControlFlowNode otherNode, ControlFlowNode circNode
@@ -108,22 +110,23 @@ class Gate extends DataFlow::CallCfgNode {
 
   /** Holds if there is a path this gate to other gate via a different intermediate gate. */
   pragma[inline]
-  predicate mayFollowVia(Gate other, Gate intermediate, int qubitIndex) {
+  predicate mayFollowVia(QuantumOperator other, QuantumOperator intermediate, int qubitIndex) {
     // case: other >> intermediate >> this
     // exclude case: other >> this >> intermediate
     // exclude case: intermediate >> other >> this
     // exclude (loop) case: this >> other >> intermediate >> this
+    // they are all in the same file
+    exists(File f |
+      this.getLocation().getFile() = f and
+      other.getLocation().getFile() = f and
+      intermediate.getLocation().getFile() = f
+      // and
+      // qc.getLocation().getFile() = f
+    ) and
     exists(
       ControlFlowNode thisNode, ControlFlowNode otherNode, ControlFlowNode intermediateNode,
       QuantumCircuit qc
     |
-      // they are all in the same file
-      exists(File f |
-        this.getLocation().getFile() = f and
-        other.getLocation().getFile() = f and
-        intermediate.getLocation().getFile() = f and
-        qc.getLocation().getFile() = f
-      ) and
       // the control flow and the gates are connected
       thisNode = this.getNode() and
       otherNode = other.getNode() and
@@ -152,7 +155,7 @@ class Gate extends DataFlow::CallCfgNode {
 
   /** Holds if there is at least a path from this to other (both acting on same bit). */
   pragma[inline]
-  predicate mayFollow(Gate other, int qubitIndex) { this.isAppliedAfterOn(other, qubitIndex) }
+  predicate mayFollow(QuantumOperator other, int qubitIndex) { this.isAppliedAfterOn(other, qubitIndex) }
 
   /** Holds if all paths to this gate contain other (other is a dominator). */
   // pragma[inline]
@@ -160,25 +163,25 @@ class Gate extends DataFlow::CallCfgNode {
   //   // TODO
   // }
   pragma[inline]
-  predicate isAppliedAfter(Gate other) {
+  predicate isAppliedAfter(QuantumOperator other) {
     exists(int qubit_index |
       qubit_index != -1 and
       this.isAppliedAfterOn(other, qubit_index)
     )
   }
 
-  predicate isAppliedBefore(Gate other) { other.isAppliedAfter(this) }
+  predicate isAppliedBefore(QuantumOperator other) { other.isAppliedAfter(this) }
 
-  predicate isMeasurement() { (this instanceof MeasureGate or this instanceof MeasurementAll) }
+  predicate isMeasurement() { this instanceof Measurement }
 
   /** Holds if this gate is unitary: e.g. h, x, y, z, cx, ccx, etc. */
-  predicate isUnitary() { this.getGateName() instanceof GateSpecificationUnitary }
+  predicate isUnitary() { this.getGateName() instanceof OperatorSpecificationUnitary }
 
   /** Holds if this gate destroys the quantum state: e.g. measure, reset, measure_all */
-  predicate destroysTheQuantumState() { this.getGateName() instanceof GateSpecificationNonUnitary }
+  predicate destroysTheQuantumState() { this.getGateName() instanceof OperatorSpecificationNonUnitary }
 }
 
-private class GenericGateObj extends Gate {
+private class GenericGateObj extends QuantumOperator {
   GenericGateObj() { isGateObj(this) }
 
   DataFlow::CallCfgNode getAppendCall() {
@@ -191,7 +194,7 @@ private class GenericGateObj extends Gate {
   }
 
   override string getGateName() {
-    exists(QuantumCircuit circ, GateSpecificationObjectName a_supported_gate_name |
+    exists(QuantumCircuit circ, OperatorSpecificationObjectName a_supported_gate_name |
       // detect from qiskit.circuit.library import HGate
       this =
         API::moduleImport("qiskit")
@@ -210,6 +213,7 @@ private class GenericGateObj extends Gate {
     )
     // result = this.(API::CallNode).getFunction().asVar().getName()
   }
+
 
   override QuantumCircuit getQuantumCircuit() {
     exists(QuantumCircuit circ |
@@ -248,16 +252,17 @@ private class GenericGateObj extends Gate {
   // }
 }
 
-private class GenericGateCall extends Gate {
+private class GenericGateCall extends QuantumOperator {
   GenericGateCall() { isGateCall(this) }
 
   override string getGateName() {
-    exists(QuantumCircuit circ, GateSpecificationAttributeName a_supported_gate_name |
+    exists(QuantumCircuit circ, OperatorSpecificationAttributeName a_supported_gate_name |
       this = circ.getAnAttributeRead(a_supported_gate_name).getACall()
     |
       result = a_supported_gate_name
     )
   }
+
 
   override QuantumCircuit getQuantumCircuit() {
     exists(QuantumCircuit circ | this = circ.getAnAttributeRead(_).getACall() | result = circ)
@@ -421,80 +426,45 @@ private class GenericGateCall extends Gate {
   }
 }
 
-class MeasureGateCall extends GenericGateCall {
-  MeasureGateCall() { this.getGateName() = "measure" }
-  // int getATargetBit() {
-  //   exists(API::Node p, int i |
-  //     p = this.(API::CallNode).getParameter(1, "cbit") and
-  //     (
-  //       // qc.measure(0, 1)
-  //       p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
-  //       or
-  //       // qc.measure(qreg[0], creg[1])
-  //       p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
-  //       or
-  //       // qc.measure([0, 1], [0, 1])
-  //       p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
-  //     )
-  //   |
-  //     result = i
-  //   )
-  // }
-}
 
-class MeasureGateObj extends GenericGateObj {
-  MeasureGateObj() { this.getGateName() = "Measure" }
-  // int getATargetBit() {
-  //   exists(API::Node p, int i |
-  //     p = this.(API::CallNode).getParameter(1, "cbit") and
-  //     (
-  //       // qc.measure(0, 1)
-  //       p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
-  //       or
-  //       // qc.measure(qreg[0], creg[1])
-  //       p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
-  //       or
-  //       // qc.measure([0, 1], [0, 1])
-  //       p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
-  //     )
-  //   |
-  //     result = i
-  //   )
-  // }
-}
+/** A gate instruction (which is reversible). */
+class Gate extends QuantumOperator {
 
-class MeasureGate extends DataFlow::CallCfgNode {
-  MeasureGate() {
-    this instanceof MeasureGateCall or
-    this instanceof MeasureGateObj
+  Gate() {
+    this.isUnitary()
   }
+
+  override string getGateName() {
+    result = this.(GenericGateCall).getGateName()
+    or
+    result = this.(GenericGateObj).getGateName()
+  }
+
+
+  override QuantumCircuit getQuantumCircuit() {
+    result = this.(GenericGateCall).getQuantumCircuit()
+    or
+    result = this.(GenericGateObj).getQuantumCircuit()
+  }
+
 }
 
-/** Reset gates bring the qubit back to the default 0 state. */
-class ResetGate extends GenericGateCall {
-  ResetGate() { this.getGateName() = "reset" }
-  // override int getATargetQubit() {
-  //     exists(
-  //         API::Node p, int i
-  //         |
-  //         p = this.(API::CallNode).getParameter(0, "qubit")  and
-  //         (
-  //             // qc.reset(0)
-  //             p.getAValueReachingSink().asExpr().(IntegerLiteral).getValue() = i
-  //             or
-  //             // qc.reset(qreg[0])
-  //             p.getAValueReachingSink().asExpr().(Subscript).getIndex().(IntegerLiteral).getValue() = i
-  //             or
-  //             // qc.reset([0, 1])
-  //             p.getAValueReachingSink().asExpr().(List).getAnElt().(IntegerLiteral).getValue() = i
-  //         )
-  //         |
-  //         result = i
-  //     )
-  // }
+
+
+/** A measurement instruction. */
+abstract class Measurement extends QuantumOperator { }
+
+
+class MeasureGateCall extends Measurement, GenericGateCall {
+  MeasureGateCall() { this.getGateName() = "measure" }
 }
 
-class MeasurementAll extends GenericGateCall {
+class MeasureGateObj extends Measurement, GenericGateObj {
+  MeasureGateObj() { this.getGateName() = "Measure" }
+}
+
+/** A measurement instruction on all qubits. */
+class MeasurementAll extends Measurement, GenericGateCall {
   MeasurementAll() { this.getGateName() = "measure_all" }
 
   // TODO rename createsNewRegister
@@ -508,6 +478,16 @@ class MeasurementAll extends GenericGateCall {
   }
 }
 
-class MeasurementAny extends DataFlow::CallCfgNode {
-  MeasurementAny() { this instanceof MeasureGate or this instanceof MeasurementAll }
+
+/** A reset instruction (brings it back to 0 state). */
+abstract class Reset extends QuantumOperator { }
+
+class ResetGateCall extends Reset, GenericGateCall {
+  ResetGateCall() { this.getGateName() = "reset" }
 }
+
+class ResetGateObj extends Reset, GenericGateObj {
+  ResetGateObj() { this.getGateName() = "Reset" }
+}
+
+

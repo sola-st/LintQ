@@ -15,11 +15,15 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
+import qiskit.QuantumDataFlow
 
-from MeasureGate measureFirst, MeasureGate measureSecond, int sharedQubit
+from Measurement measureFirst, Measurement measureSecond, int sharedQubit
 where
-  measureSecond.isAppliedAfterOn(measureFirst, sharedQubit) and
-  not exists(ResetGate res | measureSecond.(Gate).mayFollowVia(measureFirst, res, sharedQubit)) and
+  // measureSecond.isAppliedAfterOn(measureFirst, sharedQubit) and
+  mayFollow(measureFirst, measureSecond, measureFirst.getLocation().getFile(), sharedQubit) and
+  not exists(Reset res |
+    sortedInOrder(measureFirst, res, measureSecond, measureFirst.getLocation().getFile(), sharedQubit))  and
+    // measureSecond.mayFollowVia(measureFirst, res, sharedQubit)) and
   sharedQubit >= 0
 select measureSecond,
   "Two consecutive measurements on qubit '" + sharedQubit + "' " + "at locations: (" +

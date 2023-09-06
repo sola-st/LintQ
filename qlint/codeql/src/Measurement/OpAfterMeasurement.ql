@@ -17,12 +17,17 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Qubit
+import qiskit.QuantumDataFlow
 
-from MeasureGate measure, Gate gate, int shared_qubit
+from Measurement measure, Gate gate, int shared_qubit
 where
-  gate.isUnitary() and
-  gate.isAppliedAfterOn(measure, shared_qubit) and
-  not exists(ResetGate reset | gate.mayFollowVia(measure, reset, shared_qubit))
+  // gate.isAppliedAfterOn(measure, shared_qubit)
+  mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit)
+  and
+  not exists(Reset reset |
+    // gate.mayFollowVia(measure, reset, shared_qubit)
+    sortedInOrder(measure, reset, gate, measure.getLocation().getFile(), shared_qubit)
+  )
 select gate,
   "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
     " after measurement at location: (" + measure.getLocation().getStartLine() + ", " +

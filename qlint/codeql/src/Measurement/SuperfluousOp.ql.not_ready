@@ -19,12 +19,9 @@ import qiskit.Gate
 
 from Gate op, int targetBit, QuantumCircuit qc
 where
-  // op is not a measruement
-  not op instanceof MeasureGate and
   targetBit = op.getATargetQubit() and
   // there is no measurement on the qubit and there is no measure_all
-  not exists(MeasureGate m | m.isAppliedAfterOn(op, targetBit)) and
-  not exists(MeasurementAll mAll | mAll.getQuantumCircuit() = qc) and
+  not exists(Measurement m | m.getQuantumCircuit() = op.getQuantumCircuit() | m.isAppliedAfterOn(op, targetBit)) and
   // the circuit is not a subcircuit (usually without measurement)
   qc = op.getQuantumCircuit() and
   not qc.isSubCircuit()

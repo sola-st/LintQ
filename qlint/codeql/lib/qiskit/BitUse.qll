@@ -55,7 +55,7 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
 
   abstract QuantumCircuit getACircuit();
 
-  abstract Gate getAGate();
+  abstract QuantumOperator getAGate();
 
   abstract string getAGateName();
 
@@ -65,7 +65,7 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   predicate mustFollow(BitUse other) {
     // case: qc.h(0); qc.rx(3.14, 0)
     exists(
-      Gate currentGate, Gate otherGate, int commontIndex, string commonCircuitName,
+      QuantumOperator currentGate, QuantumOperator otherGate, int commontIndex, string commonCircuitName,
       string commonRegisterName
     |
       // either they act on the same register
@@ -92,7 +92,7 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     )
     or
     // case: qc.h(0); qc.ch(0, 2); qc.x(2)
-    exists(Gate intermediateGate, BitUse intermediateBitUseA, BitUse intermediateBitUseB |
+    exists(QuantumOperator intermediateGate, BitUse intermediateBitUseA, BitUse intermediateBitUseB |
       intermediateBitUseA.getAGate() = intermediateGate and
       intermediateBitUseB.getAGate() = intermediateGate and
       intermediateBitUseA.mustFollow(other) and
@@ -154,25 +154,79 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   }
 
   /** Holds if the two BitUse refer to the same circuit. */
-  predicate likelySameCircuit(BitUse other) {
-    this.getACircuitName() = "anonymous circuit" and
-    other.getACircuitName() = "anonymous circuit" and
-    // check that they are at least part of the same register
-    this.likelySameRegister(other)
-    or
+  private predicate sameCircuit(BitUse other) {
+    // case: qc.h(0); qc.h(qreg[2])
     this.getACircuitName() = other.getACircuitName() and
     this.getACircuit() = other.getACircuit()
   }
 
   /** Holds if the two BitUse refer to the same register. */
-  predicate likelySameRegister(BitUse other) {
-    this.getARegisterName() = "anonymous register" and
-    other.getARegisterName() = "anonymous register" and
-    // check that they are at least part of the same circuit
-    this.likelySameCircuit(other)
-    or
+  predicate sameRegister(BitUse other) {
+    // case: qc.h(qreg[0]); qc.h(qreg[1])
     this.getARegisterName() = other.getARegisterName() and
     this.getARegister() = other.getARegister()
+    or
+    // case: qc.h(0); qc.h(1)
+    this.getARegisterName() = "anonymous register" and
+    other.getARegisterName() = "anonymous register" and
+    this.sameCircuit(other)
+  }
+
+  /** Holds if one is anonymous register and other is on the only quantum register. */
+  predicate hasCircuitSingleAnonymousRegister() {
+    // case QubitUse
+    this instanceof QubitUse and
+    this.getARegisterName() = "anonymous register" and
+    count(QuantumRegisterV2 qreg | qreg = this.getACircuit().(QuantumCircuit).getAQuantumRegister()) = 1
+    // case ClbitUse
+    or
+    this instanceof ClbitUse and
+    this.getARegisterName() = "anonymous register" and
+    count(ClassicalRegisterV2 creg | creg = this.getACircuit().(QuantumCircuit).getAClassicalRegister()) = 1
+  }
+
+  /** Holds if the other BitUse MUST refers to the same position, register and circuit. */
+  predicate mustReferToSameBitOf(BitUse other) {
+    this.mustReferToSameRegAndCircOf(other) and
+    this.getAnIndexIfAny() = other.getAnIndexIfAny()
+  }
+
+  /** Holds if the other BitUse MAY refers to the same position, register and circuit.
+   *
+   * Note that this caputre also cases where the variable might not be modeled
+   * (e.g. qc.h(i) and qc.h(5 + 7)).
+   *
+  */
+  predicate mayReferToSameBitOf(BitUse other) {
+    this.mustReferToSameRegAndCircOf(other) and
+    this.getAnIndex() = other.getAnIndex()  // this might be -1 for both
+  }
+
+  /** Holds if the other BitUse MUST refers to the same register and circuit. */
+  predicate mustReferToSameRegAndCircOf(BitUse other) {
+    // same type
+    (
+      this instanceof QubitUse and other instanceof QubitUse
+      or
+      this instanceof ClbitUse and other instanceof ClbitUse
+    )
+    and
+    // case: same circuit -> qc.h(0); qc.h(qreg[2])
+    this.sameCircuit(other) and
+    (
+      // case: same default register -> qc.h(0); qc.h(1)
+      this.getARegisterName() = "anonymous register" and
+      other.getARegisterName() = "anonymous register"
+      or
+      // case: mixed but this is anonymous -> qc.h(0); qc.h(qreg[1])
+      this.hasCircuitSingleAnonymousRegister()
+      or
+      // case: mixed but other is anonymous -> qc.h(qreg[0]); qc.h(1)
+      other.hasCircuitSingleAnonymousRegister()
+    )
+    or
+    // case: same circuit and register -> qc.h(qreg[0]); qc.h(qreg[1])
+    this.sameCircuit(other) and this.sameRegister(other)
   }
 }
 
@@ -258,7 +312,7 @@ abstract class ClbitUse extends BitUse { }
 class QubitUseViaAttribute extends QubitUse {
   QubitUseViaAttribute() {
     exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode locSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode locSource,
       DataFlow::CallCfgNode call
     |
       // detect qc.h(0)
@@ -276,7 +330,7 @@ class QubitUseViaAttribute extends QubitUse {
   }
 
   override string getAGateName() {
-    exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
+    exists(QuantumCircuit circ, OperatorSpecification gs, DataFlow::CallCfgNode call |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
       (
@@ -293,8 +347,8 @@ class QubitUseViaAttribute extends QubitUse {
     )
   }
 
-  override Gate getAGate() {
-    exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
+  override QuantumOperator getAGate() {
+    exists(QuantumCircuit circ, OperatorSpecification gs, DataFlow::CallCfgNode call |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
       (
@@ -312,7 +366,7 @@ class QubitUseViaAttribute extends QubitUse {
   }
 
   override QuantumCircuit getACircuit() {
-    exists(QuantumCircuit circ, GateSpecification gs, DataFlow::CallCfgNode call |
+    exists(QuantumCircuit circ, OperatorSpecification gs, DataFlow::CallCfgNode call |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
       (
@@ -334,7 +388,7 @@ class QubitUseViaAttribute extends QubitUse {
 class QubitUseViaAppend extends QubitUse {
   QubitUseViaAppend() {
     exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode locSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode locSource,
       DataFlow::LocalSourceNode qubitListSource, DataFlow::CallCfgNode appendCall,
       DataFlow::CallCfgNode gateCall
     |
@@ -358,7 +412,7 @@ class QubitUseViaAppend extends QubitUse {
 
   override string getAGateName() {
     exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode qubitListSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode qubitListSource,
       DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
     |
       // detect qc.append(CXGate(), [0, 1])
@@ -380,9 +434,9 @@ class QubitUseViaAppend extends QubitUse {
     )
   }
 
-  override Gate getAGate() {
+  override QuantumOperator getAGate() {
     exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode qubitListSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode qubitListSource,
       DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
     |
       // detect qc.append(CXGate(), [0, 1])
@@ -406,7 +460,7 @@ class QubitUseViaAppend extends QubitUse {
 
   override QuantumCircuit getACircuit() {
     exists(
-      QuantumCircuit circ, GateSpecification gs, DataFlow::LocalSourceNode qubitListSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode qubitListSource,
       DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
     |
       // detect qc.append(CXGate(), [0, 1])
@@ -429,13 +483,59 @@ class QubitUseViaAppend extends QubitUse {
   }
 }
 
+
+/** Use of a qubit in a measure_all call. */
+class QubitUseViaMeasureAll extends QubitUse {
+  QubitUseViaMeasureAll() {
+    exists(
+      QuantumCircuit circ
+    |
+      // detect qc.measure_all()
+      this = circ.getAnAttributeRead("measure_all").getACall()
+    )
+  }
+
+  override string getAGateName() {
+    result = "measure_all"
+  }
+
+  override QuantumOperator getAGate() {
+    result = this
+  }
+
+  override QuantumCircuit getACircuit() {
+    exists(QuantumCircuit circ |
+      // detect qc.measure_all()
+      this = circ.getAnAttributeRead("measure_all").getACall()
+    |
+      result = circ
+    )
+  }
+
+  override int getAnIndexIfAny() {
+    exists(
+      QuantumCircuit circ, int i
+    |
+      if
+        circ.getNumberOfQubits() > 0
+      then
+        i in [0 .. circ.getNumberOfQubits() - 1]
+      else
+        i = -1
+    |
+        result = i
+    )
+  }
+
+}
+
 // GATE SPECIFICATIONS
 // TODO: support mcrx, mcry, mcrz
 // TODO: cu1 and cu3 are deprecated, support different versions of Qiskit
-abstract class GateSpecification extends string {
-  GateSpecification() {
-    this instanceof GateSpecificationObjectName or
-    this instanceof GateSpecificationAttributeName
+abstract class OperatorSpecification extends string {
+  OperatorSpecification() {
+    this instanceof OperatorSpecificationObjectName or
+    this instanceof OperatorSpecificationAttributeName
   }
 
   string getName() { result = this }
@@ -491,8 +591,8 @@ abstract class GateSpecification extends string {
   int getNumberOfQubits() { result = count(string s | s = this.getAnArgumentNameOfQubit()) }
 }
 
-class GateSpecificationAttributeName extends string {
-  GateSpecificationAttributeName() {
+class OperatorSpecificationAttributeName extends string {
+  OperatorSpecificationAttributeName() {
     this in [
         // single bit operations
         "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id",
@@ -510,8 +610,8 @@ class GateSpecificationAttributeName extends string {
   }
 }
 
-class GateSpecificationObjectName extends string {
-  GateSpecificationObjectName() {
+class OperatorSpecificationObjectName extends string {
+  OperatorSpecificationObjectName() {
     this in [
         // single operations
         "XGate", "YGate", "ZGate", "HGate", "SGate", "SdgGate", "TGate", "TdgGate", "RXGate",
@@ -530,24 +630,24 @@ class GateSpecificationObjectName extends string {
 }
 
 /** Specification of gates that are unitary / reversible gates. */
-abstract class GateSpecificationUnitary extends GateSpecification { }
+abstract class OperatorSpecificationUnitary extends OperatorSpecification { }
 
 /** Specification of gates that are not unitary and destroy the quantum state. */
-abstract class GateSpecificationNonUnitary extends GateSpecification { }
+abstract class OperatorSpecificationNonUnitary extends OperatorSpecification { }
 
 // NON-UNITARY GATES
-class GateSpecificationReset extends GateSpecificationNonUnitary {
-  GateSpecificationReset() { this in ["reset", "Reset"] }
+class OperatorSpecificationReset extends OperatorSpecificationNonUnitary {
+  OperatorSpecificationReset() { this in ["reset", "Reset"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 }
 
-class GateSpecificationMeasureAll extends GateSpecificationNonUnitary {
-  GateSpecificationMeasureAll() { this in ["measure_all"] }
+class OperatorSpecificationMeasureAll extends OperatorSpecificationNonUnitary {
+  OperatorSpecificationMeasureAll() { this in ["measure_all"] }
 }
 
-class GateSpecificationMeasure extends GateSpecificationNonUnitary {
-  GateSpecificationMeasure() { this in ["measure", "Measure"] }
+class OperatorSpecificationMeasure extends OperatorSpecificationNonUnitary {
+  OperatorSpecificationMeasure() { this in ["measure", "Measure"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
@@ -555,8 +655,8 @@ class GateSpecificationMeasure extends GateSpecificationNonUnitary {
 }
 
 // UNITARY GATES
-class GateSpecificationSingleQubitNoParam extends GateSpecificationUnitary {
-  GateSpecificationSingleQubitNoParam() {
+class OperatorSpecificationSingleQubitNoParam extends OperatorSpecificationUnitary {
+  OperatorSpecificationSingleQubitNoParam() {
     this in [
         "h", "x", "y", "z", "s", "sdg", "t", "tdg", "sx", "i", "id", "iden", "HGate", "XGate",
         "YGate", "ZGate", "SGate", "SdgGate", "TGate", "TdgGate", "SXGate", "IGate"
@@ -566,64 +666,64 @@ class GateSpecificationSingleQubitNoParam extends GateSpecificationUnitary {
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 }
 
-class GateSpecificationPGate extends GateSpecificationUnitary {
-  GateSpecificationPGate() { this in ["p", "PhaseGate"] }
+class OperatorSpecificationPGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationPGate() { this in ["p", "PhaseGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRXGate extends GateSpecificationUnitary {
-  GateSpecificationRXGate() { this in ["rx", "RXGate"] }
+class OperatorSpecificationRXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRXGate() { this in ["rx", "RXGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRYGate extends GateSpecificationUnitary {
-  GateSpecificationRYGate() { this in ["ry", "RYGate"] }
+class OperatorSpecificationRYGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRYGate() { this in ["ry", "RYGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRZGate extends GateSpecificationUnitary {
-  GateSpecificationRZGate() { this in ["rz", "RZGate"] }
+class OperatorSpecificationRZGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRZGate() { this in ["rz", "RZGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result = "phi" }
 }
 
-class GateSpecificationRVGate extends GateSpecificationUnitary {
-  GateSpecificationRVGate() { this in ["rv", "RVGate"] }
+class OperatorSpecificationRVGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRVGate() { this in ["rv", "RVGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result in ["vx", "vy", "vz"] }
 }
 
-class GateSpecificationU1Gate extends GateSpecificationUnitary {
-  GateSpecificationU1Gate() { this in ["u1", "U1Gate"] }
+class OperatorSpecificationU1Gate extends OperatorSpecificationUnitary {
+  OperatorSpecificationU1Gate() { this in ["u1", "U1Gate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationU2Gate extends GateSpecificationUnitary {
-  GateSpecificationU2Gate() { this in ["u2", "U2Gate"] }
+class OperatorSpecificationU2Gate extends OperatorSpecificationUnitary {
+  OperatorSpecificationU2Gate() { this in ["u2", "U2Gate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfParam() { result in ["phi", "lam"] }
 }
 
-class GateSpecificationU3Gate extends GateSpecificationUnitary {
-  GateSpecificationU3Gate() { this in ["u3", "U3Gate", "u", "UGate"] }
+class OperatorSpecificationU3Gate extends OperatorSpecificationUnitary {
+  OperatorSpecificationU3Gate() { this in ["u3", "U3Gate", "u", "UGate"] }
 
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
@@ -631,112 +731,112 @@ class GateSpecificationU3Gate extends GateSpecificationUnitary {
 }
 
 // TODO: CHECK IF ALL GATES WITH PARAMS ARE PRESENT
-class GateSpecificationCPGate extends GateSpecificationUnitary {
-  GateSpecificationCPGate() { this in ["cp", "CPhaseGate"] }
+class OperatorSpecificationCPGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCPGate() { this in ["cp", "CPhaseGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationCXGate extends GateSpecificationUnitary {
-  GateSpecificationCXGate() { this in ["cx", "CXGate", "cnot"] }
+class OperatorSpecificationCXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCXGate() { this in ["cx", "CXGate", "cnot"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCYGate extends GateSpecificationUnitary {
-  GateSpecificationCYGate() { this in ["cy", "CYGate"] }
+class OperatorSpecificationCYGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCYGate() { this in ["cy", "CYGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCZGate extends GateSpecificationUnitary {
-  GateSpecificationCZGate() { this in ["cz", "CZGate"] }
+class OperatorSpecificationCZGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCZGate() { this in ["cz", "CZGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCHGate extends GateSpecificationUnitary {
-  GateSpecificationCHGate() { this in ["ch", "CHGate"] }
+class OperatorSpecificationCHGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCHGate() { this in ["ch", "CHGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCSGate extends GateSpecificationUnitary {
-  GateSpecificationCSGate() { this in ["cs", "CSGate"] }
+class OperatorSpecificationCSGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCSGate() { this in ["cs", "CSGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCSdgGate extends GateSpecificationUnitary {
-  GateSpecificationCSdgGate() { this in ["csdg", "CSdgGate"] }
+class OperatorSpecificationCSdgGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCSdgGate() { this in ["csdg", "CSdgGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
-class GateSpecificationCSXGate extends GateSpecificationUnitary {
-  GateSpecificationCSXGate() { this in ["csx", "CSXGate"] }
+class OperatorSpecificationCSXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCSXGate() { this in ["csx", "CSXGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 }
 
 // GENERIC TWO-QUBIT GATES
-class GateSpecificationSwapGate extends GateSpecificationUnitary {
-  GateSpecificationSwapGate() { this in ["swap", "SwapGate"] }
+class OperatorSpecificationSwapGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationSwapGate() { this in ["swap", "SwapGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 }
 
-class GateSpecificationISwapGate extends GateSpecificationUnitary {
-  GateSpecificationISwapGate() { this in ["iswap", "iSwapGate"] }
+class OperatorSpecificationISwapGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationISwapGate() { this in ["iswap", "iSwapGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 }
 
 // CONTROL WITH PARAMS
-class GateSpecificationCRZGate extends GateSpecificationUnitary {
-  GateSpecificationCRZGate() { this in ["crz", "CRZGate"] }
+class OperatorSpecificationCRZGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCRZGate() { this in ["crz", "CRZGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationCRYGate extends GateSpecificationUnitary {
-  GateSpecificationCRYGate() { this in ["cry", "CRYGate"] }
+class OperatorSpecificationCRYGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCRYGate() { this in ["cry", "CRYGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationCRXGate extends GateSpecificationUnitary {
-  GateSpecificationCRXGate() { this in ["crx", "CRXGate"] }
+class OperatorSpecificationCRXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCRXGate() { this in ["crx", "CRXGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationCU1Gate extends GateSpecificationUnitary {
-  GateSpecificationCU1Gate() { this in ["cu1", "CU1Gate"] }
+class OperatorSpecificationCU1Gate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCU1Gate() { this in ["cu1", "CU1Gate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationCU3Gate extends GateSpecificationUnitary {
-  GateSpecificationCU3Gate() { this in ["cu3", "CU3Gate"] }
+class OperatorSpecificationCU3Gate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCU3Gate() { this in ["cu3", "CU3Gate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
   override string getAnArgumentNameOfParam() { result in ["theta", "phi", "lam"] }
 }
 
-class GateSpecificationCUGate extends GateSpecificationUnitary {
-  GateSpecificationCUGate() { this in ["cu", "CUGate"] }
+class OperatorSpecificationCUGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCUGate() { this in ["cu", "CUGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["control_qubit", "target_qubit"] }
 
@@ -744,56 +844,56 @@ class GateSpecificationCUGate extends GateSpecificationUnitary {
 }
 
 // TODO: CONTINUE WITH double controls
-class GateSpecificationCSwapGate extends GateSpecificationUnitary {
-  GateSpecificationCSwapGate() { this in ["cswap", "CSwapGate", "fredkin"] }
+class OperatorSpecificationCSwapGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCSwapGate() { this in ["cswap", "CSwapGate", "fredkin"] }
 
   override string getAnArgumentNameOfQubit() {
     result in ["control_qubit", "target_qubit1", "target_qubit2"]
   }
 }
 
-class GateSpecificationCCXGate extends GateSpecificationUnitary {
-  GateSpecificationCCXGate() { this in ["ccx", "CCXGate", "toffoli"] }
+class OperatorSpecificationCCXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCCXGate() { this in ["ccx", "CCXGate", "toffoli"] }
 
   override string getAnArgumentNameOfQubit() {
     result in ["control_qubit1", "control_qubit2", "target_qubit"]
   }
 }
 
-class GateSpecificationCCZGate extends GateSpecificationUnitary {
-  GateSpecificationCCZGate() { this in ["ccz", "CCZGate"] }
+class OperatorSpecificationCCZGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationCCZGate() { this in ["ccz", "CCZGate"] }
 
   override string getAnArgumentNameOfQubit() {
     result in ["control_qubit1", "control_qubit2", "target_qubit"]
   }
 }
 
-class GateSpecificationRXXGate extends GateSpecificationUnitary {
-  GateSpecificationRXXGate() { this in ["rxx", "RXXGate"] }
+class OperatorSpecificationRXXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRXXGate() { this in ["rxx", "RXXGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRYYGate extends GateSpecificationUnitary {
-  GateSpecificationRYYGate() { this in ["ryy", "RYYGate"] }
+class OperatorSpecificationRYYGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRYYGate() { this in ["ryy", "RYYGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRZZGate extends GateSpecificationUnitary {
-  GateSpecificationRZZGate() { this in ["rzz", "RZZGate"] }
+class OperatorSpecificationRZZGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRZZGate() { this in ["rzz", "RZZGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 
   override string getAnArgumentNameOfParam() { result = "theta" }
 }
 
-class GateSpecificationRZXGate extends GateSpecificationUnitary {
-  GateSpecificationRZXGate() { this in ["rzx", "RZXGate"] }
+class OperatorSpecificationRZXGate extends OperatorSpecificationUnitary {
+  OperatorSpecificationRZXGate() { this in ["rzx", "RZXGate"] }
 
   override string getAnArgumentNameOfQubit() { result in ["qubit1", "qubit2"] }
 
