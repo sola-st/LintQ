@@ -37,14 +37,10 @@ jobs:
       #   run: |
       #     codeql pack install
 
-      - name: Move to codeql directory
-        run: |
-          cd qlint
-
       - name: Run CodeQL test BitUse
         run: |
-          codeql test run codeql/test/library-tests/qiskit/bituse/ --threads=20
+          cd qlint ; codeql test run codeql/test/library-tests/qiskit/bituse/ --threads=20
 
       - name: Run CodeQL test QuantumOperators
         run: |
-          codeql test run codeql/test/library-tests/qiskit/gate/ --threads=20
+          cd qlint ; codeql test run codeql/test/library-tests/qiskit/gate/ --threads=20
