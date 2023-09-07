@@ -5,7 +5,13 @@ import semmle.python.ApiGraphs
 // import Variables.Definition
 import semmle.python.dataflow.new.TaintTracking
 
-abstract class Register extends DataFlow::CallCfgNode {
+
+/**
+ * DEPRECATED - use RegisterV2 instead.
+ *
+ * Classical and quantum register identified by their allocation site as dataflow.
+ */
+deprecated abstract class Register extends DataFlow::CallCfgNode {
   // the register object can be accessed by the name of the variable
   // and an index. For example: reg[0] or reg[x]
   // we want to a general node representing one of this accesses
@@ -70,12 +76,18 @@ abstract class Register extends DataFlow::CallCfgNode {
   // }
 }
 
+/**
+ * DEPRECATED - use QuantumRegisterV2 instead.
+ */
 class ClassicalRegister extends Register {
   ClassicalRegister() {
     this = API::moduleImport("qiskit").getMember("ClassicalRegister").getACall()
   }
 }
 
+/**
+ * DEPRECATED - use ClassicalRegisterV2 instead.
+ */
 class QuantumRegister extends Register {
   QuantumRegister() { this = API::moduleImport("qiskit").getMember("QuantumRegister").getACall() }
   // Expr getName() {
@@ -95,7 +107,7 @@ class QuantumRegister extends Register {
 }
 
 // REGISTER
-/** QuantumRegister and ClassicalRegister calls. */
+/** Classical and quantum register identified by their allocation site as dataflow.*/
 abstract class RegisterV2 extends DataFlow::CallCfgNode {
   /** Returns the size of the register. */
   int getSize() {

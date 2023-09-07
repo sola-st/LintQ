@@ -19,31 +19,25 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 
 
-// IDEA: disable when the mapping is obvious
-// (e.g., the main and sub circuits have the same size)
-
 from
-    QuantumCircuit mother_circuit,
-    QuantumCircuit sub_circuit,
-    DataFlow::CallCfgNode compose_call
+    QuantumCircuit motherCircuit,
+    SubCircuit subCircuit,
+    ComposeCall composeCall
 where
     // mother_circuit is the circuit that contains the sub_circuit
     // e.g. mother_circuit.compose(sub_circuit)
-    compose_call = mother_circuit.getAnAttributeRead("compose").getACall() and
-    sub_circuit.flowsTo(compose_call.getArg(0))
-    // check that the two circuits are compatible
-    and
-    mother_circuit.getNumberOfQubits() >= sub_circuit.getNumberOfQubits()
-    and
+    motherCircuit = subCircuit.getAParentCircuit() and
+    composeCall = subCircuit.getCompositionCallWith(motherCircuit) and
+    // check that the two circuits are compatible in size and not obvious (becasue they have different size)
+    motherCircuit.getNumberOfQubits() > subCircuit.getNumberOfQubits() and
+    // they have both fixed size
+    not motherCircuit.hasUnresolvedSizeRegister() and
+    not subCircuit.hasUnresolvedSizeRegister() and
     // check that the compose call does not specify the wiring
-    not exists(compose_call.(API::CallNode).getParameter(1, "qubits"))
-    and
-    not exists(compose_call.(API::CallNode).getParameter(2, "clbits"))
-    // check that it is not obvious (aka they have the same size)
-    and
-    mother_circuit.getNumberOfQubits() != sub_circuit.getNumberOfQubits()
+    composeCall.isWiringUnspecified()
 select
-    compose_call, "The composition of subcircuit '" + sub_circuit.getName() +
-        "' to the '" + mother_circuit.getName() + "' " +
+    composeCall, "The composition of subcircuit '" + subCircuit.getName() +
+        "' (l: " + subCircuit.getLocation().getStartLine() + ", c: " +
+        subCircuit.getLocation().getStartColumn() + ") to the '" + motherCircuit.getName() + "' (l: " + motherCircuit.getLocation().getStartLine() + ", c: " + motherCircuit.getLocation().getStartColumn() + ") " +
         "has no specified wiring (parameters 'qubits' and 'clbits' of " +
         "compose() are not used)."

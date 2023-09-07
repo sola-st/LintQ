@@ -1,2 +1,0 @@
-ERROR: Could not resolve module qiskit.register (test_parametric_size.ql:2,8-23)
-ERROR: Could not resolve type ClassicalRegister (test_parametric_size.ql:4,6-23)

@@ -1,0 +1,3 @@
+| pred_is_conditional.py:9:1:9:15 | ControlFlowNode for Attribute() | Operator in circuit: 'qc_correct' on qubit: 0 is applied conditionally based on register: 'cr'. |
+| pred_is_conditional.py:19:1:19:13 | ControlFlowNode for Attribute() | Operator in circuit: 'qc_buggy' on qubit: 0 is applied conditionally based on register: 'cr_b'. |
+| pred_is_conditional.py:28:1:28:15 | ControlFlowNode for Attribute() | Operator in circuit: 'qc_strange' on qubit: 0 is applied conditionally based on register: 'cr_base'. |

@@ -1,10 +1,10 @@
-| concept_reset_gate.py:12:1:12:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_plain' on qubit: 0 |
-| concept_reset_gate.py:13:1:13:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_plain' on qubit: 1 |
-| concept_reset_gate.py:19:1:19:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_begin' on qubit: 0 |
-| concept_reset_gate.py:20:1:20:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_begin' on qubit: 1 |
-| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 0 |
-| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 1 |
-| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 2 |
-| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 0 |
-| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 1 |
-| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 2 |
+| concept_reset_gate.py:12:1:12:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_plain' on qubit: 0. register: 'anonymous register'. |
+| concept_reset_gate.py:13:1:13:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_plain' on qubit: 1. register: 'anonymous register'. |
+| concept_reset_gate.py:19:1:19:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_begin' on qubit: 0. register: 'anonymous register'. |
+| concept_reset_gate.py:20:1:20:17 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_begin' on qubit: 1. register: 'anonymous register'. |
+| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 0. register: 'qr'. |
+| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 1. register: 'qr'. |
+| concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc' on qubit: 2. register: 'qr'. |
+| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 0. register: 'qreg'. |
+| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 1. register: 'qreg'. |
+| concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Reset gate in circuit: 'qc_loop' on qubit: 2. register: 'qreg'. |

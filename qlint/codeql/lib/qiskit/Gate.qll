@@ -2,8 +2,8 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import qiskit.Circuit
-// import qiskit.Qubit
 import qiskit.BitUse
+import qiskit.QuantumDataFlow
 
 private predicate isGateCall(DataFlow::CallCfgNode call) {
   exists(QuantumCircuit circ, OperatorSpecificationAttributeName gate_name_call |
@@ -48,119 +48,9 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
   /** Holds if this gate is applied after the other gate on the same qubit. */
   pragma[inline]
   predicate isAppliedAfterOn(QuantumOperator other, int qubit_index) {
-    exists(
-      QuantumCircuit circ, BitUse thisBitUse, BitUse otherBitUse, ControlFlowNode thisNode,
-      ControlFlowNode otherNode, ControlFlowNode circNode
-    |
-      // they are in the same file
-      exists(File f |
-        this.getLocation().getFile() = f and
-        other.getLocation().getFile() = f and
-        circ.getLocation().getFile() = f and
-        thisBitUse.getLocation().getFile() = f and
-        otherBitUse.getLocation().getFile() = f
-      ) and
-      // they are connected to the control flow
-      thisNode = this.getNode() and
-      otherNode = other.getNode() and
-      // they are applied in the right order: other >> this
-      otherNode.strictlyReaches(thisNode) and
-      // they belong to the same circuit
-      circ = this.getQuantumCircuit() and
-      circ = other.getQuantumCircuit() and
-      // connect bit use and the two gates
-      thisBitUse.getAGate() = this and
-      otherBitUse.getAGate() = other and
-      (
-        // // they act on the same register
-        // // (if there is one explicitely instantiated)
-        thisBitUse.getARegister() = otherBitUse.getARegister()
-        or
-        // or they act on the single quantum register of a circuit
-        // experessed implicitely with e.g. QuantumCircuit(4)
-        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 0 and
-        circ.getNumberOfQubits() > 0
-        or
-        // or they act on the same quantum register but one uses the
-        // integer only and the other uses the register object
-        // this is unambiguous only with a single register
-        // qc.h(0)
-        // qc.x(qreg[0])
-        count(QuantumRegister reg | reg = circ.getAQuantumRegister() | reg) = 1 and
-        circ.getNumberOfQubits() > 0
-      ) and
-      // and they act on the same position
-      // bind the qubit index
-      thisBitUse.getAnIndex() = qubit_index and
-      otherBitUse.getAnIndex() = qubit_index and
-      // EXTRA PRECISION
-      // they refer to the same circuit instance
-      circNode = circ.getNode() and
-      circNode.strictlyReaches(thisNode) and
-      circNode.strictlyReaches(otherNode) and
-      // we do not want a situation where the order is:
-      // other >> initialization >> gate
-      // because they would not refer to the same circuit anymore
-      not otherNode.strictlyReaches(circNode)
-    )
+    mayFollow(other, this, this.getLocation().getFile(), qubit_index)
   }
 
-  /** Holds if there is a path this gate to other gate via a different intermediate gate. */
-  pragma[inline]
-  predicate mayFollowVia(QuantumOperator other, QuantumOperator intermediate, int qubitIndex) {
-    // case: other >> intermediate >> this
-    // exclude case: other >> this >> intermediate
-    // exclude case: intermediate >> other >> this
-    // exclude (loop) case: this >> other >> intermediate >> this
-    // they are all in the same file
-    exists(File f |
-      this.getLocation().getFile() = f and
-      other.getLocation().getFile() = f and
-      intermediate.getLocation().getFile() = f
-      // and
-      // qc.getLocation().getFile() = f
-    ) and
-    exists(
-      ControlFlowNode thisNode, ControlFlowNode otherNode, ControlFlowNode intermediateNode,
-      QuantumCircuit qc
-    |
-      // the control flow and the gates are connected
-      thisNode = this.getNode() and
-      otherNode = other.getNode() and
-      intermediateNode = intermediate.getNode() and
-      // they work on the same qubit
-      qubitIndex = this.getATargetQubit() and
-      qubitIndex = other.getATargetQubit() and
-      qubitIndex = intermediate.getATargetQubit() and
-      // they are in the same circuit
-      qc = this.getQuantumCircuit() and
-      qc = other.getQuantumCircuit() and
-      qc = intermediate.getQuantumCircuit() and
-      // they are connected
-      otherNode.strictlyReaches(intermediateNode) and
-      intermediateNode.strictlyReaches(thisNode) and
-      // the intermediate gate is different from the start and target
-      this != intermediate and
-      other != intermediate
-    )
-    // this.isAppliedAfterOn(other, qubitIndex) and
-    // this.isAppliedAfterOn(intermediate, qubitIndex) and
-    // intermediate.isAppliedAfterOn(other, qubitIndex) and
-    // // exclude: other >> this >> intermediate
-    // not intermediate.isAppliedAfterOn(this, qubitIndex)
-  }
-
-  /** Holds if there is at least a path from this to other (both acting on same bit). */
-  pragma[inline]
-  predicate mayFollow(QuantumOperator other, int qubitIndex) {
-    this.isAppliedAfterOn(other, qubitIndex)
-  }
-
-  /** Holds if all paths to this gate contain other (other is a dominator). */
-  // pragma[inline]
-  // predicate mustFollow(Gate other, int qubitIndex) {
-  //   // TODO
-  // }
   pragma[inline]
   predicate isAppliedAfter(QuantumOperator other) {
     exists(int qubit_index |
@@ -171,6 +61,7 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
 
   predicate isAppliedBefore(QuantumOperator other) { other.isAppliedAfter(this) }
 
+  /** Holds if this operator is a measurement. */
   predicate isMeasurement() { this instanceof Measurement }
 
   /** Holds if this gate is unitary: e.g. h, x, y, z, cx, ccx, etc. */
@@ -179,6 +70,43 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
   /** Holds if this gate destroys the quantum state: e.g. measure, reset, measure_all */
   predicate destroysTheQuantumState() {
     this.getGateName() instanceof OperatorSpecificationNonUnitary
+  }
+
+  /** Holds if the quantum operator is applied conditionally with a c_if. */
+  predicate isConditional() {
+    // case: qc.h(0).c_if(c, 0) >> true
+    // case: qc.x(1) >> false
+    exists(
+      Attribute attr,
+      CallNode call,
+      CallNode cifCall
+    |
+      this.getAnAttributeRead("c_if").asExpr() = attr and
+      this.getNode() = call and
+      cifCall.getNode() = call.getNode().getParentNode+())
+  }
+
+  /** (if isConditional holds) the condition register. */
+  RegisterV2 getAConditionRegister() {
+    // case: qc.h(0).c_if(c, 0) >> c
+    // case: qc.x(1) >> null
+    exists(
+      RegisterV2 reg,
+      Attribute attr,
+      CallNode call,
+      CallNode cifCall,
+      DataFlow::CallCfgNode cifCfgCall
+    |
+      this.getAnAttributeRead("c_if").asExpr() = attr and
+      this.getNode() = call and
+      cifCall.getNode() = call.getNode().getParentNode+() and
+      cifCfgCall.getNode() = cifCall and
+      cifCfgCall.(API::CallNode)
+        .getParameter(0, "classical")
+        .getAValueReachingSink() = reg
+    |
+      result = reg
+    )
   }
 }
 

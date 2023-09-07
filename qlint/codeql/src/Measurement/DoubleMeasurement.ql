@@ -19,14 +19,7 @@ import qiskit.QuantumDataFlow
 
 from Measurement measureFirst, Measurement measureSecond, int sharedQubit
 where
-  // measureSecond.isAppliedAfterOn(measureFirst, sharedQubit) and
-  mayFollow(measureFirst, measureSecond, measureFirst.getLocation().getFile(), sharedQubit) and
-  not exists(Reset res |
-    sortedInOrder(measureFirst, res, measureSecond, measureFirst.getLocation().getFile(),
-      sharedQubit)
-  ) and
-  // measureSecond.mayFollowVia(measureFirst, res, sharedQubit)) and
-  sharedQubit >= 0
+  mayFollowDirectly(measureFirst, measureSecond, measureFirst.getLocation().getFile(), sharedQubit)
 select measureSecond,
   "Two consecutive measurements on qubit '" + sharedQubit + "' " + "at locations: (" +
     measureFirst.getLocation().getStartLine() + ", " + measureFirst.getLocation().getStartColumn() +

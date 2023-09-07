@@ -21,12 +21,16 @@ import qiskit.QuantumDataFlow
 
 from Measurement measure, Gate gate, int shared_qubit
 where
-  // gate.isAppliedAfterOn(measure, shared_qubit)
-  mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit) and
-  not exists(Reset reset |
-    // gate.mayFollowVia(measure, reset, shared_qubit)
-    sortedInOrder(measure, reset, gate, measure.getLocation().getFile(), shared_qubit)
-  )
+  mayFollowDirectly(measure, gate, measure.getLocation().getFile(), shared_qubit)
+
+  // mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit)
+  // and
+  // forall(Reset reset |
+  //   measure.getQuantumCircuit() = reset.getQuantumCircuit()
+  // |
+  //   not sortedInOrder(measure, reset, gate, measure.getLocation().getFile(), shared_qubit)
+  // ) and
+  // shared_qubit >= 0
 select gate,
   "Operation '" + gate.getGateName() + "' on qubit " + shared_qubit +
     " after measurement at location: (" + measure.getLocation().getStartLine() + ", " +

@@ -1,15 +1,7 @@
-| concept_reset_gate.py:10:1:10:22 | ControlFlowNode for Attribute() | concept_reset_gate.py:12:1:12:17 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'reset'. |
 | concept_reset_gate.py:10:1:10:22 | ControlFlowNode for Attribute() | concept_reset_gate.py:14:1:14:13 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'h'. |
-| concept_reset_gate.py:11:1:11:22 | ControlFlowNode for Attribute() | concept_reset_gate.py:13:1:13:17 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'reset'. |
 | concept_reset_gate.py:24:1:24:22 | ControlFlowNode for Attribute() | concept_reset_gate.py:26:1:26:13 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'h'. |
-| concept_reset_gate.py:36:5:36:28 | ControlFlowNode for Attribute() | concept_reset_gate.py:36:5:36:28 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'measure'. |
-| concept_reset_gate.py:36:5:36:28 | ControlFlowNode for Attribute() | concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'reset'. |
 | concept_reset_gate.py:37:5:37:28 | ControlFlowNode for Attribute() | concept_reset_gate.py:35:5:35:23 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'cx'. |
-| concept_reset_gate.py:37:5:37:28 | ControlFlowNode for Attribute() | concept_reset_gate.py:37:5:37:28 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'measure'. |
-| concept_reset_gate.py:37:5:37:28 | ControlFlowNode for Attribute() | concept_reset_gate.py:38:5:38:16 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'reset'. |
-| concept_reset_gate.py:50:5:50:37 | ControlFlowNode for Attribute() | concept_reset_gate.py:50:5:50:37 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'measure'. |
-| concept_reset_gate.py:50:5:50:37 | ControlFlowNode for Attribute() | concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'reset'. |
 | concept_reset_gate.py:51:5:51:37 | ControlFlowNode for Attribute() | concept_reset_gate.py:49:5:49:32 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'cx'. |
-| concept_reset_gate.py:51:5:51:37 | ControlFlowNode for Attribute() | concept_reset_gate.py:51:5:51:37 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'measure'. |
-| concept_reset_gate.py:51:5:51:37 | ControlFlowNode for Attribute() | concept_reset_gate.py:53:5:53:23 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 1 is followed by gate: 'reset'. |
 | pred_is_applied_after.py:43:1:43:16 | ControlFlowNode for Attribute() | pred_is_applied_after.py:44:1:44:18 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 2 is followed by gate: 'h'. |
+| pred_is_conditional.py:8:1:8:26 | ControlFlowNode for Attribute() | pred_is_conditional.py:9:1:9:15 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'x'. |
+| pred_is_conditional.py:18:1:18:30 | ControlFlowNode for Attribute() | pred_is_conditional.py:19:1:19:13 | ControlFlowNode for Attribute() | Gate: 'measure' on qubit 0 is followed by gate: 'x'. |

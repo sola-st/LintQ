@@ -42,6 +42,12 @@ qc.ryy(theta=0.1, qubit1=1, qubit2=2)
 qc.rzz(theta=0.1, qubit1=2, qubit2=3)
 qc.rzx(theta=0.1, qubit1=3, qubit2=4)
 qc.rzz(0.1, 4, 5)
+# unitary
+matrix = [[0, 0, 0, 1],
+          [0, 0, 1, 0],
+          [1, 0, 0, 0],
+          [0, 1, 0, 0]]
+qc.unitary(matrix, [6])
 qc.measure(qreg[0], creg[0])
 qc.measure_all()
 
@@ -75,4 +81,11 @@ qc.append(RYYGate(theta=0.1), qargs=[1, 2])
 qc.append(RZZGate(theta=0.1), qargs=[2, 3])
 qc.append(RZXGate(theta=0.1), qargs=[3, 4])
 qc.append(RZZGate(theta=0.1), qargs=[4, 5])
+# unitary
+matrix_bis = [[0, 0, 0, 1],
+              [0, 0, 1, 0],
+              [1, 0, 0, 0],
+              [0, 1, 0, 0]]
+gate = UnitaryGate(matrix)
+qc.append(gate, [6])
 qc.append(Measure(), qargs=[0], cargs=[creg[0]])

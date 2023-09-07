@@ -5,8 +5,10 @@ import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Qubit
 
-from ResetGate reset
-where not reset.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%")
+from Reset reset, QubitUse qbu
+where
+  not reset.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
+  qbu.getAGate() = reset
 select reset,
   "Reset gate in circuit: '" + reset.getQuantumCircuit().getName() + "' on qubit: " +
-    reset.getATargetQubit()
+    reset.getATargetQubit() + ". register: '" + qbu.getARegisterName() + "'."

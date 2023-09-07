@@ -44,7 +44,7 @@ qc_subcircuit_obvious = QuantumCircuit(3, 3)
 qc_subcircuit_obvious.h(0)
 qc_macro_obvious = QuantumCircuit(3, 3)
 qc_macro_obvious.z(2)
-qc_macro_obvious.compose(qc_subcircuit, inplace=True)  # DISABLED WARNING
+qc_macro_obvious.compose(qc_subcircuit_obvious, inplace=True)  # DISABLED WARNING
 
 
 # ghost addition allowed on return value

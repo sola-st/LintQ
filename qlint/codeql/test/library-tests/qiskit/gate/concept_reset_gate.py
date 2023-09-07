@@ -51,3 +51,4 @@ for i in range(2):
     qc_loop.measure(qreg[1], creg[1])
     qc_transpiled = transpile(qc_loop, backend=Aer.get_backend('qasm_simulator'))
     qc_loop.reset(qreg)
+

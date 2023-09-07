@@ -5,11 +5,11 @@ import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Qubit
 
-from Gate gateBefore, Gate gateAfter, int shared_qubit
+from QuantumOperator opBefore, QuantumOperator opAfter, int shared_qubit
 where
-  not gateBefore.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
-  not gateAfter.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
-  gateAfter.isAppliedAfterOn(gateBefore, shared_qubit)
-select gateBefore, gateAfter,
-  "Gate: '" + gateBefore.getGateName() + "' on qubit " + shared_qubit + " is followed by gate: '" +
-    gateAfter.getGateName() + "'."
+  not opBefore.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
+  not opAfter.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/%") and
+  opAfter.isAppliedAfterOn(opBefore.(QuantumOperator), shared_qubit)
+select opBefore, opAfter,
+  "Op: '" + opBefore.getGateName() + "' on qubit " + shared_qubit + " is followed by op: '" +
+  opAfter.getGateName() + "'."

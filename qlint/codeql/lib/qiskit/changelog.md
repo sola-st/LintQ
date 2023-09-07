@@ -1,3 +1,13 @@
+2023.09.07
+- introduced `QuantumOperators` and new hierarchy with: `Gate`, `Measurement` and `Reset`.
+- marked `Register` as deprecated in favor of `RegisterV2`
+- fix: size of `TraspiledCircuit` derived from the pre-transpilation circuit
+- fix: add support for `unitary()` gate
+- query: ungoverened composition disable if one of the two circuit is unknown size
+- feat: add `mayFollowDirectly` in the quantum data flow
+
+
+
 2023.08.29
 - `GateSpecification`, `BitUse`, `Circuit` with `SubCircuit` added to the qlint library
 

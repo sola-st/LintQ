@@ -70,3 +70,16 @@ for i in range(2):
     qc_transpiled = transpile(qc_loop, backend=Aer.get_backend('qasm_simulator'))
     qc_loop.reset(qreg)
 
+
+# false positive
+q = QuantumRegister(3)
+c = ClassicalRegister(3)
+qc_test = QuantumCircuit(q, c)
+qc_test.u1(0.5, q[0])
+qc_test.h(q[1])
+qc_test.cx(q[1], q[2])
+qc_test.barrier(q)
+qc_test.cx(q[0], q[1])
+qc_test.measure(q[1], c[1])
+qc_test.h(q[0])
+qc_test.measure(q[0], c[0])

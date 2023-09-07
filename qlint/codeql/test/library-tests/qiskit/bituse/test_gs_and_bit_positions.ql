@@ -2,8 +2,8 @@ import python
 import qiskit.BitUse
 import qiskit.Circuit
 
-from GateSpecification gs
+from OperatorSpecification gs
 select gs,
-  "gate specification: " + gs.getName() + " - name qubit: " + gs.getAnArgumentNameOfQubit() +
+  "Operator specification: " + gs.getName() + " - name qubit: " + gs.getAnArgumentNameOfQubit() +
     " - index qubit: " + gs.getAnArgumentIndexOfQubit()
 // + " - name param : " + gs.getAnArgumentNameOfParam() + " - index param: " + gs.getAnArgumentIndexOfParam() + " "

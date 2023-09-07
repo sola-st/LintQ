@@ -290,22 +290,42 @@ abstract class QubitUse extends BitUse {
     // > quantum_register
     // case: qc.h(quantum_register)
     // > quantum_register
-    if
-      exists(RegisterV2 reg |
-        reg.getScope() = this.getScope() and
-        reg.getName() = this.asExpr().(Subscript).getObject().toString()
-      )
-    then
-      exists(RegisterV2 reg |
-        reg.getScope() = this.getScope() and
-        reg.getName() = this.asExpr().(Subscript).getObject().toString()
-      |
-        result = reg
-      )
-    else
-      if exists(RegisterV2 reg | reg.flowsTo(this))
-      then exists(RegisterV2 reg | reg.flowsTo(this) | result = reg)
-      else result instanceof EmptySetForRegisterV2
+    // exists(RegisterV2 reg
+    // |
+    //   reg.getScope() = this.getScope() and
+    //   reg.getName() = this.asExpr().(Subscript).getObject().toString()
+    // |
+    //   result = reg
+    // )
+    // or
+    exists(RegisterV2 reg, Value regValue
+    |
+      regValue.getOrigin() = reg.getNode() and
+      this.asExpr().(Subscript).getObject().pointsTo(regValue)
+    |
+      result = reg
+    )
+    or
+    exists(RegisterV2 reg | reg.flowsTo(this) | result = reg)
+    or
+    result instanceof EmptySetForRegisterV2
+
+    // if
+    //   exists(RegisterV2 reg |
+    //     reg.getScope() = this.getScope() and
+    //     reg.getName() = this.asExpr().(Subscript).getObject().toString()
+    //   )
+    // then
+    //   exists(RegisterV2 reg |
+    //     reg.getScope() = this.getScope() and
+    //     reg.getName() = this.asExpr().(Subscript).getObject().toString()
+    //   |
+    //     result = reg
+    //   )
+    // else
+    //   if exists(RegisterV2 reg | reg.flowsTo(this))
+    //   then exists(RegisterV2 reg | reg.flowsTo(this) | result = reg)
+    //   else result instanceof EmptySetForRegisterV2
   }
 }
 
@@ -594,7 +614,9 @@ class OperatorSpecificationAttributeName extends string {
         // measurements
         "measure", "measure_all",
         // reset
-        "reset"
+        "reset",
+        // unitary
+        "unitary"
       ]
   }
 }
@@ -613,7 +635,11 @@ class OperatorSpecificationObjectName extends string {
         "RXXGate", "RYYGate", "RZZGate", "RZXGate", "SwapGate", "iSwapGate", "MSGate", "CRGate",
         "RGate", "RCCXGate", "ECRGate",
         // measurements
-        "Measure"
+        "Measure",
+        // reset
+        "Reset",
+        // unitary
+        "UnitaryGate"
       ]
   }
 }
@@ -644,6 +670,26 @@ class OperatorSpecificationMeasure extends OperatorSpecificationNonUnitary {
 }
 
 // UNITARY GATES
+
+
+class OperatorSpecificationUnitaryGateObj extends OperatorSpecificationUnitary {
+  OperatorSpecificationUnitaryGateObj() { this = "UnitaryGate" }
+
+  override string getAnArgumentNameOfParam() { result = "data" }
+}
+
+
+class OperatorSpecificationUnitaryCall extends OperatorSpecificationUnitary {
+  OperatorSpecificationUnitaryCall() { this = "unitary" }
+
+  override string getAnArgumentNameOfParam() { result = "obj" }
+
+  override string getAnArgumentNameOfQubit() { result = "qubits" }
+}
+
+
+
+
 class OperatorSpecificationSingleQubitNoParam extends OperatorSpecificationUnitary {
   OperatorSpecificationSingleQubitNoParam() {
     this in [
