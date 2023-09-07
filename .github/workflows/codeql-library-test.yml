@@ -39,8 +39,8 @@ jobs:
 
       - name: Run CodeQL test BitUse
         run: |
-          cd qlint ; codeql test run codeql/test/library-tests/qiskit/bituse/ --threads=20
+          cd qlint ; codeql test run codeql/test/library-tests/qiskit/bituse/ --threads=10
 
       - name: Run CodeQL test QuantumOperators
         run: |
-          cd qlint ; codeql test run codeql/test/library-tests/qiskit/gate/ --threads=20
+          cd qlint ; codeql test run codeql/test/library-tests/qiskit/gate/ --threads=10
