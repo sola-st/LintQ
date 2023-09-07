@@ -76,14 +76,11 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
   predicate isConditional() {
     // case: qc.h(0).c_if(c, 0) >> true
     // case: qc.x(1) >> false
-    exists(
-      Attribute attr,
-      CallNode call,
-      CallNode cifCall
-    |
+    exists(Attribute attr, CallNode call, CallNode cifCall |
       this.getAnAttributeRead("c_if").asExpr() = attr and
       this.getNode() = call and
-      cifCall.getNode() = call.getNode().getParentNode+())
+      cifCall.getNode() = call.getNode().getParentNode+()
+    )
   }
 
   /** (if isConditional holds) the condition register. */
@@ -91,19 +88,14 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
     // case: qc.h(0).c_if(c, 0) >> c
     // case: qc.x(1) >> null
     exists(
-      RegisterV2 reg,
-      Attribute attr,
-      CallNode call,
-      CallNode cifCall,
+      RegisterV2 reg, Attribute attr, CallNode call, CallNode cifCall,
       DataFlow::CallCfgNode cifCfgCall
     |
       this.getAnAttributeRead("c_if").asExpr() = attr and
       this.getNode() = call and
       cifCall.getNode() = call.getNode().getParentNode+() and
       cifCfgCall.getNode() = cifCall and
-      cifCfgCall.(API::CallNode)
-        .getParameter(0, "classical")
-        .getAValueReachingSink() = reg
+      cifCfgCall.(API::CallNode).getParameter(0, "classical").getAValueReachingSink() = reg
     |
       result = reg
     )

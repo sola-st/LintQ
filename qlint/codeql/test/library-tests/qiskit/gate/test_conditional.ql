@@ -5,13 +5,12 @@ import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Qubit
 
-
 from QuantumOperator op
 where op.isConditional()
 select op,
   "Operator in circuit: '" + op.getQuantumCircuit().getName() + "' on qubit: " +
-  op.getATargetQubit() + " is applied conditionally based on register: '" + op.getAConditionRegister().getName() + "'."
-
+    op.getATargetQubit() + " is applied conditionally based on register: '" +
+    op.getAConditionRegister().getName() + "'."
 // from
 //   DataFlow::CallCfgNode cfgCall, Attribute attr, CallNode call, ExprStmt stmt, CallNode cifCall, ClassicalRegisterV2 creg,
 //   DataFlow::CallCfgNode cifCfgCall

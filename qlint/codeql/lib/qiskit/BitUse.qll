@@ -298,8 +298,7 @@ abstract class QubitUse extends BitUse {
     //   result = reg
     // )
     // or
-    exists(RegisterV2 reg, Value regValue
-    |
+    exists(RegisterV2 reg, Value regValue |
       regValue.getOrigin() = reg.getNode() and
       this.asExpr().(Subscript).getObject().pointsTo(regValue)
     |
@@ -309,7 +308,6 @@ abstract class QubitUse extends BitUse {
     exists(RegisterV2 reg | reg.flowsTo(this) | result = reg)
     or
     result instanceof EmptySetForRegisterV2
-
     // if
     //   exists(RegisterV2 reg |
     //     reg.getScope() = this.getScope() and
@@ -670,14 +668,11 @@ class OperatorSpecificationMeasure extends OperatorSpecificationNonUnitary {
 }
 
 // UNITARY GATES
-
-
 class OperatorSpecificationUnitaryGateObj extends OperatorSpecificationUnitary {
   OperatorSpecificationUnitaryGateObj() { this = "UnitaryGate" }
 
   override string getAnArgumentNameOfParam() { result = "data" }
 }
-
 
 class OperatorSpecificationUnitaryCall extends OperatorSpecificationUnitary {
   OperatorSpecificationUnitaryCall() { this = "unitary" }
@@ -686,9 +681,6 @@ class OperatorSpecificationUnitaryCall extends OperatorSpecificationUnitary {
 
   override string getAnArgumentNameOfQubit() { result = "qubits" }
 }
-
-
-
 
 class OperatorSpecificationSingleQubitNoParam extends OperatorSpecificationUnitary {
   OperatorSpecificationSingleQubitNoParam() {

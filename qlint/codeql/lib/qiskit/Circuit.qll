@@ -5,8 +5,7 @@ import qiskit.Register
 import qiskit.Gate
 
 /** Composition call (append() and compose()) to join two circuits. */
-abstract class CompositionCall extends DataFlow::CallCfgNode {}
-
+abstract class CompositionCall extends DataFlow::CallCfgNode { }
 
 /** Call to the compose() api on a circuit. */
 class ComposeCall extends CompositionCall {
@@ -19,8 +18,7 @@ class ComposeCall extends CompositionCall {
 
   /** Holds if the wiring of the composition is unspecified. */
   predicate isWiringUnspecified() {
-    not exists(this.(API::CallNode).getParameter(1, "qubits"))
-    and
+    not exists(this.(API::CallNode).getParameter(1, "qubits")) and
     not exists(this.(API::CallNode).getParameter(2, "clbits"))
   }
 }
@@ -57,14 +55,14 @@ class ToGateCall extends DataFlow::CallCfgNode {
   }
 }
 
-/** Circuit that is appended/composed to another circuit.
+/**
+ * Circuit that is appended/composed to another circuit.
  *
  * Note that it includes:
  * - (actual subcircuit) circuit that are appened and compesed to circuit
  * - (potential subcircuit) circuit that are defined in a function and returned
  * - (potential subcircuit) circuit that are called with to_instruction() or to_gate()
- *
-*/
+ */
 class SubCircuit extends QuantumCircuit {
   /**
    * Holds if the circuit is appended to another circuit.
@@ -143,11 +141,8 @@ class SubCircuit extends QuantumCircuit {
     )
   }
 
-
   /** Return the compose/append call that created the subcircuit relationship. */
-  DataFlow::CallCfgNode getACompositionCall() {
-    result = this.getCompositionCallWith(_)
-  }
+  DataFlow::CallCfgNode getACompositionCall() { result = this.getCompositionCallWith(_) }
 
   /** Return the compose/append call that attached this circuit to the target circuit. */
   DataFlow::CallCfgNode getCompositionCallWith(QuantumCircuit qc) {
@@ -165,8 +160,6 @@ class SubCircuit extends QuantumCircuit {
       result = composeCall
     )
   }
-
-
 }
 
 /** Circuit that is used as insturction/gate. */
@@ -536,13 +529,13 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     exists(DataFlow::LocalSourceNode someUnknown |
       // something is used in the constructor QuantumCircuit(2, someUnknown)
       (
-        someUnknown.flowsTo(this.getArg(_)) or
+        someUnknown.flowsTo(this.getArg(_))
+        or
         exists(DataFlow::CallCfgNode addRegisterCall |
           addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
           someUnknown.flowsTo(addRegisterCall.getArg(0))
         )
-      )
-      and
+      ) and
       // nor a register nor an integer literal
       not someUnknown instanceof RegisterV2 and
       not someUnknown.asExpr() instanceof IntegerLiteral

@@ -12,4 +12,4 @@ where
   opAfter.isAppliedAfterOn(opBefore.(QuantumOperator), shared_qubit)
 select opBefore, opAfter,
   "Op: '" + opBefore.getGateName() + "' on qubit " + shared_qubit + " is followed by op: '" +
-  opAfter.getGateName() + "'."
+    opAfter.getGateName() + "'."

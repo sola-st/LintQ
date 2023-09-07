@@ -4,7 +4,6 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.QuantumOperator
 
-
 /** Holds if the second operator may follow the first one. */
 bindingset[start, file]
 pragma[inline]
@@ -69,10 +68,10 @@ predicate mayFollow(QuantumOperator start, QuantumOperator end, File file, int q
 /** Holds if the two operators refer to the same qubit. */
 bindingset[opA, file]
 pragma[inline]
-predicate manipulateSameQubit(QuantumOperator opA, QuantumOperator opB, QuantumCircuit qc, int i, File file) {
-  exists(
-    QubitUse qbuA, QubitUse qbuB
-  |
+predicate manipulateSameQubit(
+  QuantumOperator opA, QuantumOperator opB, QuantumCircuit qc, int i, File file
+) {
+  exists(QubitUse qbuA, QubitUse qbuB |
     // they are in the same file
     opA.getLocation().getFile() = file and
     opB.getLocation().getFile() = file and
@@ -111,11 +110,12 @@ predicate manipulateSameQubit(QuantumOperator opA, QuantumOperator opB, QuantumC
 /** Holds if the three operators refer to the same qubit. */
 bindingset[opA, opB, opC, file, i]
 pragma[inline]
-predicate manipulateSameQubit(QuantumOperator opA, QuantumOperator opB, QuantumOperator opC, QuantumCircuit qc, int i, File file) {
+predicate manipulateSameQubit(
+  QuantumOperator opA, QuantumOperator opB, QuantumOperator opC, QuantumCircuit qc, int i, File file
+) {
   manipulateSameQubit(opA, opB, qc, i, file) and
   manipulateSameQubit(opB, opC, qc, i, file)
 }
-
 
 /** Holds if the second operator may DIRECTLY follow the first one (with no operators in between). */
 bindingset[start, file]
@@ -127,10 +127,7 @@ predicate mayFollowDirectly(QuantumOperator start, QuantumOperator end, File fil
   //   sortedInOrder(start, other, end, file, qubitIndex)
   // )
   exists(
-    ControlFlowNode startNode,
-    ControlFlowNode endNode,
-    ControlFlowNode circNode,
-    QuantumCircuit qc
+    ControlFlowNode startNode, ControlFlowNode endNode, ControlFlowNode circNode, QuantumCircuit qc
   |
     startNode = start.getNode() and
     endNode = end.getNode() and
@@ -140,10 +137,7 @@ predicate mayFollowDirectly(QuantumOperator start, QuantumOperator end, File fil
     // they are connected: start > end
     startNode.strictlyReaches(endNode) and
     // there is nothing in between
-    not exists(
-      QuantumOperator intermediate,
-      ControlFlowNode intermediateNode
-    |
+    not exists(QuantumOperator intermediate, ControlFlowNode intermediateNode |
       intermediateNode = intermediate.getNode() and
       // the node must be different from both at the same time
       intermediateNode != startNode and
@@ -164,7 +158,6 @@ predicate mayFollowDirectly(QuantumOperator start, QuantumOperator end, File fil
     not startNode.strictlyReaches(circNode)
   )
 }
-
 
 bindingset[start, intermediate, end, file, qubitIndex]
 pragma[inline]

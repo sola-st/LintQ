@@ -30,8 +30,10 @@ where
   // by a parameter which is unknon in the current context
   not motherCircuit.hasUnknonNumberOfQubits()
 select motherCircuit,
-  "The subcircuit '" + subCircuit.getName() + "' (qubits=" +
-    subCircuit.getNumberOfQubits() + ") at location: (" + subCircuit.getLocation().getStartLine() + ", " + subCircuit.getLocation().getStartColumn() + ") " +
-    " is larger than parent '" + motherCircuit.getName() +
-    "' (qubits=" + motherCircuit.getNumberOfQubits() + ") at location: (" + motherCircuit.getLocation().getStartLine() + ", " + motherCircuit.getLocation().getStartColumn() + ")." +
-    " The composition at location: (" + compositionCall.getLocation().getStartLine() + ", " + compositionCall.getLocation().getStartColumn() + ") is not possible."
+  "The subcircuit '" + subCircuit.getName() + "' (qubits=" + subCircuit.getNumberOfQubits() +
+    ") at location: (" + subCircuit.getLocation().getStartLine() + ", " +
+    subCircuit.getLocation().getStartColumn() + ") " + " is larger than parent '" +
+    motherCircuit.getName() + "' (qubits=" + motherCircuit.getNumberOfQubits() + ") at location: (" +
+    motherCircuit.getLocation().getStartLine() + ", " + motherCircuit.getLocation().getStartColumn()
+    + ")." + " The composition at location: (" + compositionCall.getLocation().getStartLine() + ", "
+    + compositionCall.getLocation().getStartColumn() + ") is not possible."
