@@ -6,8 +6,6 @@
 - query: ungoverened composition disable if one of the two circuit is unknown size
 - feat: add `mayFollowDirectly` in the quantum data flow
 
-
-
 2023.08.29
 - `GateSpecification`, `BitUse`, `Circuit` with `SubCircuit` added to the qlint library
 
