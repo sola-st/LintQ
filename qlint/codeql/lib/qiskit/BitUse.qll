@@ -627,7 +627,9 @@ class OperatorSpecificationAttributeName extends string {
         // reset
         "reset",
         // unitary
-        "unitary"
+        "unitary",
+        // initialize
+        "initialize"
       ]
   }
 }
@@ -650,7 +652,9 @@ class OperatorSpecificationObjectName extends string {
         // reset
         "Reset",
         // unitary
-        "UnitaryGate"
+        "UnitaryGate",
+        // initialize
+        "Initialize"
       ]
   }
 }
@@ -678,6 +682,14 @@ class OperatorSpecificationMeasure extends OperatorSpecificationNonUnitary {
   override string getAnArgumentNameOfQubit() { result = "qubit" }
 
   override string getAnArgumentNameOfClbit() { result = "cbit" }
+}
+
+class OperatorSpecificationInitialize extends OperatorSpecificationNonUnitary {
+  OperatorSpecificationInitialize() { this in ["initialize", "Initialize"] }
+
+  override string getAnArgumentNameOfQubit() { result = "qubits" }
+
+  override string getAnArgumentNameOfParam() { result = "params" }
 }
 
 // UNITARY GATES

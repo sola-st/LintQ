@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Whenever we want to run a circuit on a specific <a href="https://qiskit.org/ecosystem/aer/tutorials/1_aer_provider.html">backend</a> we need to make sure that it supports the instructions in the circuit, or at least converts them to something compatible with its instruction set.
+In particular, when we run on a simulator, the instruction <code>initialize</code> is not supported, and we need to convert it via a transpilation procedure.
+And if we skip this step, we will get an error when we try to run the circuit on the backend.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure to transpile your circuit with <code>transpile()</code> when you run initialize operations on a simulator.
+</p>
+</recommendation>
+
+<example>
+<p>The circuit with <code>initialize</code> is directly run on the backend without transpilation.</p>
+<sample src="InitWithoutTranspilation.py" />
+
+<p>Add <code>qc = transpile(qc)</code> before running the program.</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/ecosystem/aer/tutorials/1_aer_provider.html">Backend</a>.</li>
+</references>
+
+</qhelp>

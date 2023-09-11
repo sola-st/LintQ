@@ -398,3 +398,14 @@ class ResetGateCall extends Reset, GenericGateCall {
 class ResetGateObj extends Reset, GenericGateObj {
   ResetGateObj() { this.getGateName() = "Reset" }
 }
+
+/** An initialization instruction on a specific qubit */
+abstract class Initialize extends QuantumOperator { }
+
+class InitializeGateCall extends Initialize, GenericGateCall {
+  InitializeGateCall() { this.getGateName() = "initialize" }
+}
+
+class InitializeGateObj extends Initialize, GenericGateObj {
+  InitializeGateObj() { this.getGateName() = "Initialize" }
+}
