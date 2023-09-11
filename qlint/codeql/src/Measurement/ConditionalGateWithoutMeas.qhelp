@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Finds a conditioned gate with <code>c_if()</code> call but without a <code>measure()</code> call on the same qubit that comes before the gate.
+With a missing preceding <code>measure()</code> call, the gate is typically conditioned on a constant value, which is typically not the intended behavior.
+</p>
+</overview>
+
+<recommendation>
+<p>Always measure the register before applying a conditional gate.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, there is a missing <code>measure()</code> call on qubit 0 before the <code>h()</code> gate (in <code>circuit.h(0).c_if(c, 1)</code>).
+<sample src="ConditionalGateWithoutMeas.py" />
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.Gate.html#qiskit.circuit.Gate.c_if">qiskit.circuit.Gate.c_if()</a>.</li>
+</references>
+
+</qhelp>

@@ -17,7 +17,9 @@ import qiskit.Qubit
 
 // IDEA: if the circuit has subcircuits, we cannot know the real number of ops >> disable
 // IDEA: if the circuit has an unknown register size, we cannot know the real number of qubits >> disable
-from SubCircuit circ, int numQubits
+// IDEA: disable on built-in circuits e.g. QFT, Grover, etc. because they already have their set of gates internally.
+// IDEA: model and consider append operations with unknown arg as well e.g. qc.append(unknown_object, [qubit1, qubit2, qubit3])
+from QuantumCircuit circ, int numQubits
 where
   // the circuit has a number of qubits
   numQubits = circ.getNumberOfQubits() and

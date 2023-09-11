@@ -339,7 +339,10 @@ class QubitUseViaAttribute extends QubitUse {
     |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
-      this = locSource
+      this = locSource and
+      // avoid to consider the values defined in the __get_item__() method
+      // of the Register class in qiskit
+      not this.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/circuit/register.py")
     |
       exists(int i | i = gs.getAnArgumentIndexOfQubit() |
         call.(API::CallNode).getParameter(i).getAValueReachingSink() = locSource
@@ -424,7 +427,10 @@ class QubitUseViaAppend extends QubitUse {
             .getMember(gs)
             .getACall() and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
-      this = locSource
+      this = locSource and
+      // avoid to consider the values defined in the __get_item__() method
+      // of the Register class in qiskit
+      not this.getLocation().getFile().getAbsolutePath().matches("%site-packages/qiskit/circuit/register.py")
     |
       if qubitListSource.asExpr() instanceof List
       then qubitListSource.asExpr().(List).getAnElt() = locSource.asExpr()
@@ -529,6 +535,8 @@ class QubitUseViaMeasureAll extends QubitUse {
 
   override int getAnIndexIfAny() {
     exists(QuantumCircuit circ, int i |
+      this = circ.getAnAttributeRead("measure_all").getACall()
+      and
       if circ.getNumberOfQubits() > 0 then i in [0 .. circ.getNumberOfQubits() - 1] else i = -1
     |
       result = i

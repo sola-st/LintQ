@@ -37,6 +37,9 @@ os.chdir(FOLDER)
 if not pathlib.Path("codeql-container").is_dir():
     print("Cloning the official repo...")
     os.system("git clone https://github.com/microsoft/codeql-container.git")
+    # add this if you want to fix the commit version:
+    # 99ffb3ced1a31822235272c0b6fe5ee12ea4105e
+    os.system("git checkout 99ffb3ced1a31822235272c0b6fe5ee12ea4105e")
 
 # move to the folder
 os.chdir("codeql-container")
