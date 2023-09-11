@@ -11,8 +11,6 @@ predicate mayFollow(QuantumOperator start, QuantumOperator end, File file, int q
   // they are in the same file
   start.getLocation().getFile() = file and
   end.getLocation().getFile() = file and
-  // they belong to the same circuit
-  start.getQuantumCircuit() = end.getQuantumCircuit() and
   // they are connected via the control flow
   exists(
     QuantumCircuit circ, QubitUse startBitUse, QubitUse endBitUse, ControlFlowNode startNode,

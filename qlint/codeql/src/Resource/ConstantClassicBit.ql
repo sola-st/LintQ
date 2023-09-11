@@ -17,10 +17,8 @@ import qiskit.QuantumDataFlow
 
 // from Gate g
 // select g, g.getQuantumCircuit()
-
 // from Measurement meas
 // select meas, meas.getQuantumCircuit()"Measurement circuit: " + meas.getQuantumCircuit().getName()
-
 // from QubitUse qbu, QuantumOperator g1, QuantumOperator g2
 // where
 //   g1 != g2 and
@@ -29,12 +27,9 @@ import qiskit.QuantumDataFlow
 //   g1.getLocation().getFile() != g2.getLocation().getFile()
 // select
 //   qbu, g1, g2, g1.getLocation().getFile(), g2.getLocation().getFile()
-
-
 // from Measurement m, QubitUse bu
 // where m = bu.getAGate()
 // select m, bu, "Measurement circuit: " + m.getQuantumCircuit().getName() + " (l:" + m.getLocation().getStartLine() + ", c:" + m.getLocation().getStartColumn() + ") measures qubit '" + bu.getAnIndex() + "' - bituse (l:" + bu.getLocation().getStartLine() + ", c:" + bu.getLocation().getStartColumn() + ")"
-
 // from QuantumCircuit circ, Measurement meas, int i, File f
 // where
 //   i = meas.getATargetQubit() and
@@ -51,8 +46,6 @@ import qiskit.QuantumDataFlow
 //   // i >= 0
 // select meas,
 //   "Circuit '" + circ.getName() + "' (l:" + circ.getLocation().getStartLine() + ", c:" + circ.getLocation().getStartColumn() + ") measures qubit '" + i + "'"
-
-
 from QuantumCircuit circ, Measurement measure, int qubitIndex
 where
   // only constructors
@@ -61,9 +54,7 @@ where
   circ = measure.getQuantumCircuit() and
   measure.getATargetQubit() = qubitIndex and
   // there is no gate applied before
-  not exists(Gate gate |
-    circ = gate.getQuantumCircuit()
-  |
+  not exists(Gate gate | circ = gate.getQuantumCircuit() |
     mayFollow(gate, measure, circ.getLocation().getFile(), qubitIndex)
   ) and
   // the qubit not undefined
@@ -74,7 +65,6 @@ where
   not exists(SubCircuit subCirc | subCirc.getAParentCircuit() = circ)
 select circ,
   "Circuit '" + circ.getName() + "' measures qubit '" + qubitIndex + "' but never uses it."
-
 // from QuantumCircuit circ, Measurement meas, QubitUse qbuMeas, int qubitIndex, Measurement measOnDeafultState, QubitUse qbuDefaultState, int qubitIndexDefaultState
 // where
 //   // the circuit has a measurement
@@ -93,12 +83,10 @@ select circ,
 //   // not exists(Gate gate | gate.getQuantumCircuit() = circ | gate.isAppliedAfterOn(measure, qubitIndex)) and
 //   // the qubit not undefined
 //   qubitIndex >= 0 and
-
 //   // // we want abother measurement on the same circuit
 //   measOnDeafultState != meas and
 //   measOnDeafultState = qbuDefaultState.getAGate() and
 //   meas.getLocation().getFile() = measOnDeafultState.getLocation().getFile() and
 //   qubitIndexDefaultState = qbuDefaultState.getAnIndex()
-
 // select measOnDeafultState, qbuDefaultState,
 //   "Circuit '" + circ.getName() + "' (l:" + circ.getLocation().getStartLine() + ", c:" + circ.getLocation().getStartColumn() + ") measures qubit '" + qubitIndexDefaultState + "' but never uses it."

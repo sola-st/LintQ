@@ -24,11 +24,10 @@ where
   // it acts on a qubit
   conditionedGate.getATargetQubit() = sharedQubit and
   // no preceeding measurement is found
-  not exists(
-    Measurement preceedingMeas
-  |
+  not exists(Measurement preceedingMeas |
     mayFollow(preceedingMeas, conditionedGate, conditionedGate.getLocation().getFile(), sharedQubit)
   )
 select conditionedGate,
   "Conditional gate '" + conditionedGate.getGateName() + "' on qubit '" + sharedQubit + "' (l: " +
-    conditionedGate.getLocation().getStartLine() + ", c: " + conditionedGate.getLocation().getStartColumn() + ") without preceeding measurement."
+    conditionedGate.getLocation().getStartLine() + ", c: " +
+    conditionedGate.getLocation().getStartColumn() + ") without preceeding measurement."

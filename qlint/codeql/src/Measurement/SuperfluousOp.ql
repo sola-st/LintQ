@@ -22,18 +22,14 @@ from Gate op, int targetBit, QuantumCircuit qc
 where
   targetBit = op.getATargetQubit() and
   // there is no measurement on the qubit and there is no measure_all
-  not exists(Measurement m |
-    m.getQuantumCircuit() = op.getQuantumCircuit()
-  |
+  not exists(Measurement m | m.getQuantumCircuit() = op.getQuantumCircuit() |
     mayFollow(op, m, op.getLocation().getFile(), targetBit)
   ) and
   // the circuit is not a subcircuit (usually without measurement)
   qc = op.getQuantumCircuit() and
   not qc.isSubCircuit() and
   // there are no circuit extender
-  not exists(CircuitExtenderFunction extender |
-    extender.getExtendedQuantumCircuit() = qc
-  ) and
+  not exists(CircuitExtenderFunction extender | extender.getExtendedQuantumCircuit() = qc) and
   // not undefined bit
   targetBit >= 0
 select op, "The qubit '" + targetBit + "' is modified but never measured."
