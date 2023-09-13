@@ -28,4 +28,4 @@ where
   not exists(Return r | r.getValue().(Expr).getASubExpression*() = fromQasmStrCall.asExpr())
 select fromQasmStrCall,
   "Ghost from_qasm_str at location: (" + fromQasmStrCall.getLocation().getStartLine() + ", " +
-  fromQasmStrCall.getLocation().getStartColumn() + ")"
+    fromQasmStrCall.getLocation().getStartColumn() + ")"

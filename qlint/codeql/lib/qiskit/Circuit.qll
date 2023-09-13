@@ -39,14 +39,8 @@ class FromQasmStrCall extends DataFlow::CallCfgNode {
    * Holds if the call is a from_qasm_str call.
    */
   FromQasmStrCall() {
-    exists(QuantumCircuit qc |
-      this = qc.getAnAttributeRead("from_qasm_str").getACall()
-    )
+    exists(QuantumCircuit qc | this = qc.getAnAttributeRead("from_qasm_str").getACall())
   }
-
-  /** Returns the circuit that is created by the call. */
-
-
 }
 
 /** Call to to_instruction. */

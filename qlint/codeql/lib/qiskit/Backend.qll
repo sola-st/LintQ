@@ -69,23 +69,17 @@ class Backend extends DataFlow::CallCfgNode {
 
   /** Get a backend run with this backend. */
   BackendRun getABackendRun() {
-    exists(BackendRun bkdRun |
-      bkdRun.getBackend() = this
-    |
-      result = bkdRun
-    )
+    exists(BackendRun bkdRun | bkdRun.getBackend() = this | result = bkdRun)
   }
-
 }
 
-/** Backend run.
+/**
+ * Backend run.
  *
  * This is a call to a backend run method.
  */
 abstract class BackendRun extends DataFlow::CallCfgNode {
-
   abstract Backend getBackend();
-
 }
 
 /** A call to a backend run method. */
@@ -110,9 +104,7 @@ class BackendRunViaRunCall extends BackendRun {
 
 /** A call to a backend execute method. */
 class BackendRunViaExecuteCall extends BackendRun {
-  BackendRunViaExecuteCall() {
-    this instanceof ExecuteCall
-  }
+  BackendRunViaExecuteCall() { this instanceof ExecuteCall }
 
   /** The backend that is run. */
   override Backend getBackend() {
@@ -150,9 +142,7 @@ class BackendResult extends DataFlow::CallCfgNode {
       result = bkdRun
     )
   }
-
 }
-
 
 /** Statevector returned by a result of a simulator run. */
 class Statevector extends DataFlow::CallCfgNode {
@@ -173,5 +163,4 @@ class Statevector extends DataFlow::CallCfgNode {
       result = bkdRun
     )
   }
-
 }

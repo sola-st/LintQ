@@ -20,7 +20,6 @@ import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Backend
 
-
 from QuantumCircuit qc, Backend bkd, Measurement meas, BackendRun run, Statevector sv
 where
   // connect backend and its circuit
@@ -38,13 +37,12 @@ where
   meas.asCfgNode().strictlyReaches(run.asCfgNode())
 select qc,
   "The circuit '" + qc.getName() + "' with measurement " + "(l: " +
-    meas.getLocation().getStartLine() + ", " + "c: " + meas.getLocation().getStartColumn()
-    + ") " + "is run on a statevector simulator backend " + "(l: " + bkd.getLocation().getStartLine() +
-    ", " + "c: " + bkd.getLocation().getStartColumn() + ") " +
+    meas.getLocation().getStartLine() + ", " + "c: " + meas.getLocation().getStartColumn() + ") " +
+    "is run on a statevector simulator backend " + "(l: " + bkd.getLocation().getStartLine() + ", " +
+    "c: " + bkd.getLocation().getStartColumn() + ") " +
     " and then the statevector is retrieved. This might lead to unexpected results in case " +
     "because the measurement will distrupt the statevector and what is observed is only " +
     "a possible outcome measreument."
-
 // from QuantumCircuit qc, Backend bkd, Initialize initInstr
 // where
 //   // connect backend and its circuit
