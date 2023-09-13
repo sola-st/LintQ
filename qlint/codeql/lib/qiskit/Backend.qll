@@ -31,6 +31,12 @@ class Backend extends DataFlow::CallCfgNode {
     this.getKind().matches("%statevector%")
   }
 
+  /** If the simulator is Unitary simulator. */
+  predicate isUnitarySimulator() {
+    // case: from qiskit import Aer; Aer.get_backend('unitary_simulator')
+    this.getKind().matches("%unitary%")
+  }
+
   /** Get a circuit run with this backend. */
   QuantumCircuit getACircuitToBeRun() {
     // case: Aer.get_backend('qasm_simulator').run(circuit)
@@ -60,4 +66,112 @@ class Backend extends DataFlow::CallCfgNode {
       result = circuit
     )
   }
+
+  /** Get a backend run with this backend. */
+  BackendRun getABackendRun() {
+    exists(BackendRun bkdRun |
+      bkdRun.getBackend() = this
+    |
+      result = bkdRun
+    )
+  }
+
+}
+
+/** Backend run.
+ *
+ * This is a call to a backend run method.
+ */
+abstract class BackendRun extends DataFlow::CallCfgNode {
+
+  abstract Backend getBackend();
+
+}
+
+/** A call to a backend run method. */
+class BackendRunViaRunCall extends BackendRun {
+  BackendRunViaRunCall() {
+    exists(Backend backend, DataFlow::CallCfgNode runCall |
+      runCall = backend.getAnAttributeRead("run").getACall()
+    |
+      this = runCall
+    )
+  }
+
+  /** The backend that is run. */
+  override Backend getBackend() {
+    exists(Backend backend, DataFlow::CallCfgNode runCall |
+      runCall = backend.getAnAttributeRead("run").getACall()
+    |
+      result = backend
+    )
+  }
+}
+
+/** A call to a backend execute method. */
+class BackendRunViaExecuteCall extends BackendRun {
+  BackendRunViaExecuteCall() {
+    this instanceof ExecuteCall
+  }
+
+  /** The backend that is run. */
+  override Backend getBackend() {
+    exists(Backend backend |
+      (
+        backend.flowsTo(this.getArg(1)) or
+        backend.flowsTo(this.getArgByName("backend"))
+      )
+    |
+      result = backend
+    )
+  }
+}
+
+/** Result of a simulator run. */
+class BackendResult extends DataFlow::CallCfgNode {
+  BackendResult() {
+    exists(BackendRun bkdRun |
+      this = bkdRun.getAnAttributeRead("result").getACall()
+      or
+      this = bkdRun.getAnAttributeReference("result")
+      or
+      this = bkdRun.getAnAttributeWrite("result")
+    )
+  }
+
+  /** The backend run that generated this result. */
+  BackendRun getBackendRun() {
+    exists(BackendRun bkdRun |
+      // connect the run and its result
+      this = bkdRun.getAnAttributeRead("result").getACall() or
+      this = bkdRun.getAnAttributeReference("result") or
+      this = bkdRun.getAnAttributeWrite("result")
+    |
+      result = bkdRun
+    )
+  }
+
+}
+
+
+/** Statevector returned by a result of a simulator run. */
+class Statevector extends DataFlow::CallCfgNode {
+  Statevector() {
+    exists(BackendResult bkdResult |
+      this = bkdResult.getAnAttributeRead("get_statevector").getACall()
+    )
+  }
+
+  /** The backend run that generated this statevector. */
+  BackendRun producedByBackendRun() {
+    exists(BackendResult bkdResult, BackendRun bkdRun |
+      // connect the run and its result
+      bkdResult.getBackendRun() = bkdRun and
+      // the result has been called to extract the statevector
+      this = bkdResult.getAnAttributeRead("get_statevector").getACall()
+    |
+      result = bkdRun
+    )
+  }
+
 }

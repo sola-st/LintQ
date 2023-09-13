@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The class <code>qiskit.circuit.QuantumCircuit</code> provides a method <code>from_qasm_str()</code> to generate a new circuit starting from the lower level QASM representation.
+The method returns a new object, and does not modify the current circuit.
+This often confuse developers that might expect the current circuit to be modified.
+Thus the returned new circuit needs to be stored into a variable, the imported QASM is lost and never used.
+</p>
+</overview>
+
+<recommendation>
+<p>Always assign the return value of <code>from_qasm_str()</code> to a new variable.</p>
+</p>
+</recommendation>
+
+<example>
+<p>In this example, we do not store the return value of <code>from_qasm_str()</code> and effectively loose the new created circuit</p>
+<sample src="GhostFromQasm.py" />
+
+<p>Reassign the return value of <code>from_qasm_str()</code> to a new variable to make it work as expected.</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.html#qiskit.circuit.QuantumCircuit.from_qasm_str">QuantumCircuit.from_qasm_str</a>.</li>
+</references>
+
+</qhelp>

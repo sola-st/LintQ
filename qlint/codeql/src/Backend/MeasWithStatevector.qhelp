@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Whenever we use a <a href="https://qiskit.org/ecosystem/aer/tutorials/1_aer_provider.html">backend</a> of type statevector, we typically want to observe the precise quantum state, in the form of vector of complex numbers.
+However, when we apply a measurement operation, the statevector is collapsed to a classical state, and we cannot observe the quantum state anymore.
+Thus, using statevector backends together with <code>get_statevector()</code> and <code>measure()</code> could lead to unexpected results, where instead of measuring the quantum state, we measure a possible and randomly sampled classical state.
+</p>
+</overview>
+
+<recommendation>
+<p>Make sure to transpile your circuit with <code>transpile()</code> when you run initialize operations on a simulator.
+</p>
+</recommendation>
+
+<example>
+<p>The circuit has a measurement and is run on a statevector backend where the specific quantum is retrieved via  <code>get_statevector()</code>.</p>
+<sample src="MeasWithStatevector.py" />
+
+<p>If the goal is to observe the quantum state, remove the <code>measure</code> before running the program, in this case the output will be a proper output with vector numbers instead of a classical vector.</p>
+</example>
+
+<references>
+    <li>Qiskit library reference: <a href="https://qiskit.org/ecosystem/aer/tutorials/1_aer_provider.html">Backend</a>.</li>
+</references>
+
+</qhelp>

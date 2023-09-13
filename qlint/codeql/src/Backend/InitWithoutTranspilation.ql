@@ -22,6 +22,8 @@ from QuantumCircuit qc, Backend bkd, Initialize initInstr
 where
   // connect backend and its circuit
   qc = bkd.getACircuitToBeRun() and
+  // check that the backend is unitary
+  bkd.isUnitarySimulator() and
   // check that the initialize instruction is in the circuit
   qc = initInstr.getQuantumCircuit() and
   // check that there is no transpilation

@@ -615,7 +615,7 @@ class OperatorSpecificationAttributeName extends string {
   OperatorSpecificationAttributeName() {
     this in [
         // single bit operations
-        "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id",
+        "x", "y", "z", "h", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "rv", "u1", "u2", "u3", "id", "u",
         "iden", "i", "sx", "p",
         // controlled operations
         "cx", "cnot", "cy", "cz", "ch", "cs", "csdg", "csx", "crz", "cry", "crx", "cu1", "cu3",
@@ -639,7 +639,7 @@ class OperatorSpecificationObjectName extends string {
     this in [
         // single operations
         "XGate", "YGate", "ZGate", "HGate", "SGate", "SdgGate", "TGate", "TdgGate", "RXGate",
-        "RYGate", "RZGate", "RVGate", "U1Gate", "U2Gate", "U3Gate", "IGate", "SXGate", "PhaseGate",
+        "RYGate", "RZGate", "RVGate", "U1Gate", "U2Gate", "U3Gate", "IGate", "SXGate", "PhaseGate", "UGate",
         // controlled operations
         "CXGate", "CYGate", "CZGate", "CHGate", "CSGate", "CSdgGate", "CSXGate", "CRZGate",
         "CRYGate", "CRXGate", "CU1Gate", "CU3Gate", "CCXGate", "CCZGate", "CSwapGate", "MCXGate",

@@ -33,6 +33,22 @@ class AppendCall extends DataFlow::CallCfgNode {
   }
 }
 
+/** Call to from_qasm_str() api. */
+class FromQasmStrCall extends DataFlow::CallCfgNode {
+  /**
+   * Holds if the call is a from_qasm_str call.
+   */
+  FromQasmStrCall() {
+    exists(QuantumCircuit qc |
+      this = qc.getAnAttributeRead("from_qasm_str").getACall()
+    )
+  }
+
+  /** Returns the circuit that is created by the call. */
+
+
+}
+
 /** Call to to_instruction. */
 class ToInstructionCall extends DataFlow::CallCfgNode {
   /**
