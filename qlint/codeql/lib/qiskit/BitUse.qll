@@ -37,6 +37,12 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
     else result = -1
   }
 
+  int getAnAbsoluteIndex() {
+    if exists(int i | i = this.getAnAbsoluteIndexIfAny())
+    then exists(int i | i = this.getAnAbsoluteIndexIfAny() | result = i)
+    else result = -1
+  }
+
   string getARegisterName() {
     if exists(RegisterV2 reg | reg = this.getARegister())
     then exists(RegisterV2 reg | reg = this.getARegister() | result = reg.getName())
@@ -50,6 +56,8 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   }
 
   abstract int getAnIndexIfAny();
+
+  abstract int getAnAbsoluteIndexIfAny();
 
   abstract RegisterV2 getARegister();
 
@@ -283,6 +291,47 @@ abstract class QubitUse extends BitUse {
       else result instanceof EmptySetForInt
   }
 
+  override int getAnAbsoluteIndexIfAny() {
+    // if this belongs to a no register it is like the relative index
+    count(QuantumRegisterV2 qreg | qreg = this.getARegister()) = 0 and
+    this.getAnIndexIfAny() = result
+    or
+    // if this belongs to a register,
+    count(QuantumRegisterV2 qreg | qreg = this.getARegister()) > 0 and
+    // the register is shift by the amount of positions of the previous registers
+    exists(
+      QuantumCircuitConstructor circ, QuantumRegisterV2 currentReg, int sizePreceedingRegs,
+      int posCurrentReg
+    |
+      // the circuit is of this qubit use as well
+      circ = this.getACircuit() and
+      // connects the qubit use and its register
+      currentReg = this.getARegister() and
+      // it flows to the register as a specific position of the circuit constructor
+      currentReg.flowsTo(circ.getArg(posCurrentReg)) and
+      // the sum of the preceeding registers is...
+      sizePreceedingRegs =
+        sum(int iSize |
+          exists(QuantumRegisterV2 iReg, int iRegPos |
+            iSize = iReg.getSize() and
+            // the register is part of the same circuit
+            iReg.getACircuit() = circ and
+            // the register flows in the same circuit constructor
+            iReg.flowsTo(circ.getArg(iRegPos)) and
+            // it position comes before the current register
+            iRegPos < posCurrentReg
+          )
+        )
+    |
+      result = +this.getAnIndexIfAny()
+    )
+    or
+    // if it is not a QuantumCircuitConstructor
+    // then it returns -1
+    not this.getACircuit() instanceof QuantumCircuitConstructor and
+    result = -1
+  }
+
   override RegisterV2 getARegister() {
     // case: qc.h(0)
     // > EmptySetForRegisterV2
@@ -334,12 +383,11 @@ abstract class ClbitUse extends BitUse { }
 class QubitUseViaAttribute extends QubitUse {
   QubitUseViaAttribute() {
     exists(
-      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode locSource,
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode qubitListSource,
       DataFlow::CallCfgNode call
     |
       // detect qc.h(0)
       call = circ.getAnAttributeRead(gs).getACall() and
-      this = locSource and
       // avoid to consider the values defined in the __get_item__() method
       // of the Register class in qiskit
       not this.getLocation()
@@ -348,11 +396,27 @@ class QubitUseViaAttribute extends QubitUse {
           .matches("%site-packages/qiskit/circuit/register.py")
     |
       exists(int i | i = gs.getAnArgumentIndexOfQubit() |
-        call.(API::CallNode).getParameter(i).getAValueReachingSink() = locSource
+        call.(API::CallNode).getParameter(i).getAValueReachingSink() = qubitListSource and
+        (
+          // CASE: qc.h(0)
+          qubitListSource.asExpr() = this.asExpr()
+          or
+          // CASE: qc.measure([0, 1], [0, 1])
+          qubitListSource.asExpr() instanceof List and
+          qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+        )
       )
       or
       exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
-        call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = locSource
+        call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = qubitListSource and
+        (
+          // CASE: qc.h(qubit=0)
+          qubitListSource.asExpr() = this.asExpr()
+          or
+          // CASE: qc.measure(qubit=[0, 1], cbit=[0, 1])
+          qubitListSource.asExpr() instanceof List and
+          qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+        )
       )
     )
   }
@@ -416,9 +480,8 @@ class QubitUseViaAttribute extends QubitUse {
 class QubitUseViaAppend extends QubitUse {
   QubitUseViaAppend() {
     exists(
-      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode locSource,
-      DataFlow::LocalSourceNode qubitListSource, DataFlow::CallCfgNode appendCall,
-      DataFlow::CallCfgNode gateCall
+      QuantumCircuit circ, OperatorSpecification gs, DataFlow::LocalSourceNode qubitListSource,
+      DataFlow::CallCfgNode appendCall, DataFlow::CallCfgNode gateCall
     |
       // detect qc.append(CXGate(), [0, 1])
       appendCall = circ.getAnAttributeRead("append").getACall() and
@@ -430,7 +493,6 @@ class QubitUseViaAppend extends QubitUse {
             .getMember(gs)
             .getACall() and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
-      this = locSource and
       // avoid to consider the values defined in the __get_item__() method
       // of the Register class in qiskit
       not this.getLocation()
@@ -438,9 +500,12 @@ class QubitUseViaAppend extends QubitUse {
           .getAbsolutePath()
           .matches("%site-packages/qiskit/circuit/register.py")
     |
-      if qubitListSource.asExpr() instanceof List
-      then qubitListSource.asExpr().(List).getAnElt() = locSource.asExpr()
-      else qubitListSource.asExpr() = locSource.asExpr()
+      // CASE: qc.append(CXGate(), [0, 1])
+      qubitListSource.asExpr() instanceof List and
+      qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
+      or
+      // CASE: qc.append(CXGate(), 0)
+      qubitListSource.asExpr() = this.asExpr()
     )
   }
 

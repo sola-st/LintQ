@@ -5,14 +5,14 @@ import qiskit.Circuit
 import qiskit.BitUse
 import qiskit.QuantumDataFlow
 
-private predicate isGateCall(DataFlow::CallCfgNode call) {
+private predicate isQuantumOperatorCall(DataFlow::CallCfgNode call) {
   exists(QuantumCircuit circ, OperatorSpecificationAttributeName gate_name_call |
     // detect qc.h(0)
     call = circ.getAnAttributeRead(gate_name_call).getACall()
   )
 }
 
-private predicate isGateObj(DataFlow::CallCfgNode call) {
+private predicate isQuantumOperatorObj(DataFlow::CallCfgNode call) {
   exists(QuantumCircuit circ, OperatorSpecificationObjectName gate_name_obj |
     // detect from qiskit.circuit.library import HGate
     call =
@@ -33,8 +33,8 @@ private predicate isGateObj(DataFlow::CallCfgNode call) {
 /** Quantum Operator either a gate, measurement or reset. */
 abstract class QuantumOperator extends DataFlow::CallCfgNode {
   // Gate() {
-  //   isGateCall(this) or
-  //   isGateObj(this)
+  //   isQuantumOperatorCall(this) or
+  //   isQuantumOperatorObj(this)
   // }
   /** The name of the gate. */
   abstract string getGateName();
@@ -57,6 +57,11 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
       qubit_index != -1 and
       this.isAppliedAfterOn(other, qubit_index)
     )
+  }
+
+  /** Get an operator that is applied after this. */
+  QuantumOperator getASuccessorOperator() {
+    exists(QuantumOperator other | this.isAppliedAfter(other) | result = other)
   }
 
   predicate isAppliedBefore(QuantumOperator other) { other.isAppliedAfter(this) }
@@ -103,7 +108,7 @@ abstract class QuantumOperator extends DataFlow::CallCfgNode {
 }
 
 private class GenericGateObj extends QuantumOperator {
-  GenericGateObj() { isGateObj(this) }
+  GenericGateObj() { isQuantumOperatorObj(this) }
 
   DataFlow::CallCfgNode getAppendCall() {
     exists(QuantumCircuit circ, DataFlow::CallCfgNode append_call |
@@ -173,7 +178,7 @@ private class GenericGateObj extends QuantumOperator {
 }
 
 private class GenericGateCall extends QuantumOperator {
-  GenericGateCall() { isGateCall(this) }
+  GenericGateCall() { isQuantumOperatorCall(this) }
 
   override string getGateName() {
     exists(QuantumCircuit circ, OperatorSpecificationAttributeName a_supported_gate_name |

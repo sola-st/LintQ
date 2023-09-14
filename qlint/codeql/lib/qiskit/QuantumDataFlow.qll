@@ -29,8 +29,10 @@ predicate mayFollow(QuantumOperator start, QuantumOperator end, File file, int q
     endBitUse.getAGate() = end and
     // and they act on the same position
     // bind the qubit index
-    startBitUse.getAnIndex() = qubitIndex and
-    endBitUse.getAnIndex() = qubitIndex and
+    // startBitUse.getAnIndex() = qubitIndex and
+    // endBitUse.getAnIndex() = qubitIndex and
+    startBitUse.getAnAbsoluteIndex() = qubitIndex and
+    endBitUse.getAnAbsoluteIndex() = qubitIndex and
     // exclude undefined bit indices
     qubitIndex >= 0 and
     (
@@ -80,8 +82,10 @@ predicate manipulateSameQubit(
     qbuA.getAGate() = opA and
     qbuB.getAGate() = opB and
     // and they act on the same position (qubit index)
-    qbuA.getAnIndex() = i and
-    qbuB.getAnIndex() = i and
+    // qbuA.getAnIndex() = i and
+    // qbuB.getAnIndex() = i and
+    qbuA.getAnAbsoluteIndex() = i and
+    qbuB.getAnAbsoluteIndex() = i and
     // exclude undefined bit indices
     i >= 0 and
     (

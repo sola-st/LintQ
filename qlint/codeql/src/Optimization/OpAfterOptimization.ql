@@ -1,4 +1,4 @@
- /**
+/**
  * @name Operations after optimization.
  * @description Finds any operation (gate or measurement) is applied to a transpiled
  * circuit has some.
@@ -17,9 +17,10 @@ import semmle.python.ApiGraphs
 import qiskit.Circuit
 import qiskit.Gate
 
-from TranspiledCircuit transpiledCirc, Gate gate
-where gate = transpiledCirc.getAGate() and
-    transpiledCirc.getOptimizationLvl() = 3
-select
-    gate, "Gate " + gate.getGateName() + " applied to transpiled circuit: "
-    + transpiledCirc.getName() + "."
+from TranspiledCircuit transpiledCirc, QuantumOperator op
+where
+  op = transpiledCirc.getAGate() and
+  transpiledCirc.getOptimizationLvl() = 3
+select op,
+  "Operation " + op.getGateName() + " applied to transpiled circuit: " + transpiledCirc.getName() +
+    "."

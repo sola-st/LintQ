@@ -5,106 +5,88 @@ import semmle.python.ApiGraphs
 // import Variables.Definition
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * DEPRECATED - use RegisterV2 instead.
- *
- * Classical and quantum register identified by their allocation site as dataflow.
- */
-abstract deprecated class Register extends DataFlow::CallCfgNode {
-  // the register object can be accessed by the name of the variable
-  // and an index. For example: reg[0] or reg[x]
-  // we want to a general node representing one of this accesses
-  int getSize() {
-    exists(IntegerLiteral size, DataFlow::LocalSourceNode source |
-      source.flowsTo(this.getArg(0)) and
-      source.asExpr() = size
-    |
-      result = size.getValue()
-    )
-  }
-
-  // TODO rename hasKnownSize
-  //* Holds if the circuit has integer parameter. */
-  predicate hasIntegerParameter() {
-    exists(DataFlow::LocalSourceNode source | source.flowsTo(this.getArg(0)) |
-      source.asExpr() instanceof IntegerLiteral
-    )
-  }
-  // int getAnAccessedPosition() {
-  //   exists(
-  //     DataFlow::Node nd, DataFlow::ExprNode targetSubscript, Subscript subscript,
-  //     IntegerLiteral position
-  //   |
-  //     this.flowsTo(nd) and
-  //     nd.asExpr() = targetSubscript.asExpr() and
-  //     targetSubscript.asExpr() = subscript.getObject() and
-  //     position = subscript.getIndex()
-  //   |
-  //     result = position.getValue()
-  //   )
-  // }
-  // Variable getVar() {
-  //   // get the left side of the assignment
-  //   // e.g. reg = QuantumRegister(2)
-  //   // reg is the name of the register
-  //   exists(Variable var, AssignStmt assignStmt |
-  //     // ,
-  //     // Scope same_scope
-  //     //var.getAStore() = this.asExpr()
-  //     //and
-  //     assignStmt.getValue() = this.asExpr() and
-  //     // and this.getScope() = same_scope
-  //     // and var.getScope() = same_scope
-  //     // and assignStmt.getScope() = same_scope
-  //     assignStmt.getATarget() = var.getAStore()
-  //   |
-  //     // return the left side of the assignment, namely the reference
-  //     // to the NameNode
-  //     result = var
-  //   )
-  // }
-  // /** Gets a index/position available in this register as int.*/
-  // int getAQubitIndex() {
-  //     exists(
-  //         int i
-  //         |
-  //         i = [0 .. this.getSize() - 1]
-  //         |
-  //         result = i
-  //     )
-  // }
-}
-
-/**
- * DEPRECATED - use QuantumRegisterV2 instead.
- */
-class ClassicalRegister extends Register {
-  ClassicalRegister() {
-    this = API::moduleImport("qiskit").getMember("ClassicalRegister").getACall()
-  }
-}
-
-/**
- * DEPRECATED - use ClassicalRegisterV2 instead.
- */
-class QuantumRegister extends Register {
-  QuantumRegister() { this = API::moduleImport("qiskit").getMember("QuantumRegister").getACall() }
-  // Expr getName() {
-  //     // get the left side of the assignment
-  //     // e.g. reg = QuantumRegister(2)
-  //     // reg is the name of the register
-  //     exists(
-  //         AssignStmt assignStmt
-  //         |
-  //         assignStmt.getValue() = this.asExpr()
-  //         |
-  //         // return the left side of the assignment, namely the reference
-  //         // to the NameNode
-  //         result = assignStmt.getATarget()
-  //     )
-  // }
-}
-
+// /**
+//  * DEPRECATED - use RegisterV2 instead.
+//  *
+//  * Classical and quantum register identified by their allocation site as dataflow.
+//  */
+// abstract deprecated class RegisterSeed extends DataFlow::CallCfgNode {
+//   // the register object can be accessed by the name of the variable
+//   // and an index. For example: reg[0] or reg[x]
+//   // we want to a general node representing one of this accesses
+//   int getSize() {
+//     exists(IntegerLiteral size, DataFlow::LocalSourceNode source |
+//       source.flowsTo(this.getArg(0)) and
+//       source.asExpr() = size
+//     |
+//       result = size.getValue()
+//     )
+//   }
+//   // TODO rename hasKnownSize
+//   //* Holds if the circuit has integer parameter. */
+//   predicate hasIntegerParameter() {
+//     exists(DataFlow::LocalSourceNode source | source.flowsTo(this.getArg(0)) |
+//       source.asExpr() instanceof IntegerLiteral
+//     )
+//   }
+//   // int getAnAccessedPosition() {
+//   //   exists(
+//   //     DataFlow::Node nd, DataFlow::ExprNode targetSubscript, Subscript subscript,
+//   //     IntegerLiteral position
+//   //   |
+//   //     this.flowsTo(nd) and
+//   //     nd.asExpr() = targetSubscript.asExpr() and
+//   //     targetSubscript.asExpr() = subscript.getObject() and
+//   //     position = subscript.getIndex()
+//   //   |
+//   //     result = position.getValue()
+//   //   )
+//   // }
+//   // Variable getVar() {
+//   //   // get the left side of the assignment
+//   //   // e.g. reg = QuantumRegister(2)
+//   //   // reg is the name of the register
+//   //   exists(Variable var, AssignStmt assignStmt |
+//   //     // ,
+//   //     // Scope same_scope
+//   //     //var.getAStore() = this.asExpr()
+//   //     //and
+//   //     assignStmt.getValue() = this.asExpr() and
+//   //     // and this.getScope() = same_scope
+//   //     // and var.getScope() = same_scope
+//   //     // and assignStmt.getScope() = same_scope
+//   //     assignStmt.getATarget() = var.getAStore()
+//   //   |
+//   //     // return the left side of the assignment, namely the reference
+//   //     // to the NameNode
+//   //     result = var
+//   //   )
+//   // }
+//   // /** Gets a index/position available in this register as int.*/
+//   // int getAQubitIndex() {
+//   //     exists(
+//   //         int i
+//   //         |
+//   //         i = [0 .. this.getSize() - 1]
+//   //         |
+//   //         result = i
+//   //     )
+//   // }
+// }
+// /**
+//  * DEPRECATED - use QuantumRegisterV2 instead.
+//  */
+// class ClassicalRegisterSeed extends RegisterSeed {
+//   ClassicalRegisterSeed() {
+//     this = API::moduleImport("qiskit").getMember("ClassicalRegister").getACall()
+//   }
+// }
+// /**
+//  * DEPRECATED - use ClassicalRegisterV2 instead.
+//  */
+// class QuantumRegisterSeed extends RegisterSeed {
+//   QuantumRegisterSeed() { this = API::moduleImport("qiskit").getMember("QuantumRegister").getACall() }
+// }
 // REGISTER
 /** Classical and quantum register identified by their allocation site as dataflow. */
 abstract class RegisterV2 extends DataFlow::CallCfgNode {
@@ -122,13 +104,13 @@ abstract class RegisterV2 extends DataFlow::CallCfgNode {
   }
 
   /** Returns true if the size of the register is known. */
-  boolean hasKnownSize() {
+  predicate hasKnownSize() {
     // register = QuantumRegister(size=2)
     // >> true
     // x = external_call()
     // register = QuantumRegister(size=x)
     // >> false
-    if exists(int size | this.getSize() = size) then result = true else result = false
+    exists(int size | this.getSize() = size)
   }
 
   /** Returns the name of the identifier of the register. */

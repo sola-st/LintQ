@@ -14,6 +14,7 @@
 import python
 import qiskit.Circuit
 import qiskit.Qubit
+import qiskit.UnknownQuantumOperator
 
 // IDEA: if the circuit has subcircuits, we cannot know the real number of ops >> disable
 // IDEA: if the circuit has an unknown register size, we cannot know the real number of qubits >> disable
@@ -27,9 +28,25 @@ where
   // there is at least one register of the circuit
   // that has at least one qubit index not used
   not exists(QubitUse bu, int i | i in [0 .. numQubits - 1] |
-    bu.getAnIndex() = i and
+    bu.getAnAbsoluteIndex() = i and
     bu.getAGate().getQuantumCircuit() = circ
-  )
+  ) and
+  // EXTRA PRECISION
+  // we focus only on Constructors
+  circ instanceof QuantumCircuitConstructor and
+  // ALTERNATIVE
+  // // it is not a transpiled circuit
+  // not circ instanceof TranspiledCircuit and
+  // // the circuit is a subcircuit or parent of a circuit
+  // not circ instanceof SubCircuit and
+  // the cicuit is not a parent of a subcircuit
+  not exists(SubCircuit sub | sub.getAParentCircuit() = circ) and
+  // there is no initialize op, because it can potentially touch all the qubits
+  not exists(Initialize init | init.getQuantumCircuit() = circ) and
+  // and the circuit has no unknown register size
+  not exists(QuantumRegisterV2 reg | reg = circ.getAQuantumRegister() and not reg.hasKnownSize()) and
+  // there are no unresolved operations
+  not exists(UnknownQuantumOperator unkOp | unkOp.getQuantumCircuit() = circ)
 // reg = circ.getAQuantumRegister() and reg.getSize() > 0 |
 // exists(int i | i in [0 .. reg.getSize() - 1] |
 //     not exists(QubitUsedInteger qubitUsed |

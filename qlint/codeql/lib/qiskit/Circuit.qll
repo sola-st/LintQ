@@ -460,7 +460,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     // qc = QuantumCircuit(2, creg)
     // the number of bits is 3
     if
-      not exists(ClassicalRegister clsReg |
+      not exists(ClassicalRegisterV2 clsReg |
         clsReg.flowsTo(this.getArg(_))
         or
         // there is a this.add_register() call with clsReg as argument
@@ -472,7 +472,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     then result = 0
     else
       result =
-        sum(ClassicalRegister clsReg |
+        sum(ClassicalRegisterV2 clsReg |
           clsReg.flowsTo(this.getArg(_))
           or
           // there is a this.add_register() call with clsReg as argument
@@ -551,7 +551,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
   private int get_num_qubits_from_registers() {
     // if there is no quantum register, return 0
     if
-      not exists(QuantumRegister qntReg |
+      not exists(QuantumRegisterV2 qntReg |
         exists(int i | qntReg.flowsTo(this.getArg(i)))
         or
         // there is a this.add_register() call with qntReg as argument
@@ -563,7 +563,7 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     then result = 0
     else
       result =
-        sum(QuantumRegister qntReg |
+        sum(QuantumRegisterV2 qntReg |
           exists(int i | qntReg.flowsTo(this.getArg(i)))
           or
           // there is a this.add_register() call with qntReg as argument
@@ -657,11 +657,11 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
   }
 
   //* Returns a QuantumRegister added to a circuit. */
-  QuantumRegister getAQuantumRegister() {
-    exists(QuantumRegister qntReg, int i | qntReg.flowsTo(this.getArg(i)) | result = qntReg)
+  QuantumRegisterV2 getAQuantumRegister() {
+    exists(QuantumRegisterV2 qntReg, int i | qntReg.flowsTo(this.getArg(i)) | result = qntReg)
     or
     // there is a this.add_register() call with qntReg as argument
-    exists(QuantumRegister qntReg, DataFlow::CallCfgNode addRegisterCall |
+    exists(QuantumRegisterV2 qntReg, DataFlow::CallCfgNode addRegisterCall |
       addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
       qntReg.flowsTo(addRegisterCall.getArg(0))
     |
@@ -669,11 +669,11 @@ class QuantumCircuit extends DataFlow::CallCfgNode {
     )
   }
 
-  ClassicalRegister getAClassicalRegister() {
-    exists(ClassicalRegister clsReg, int i | clsReg.flowsTo(this.getArg(i)) | result = clsReg)
+  ClassicalRegisterV2 getAClassicalRegister() {
+    exists(ClassicalRegisterV2 clsReg, int i | clsReg.flowsTo(this.getArg(i)) | result = clsReg)
     or
     // there is a this.add_register() call with clsReg as argument
-    exists(ClassicalRegister clsReg, DataFlow::CallCfgNode addRegisterCall |
+    exists(ClassicalRegisterV2 clsReg, DataFlow::CallCfgNode addRegisterCall |
       addRegisterCall = this.getAnAttributeRead("add_register").getACall() and
       clsReg.flowsTo(addRegisterCall.getArg(0))
     |
@@ -747,106 +747,6 @@ class ComposedCircuit extends QuantumCircuit {
   override int getNumberOfClassicalBits() {
     exists(QuantumCircuit parentCirc | this = parentCirc.getAnAttributeRead("compose").getACall() |
       result = parentCirc.getNumberOfClassicalBits()
-    )
-  }
-}
-
-// QUANTUM CIRCUIT EXTENDER FUNCTIONS
-/** A function call that can extend a specific circuit. */
-abstract class CircuitExtenderFunction extends DataFlow::CallCfgNode {
-  /** Returns the circuit that is extended by the function call. */
-  abstract QuantumCircuit getExtendedQuantumCircuit();
-
-  /** Return the name of the function call. */
-  string getCallName() {
-    exists(PythonFunctionValue method, string methodName |
-      method.getName() = methodName and
-      method.getACall().getNode() = this.asExpr()
-    |
-      result = methodName
-    )
-  }
-}
-
-/**
- * Circuit extender fuctions via argument.
- *
- * Any function that takes a quantum circuit as argument and possibly manipulates it.
- */
-class CircuitExtenderFunctionViaArg extends CircuitExtenderFunction {
-  CircuitExtenderFunctionViaArg() {
-    exists(
-      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, Call callNode,
-      PythonFunctionValue method, string methodName
-    |
-      callNode = actualCall.asExpr() and
-      this = actualCall and
-      qc.flowsTo(this.getArg(_)) and
-      // exclude the well known functions
-      // instanceof, type, transpile, assemble, execute, append, compose, copy
-      method.getName() = methodName and
-      method.getACall().getNode() = this.asExpr() and
-      not methodName in [
-          "isinstance", "type", "transpile", "assemble", "execute", "append", "compose", "copy"
-        ]
-    )
-  }
-
-  override QuantumCircuit getExtendedQuantumCircuit() {
-    exists(QuantumCircuit qc | qc.flowsTo(this.getArg(_)) | result = qc)
-  }
-}
-
-/**
- * Circuit extender via implicit global.
- *
- * Any function that takes no circuit arguments but manipulates a variable that has
- * the same name as a circuit in the same file.
- */
-class CircuitExtenderFunctionImplicit extends CircuitExtenderFunction {
-  CircuitExtenderFunctionImplicit() {
-    exists(
-      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
-      Variable inFunctionQcVariable
-    |
-      // they are in the same file
-      qc.getLocation().getFile() = actualCall.getLocation().getFile() and
-      // the variable used in the function def
-      // and variable used to refer to the circuit
-      // point to the same thing (aka: proxy they have the same name)
-      inFunctionQcVariable.getId() = qc.getName() and
-      // the variable is in the body of the function
-      fd.contains(inFunctionQcVariable.getAUse().getNode()) and
-      // make sure that there is no store in the function
-      not fd.contains(inFunctionQcVariable.getAStore()) and
-      // the call is referred to the function def (same name and scope)
-      actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
-      actualCall.getScope() = fd.getScope()
-    |
-      this = actualCall
-    )
-  }
-
-  override QuantumCircuit getExtendedQuantumCircuit() {
-    exists(
-      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
-      Variable inFunctionQcVariable
-    |
-      // they are in the same file
-      qc.getLocation().getFile() = actualCall.getLocation().getFile() and
-      // the variable used in the function def
-      // and variable used to refer to the circuit
-      // point to the same thing (aka: proxy they have the same name)
-      inFunctionQcVariable.getId() = qc.getName() and
-      // the variable is in the body of the function
-      fd.contains(inFunctionQcVariable.getAUse().getNode()) and
-      // make sure that there is no store in the function
-      not fd.contains(inFunctionQcVariable.getAStore()) and
-      // the call is referred to the function def (same name and scope)
-      actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
-      actualCall.getScope() = fd.getScope()
-    |
-      result = qc
     )
   }
 }

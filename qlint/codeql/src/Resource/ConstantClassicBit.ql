@@ -14,6 +14,7 @@ import python
 import qiskit.Circuit
 import qiskit.Qubit
 import qiskit.QuantumDataFlow
+import qiskit.UnknownQuantumOperator
 
 // from Gate g
 // select g, g.getQuantumCircuit()
@@ -60,7 +61,7 @@ where
   // the qubit not undefined
   qubitIndex >= 0 and
   // there are no circuit extender
-  not exists(CircuitExtenderFunction circExt | circExt.getExtendedQuantumCircuit() = circ) and
+  not exists(UnknownQuantumOperator unkOp | unkOp.getQuantumCircuit() = circ) and
   // they are do not have any subcircuits
   not exists(SubCircuit subCirc | subCirc.getAParentCircuit() = circ)
 select circ,
