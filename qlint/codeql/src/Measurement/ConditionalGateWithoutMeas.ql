@@ -23,10 +23,18 @@ where
   conditionedGate.isConditional() and
   // it acts on a qubit
   conditionedGate.getATargetQubit() = sharedQubit and
-  // no preceeding measurement is found
-  not exists(Measurement preceedingMeas |
-    mayFollow(preceedingMeas, conditionedGate, conditionedGate.getLocation().getFile(), sharedQubit)
-  )
+  // all the measruement are found after this gate
+  forall(Measurement followingMeasurement |
+    followingMeasurement.getQuantumCircuit() = conditionedGate.getQuantumCircuit()
+  |
+    conditionedGate.getNode().strictlyReaches(followingMeasurement.getNode())
+  ) and
+  // EXTRA PRECISION - 11:55 - 14.09.23
+  sharedQubit >= 0 and
+  // not on subcricuits
+  not conditionedGate.getQuantumCircuit().isSubCircuit() and
+  // no parent of subcircuits
+  not exists(SubCircuit sub | sub.getAParentCircuit() = conditionedGate.getQuantumCircuit())
 select conditionedGate,
   "Conditional gate '" + conditionedGate.getGateName() + "' on qubit '" + sharedQubit + "' (l: " +
     conditionedGate.getLocation().getStartLine() + ", c: " +

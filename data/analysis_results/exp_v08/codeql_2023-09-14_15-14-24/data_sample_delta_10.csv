@@ -1,0 +1,438 @@
+rule_id,message,file,line,col
+ql-ghost-composition,"Ghost composition at location: (64, 1)",h2evoqlm_f7e7b5.py,64,
+ql-ghost-composition,"Ghost composition at location: (322, 9)",shor_df608f.py,322,9.0
+ql-conditional-without-measurement,"Conditional gate 'tdg' on qubit '0' (l: 46, c: 1) without preceeding measurement.",task_0f414b.py,46,
+ql-conditional-without-measurement,"Conditional gate 'y' on qubit '1' (l: 372, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,372,9.0
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '2' (l: 38, c: 1) without preceeding measurement.",example_qiskit_conditional_67fb51.py,38,
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '0' (l: 1157, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1157,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '0' (l: 1025, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1025,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 367, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,367,9.0
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '2' (l: 34, c: 1) without preceeding measurement.",test_sdk_352e8e.py,34,
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '6' (l: 924, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,924,9.0
+ql-conditional-without-measurement,"Conditional gate 'y' on qubit '2' (l: 242, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,242,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '3' (l: 1116, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,1116,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '6' (l: 418, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,418,9.0
+ql-conditional-without-measurement,"Conditional gate 'rz' on qubit '0' (l: 451, c: 13) without preceeding measurement.",factorization_shor_algorithm_77e5d5.py,451,13.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '1' (l: 362, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,362,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '2' (l: 894, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,894,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '4' (l: 1157, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,1157,9.0
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '1' (l: 59, c: 5) without preceeding measurement.",example_qiskit_conditional_78732d.py,59,5.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 999, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,999,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '1' (l: 767, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,767,9.0
+ql-conditional-without-measurement,"Conditional gate 'tdg' on qubit '1' (l: 51, c: 1) without preceeding measurement.",task_0f414b.py,51,
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 895, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,895,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '5' (l: 533, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,533,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 1115, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,1115,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 1159, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1159,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '2' (l: 630, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,630,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '6' (l: 70, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,70,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 628, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,628,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '0' (l: 893, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,893,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 508, c: 9) without preceeding measurement.",rsaqattack_362071.py,508,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '5' (l: 227, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,227,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 364, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,364,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '3' (l: 114, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,114,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '3' (l: 72, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,72,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '3' (l: 1158, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,1158,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 103, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,103,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 539, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,539,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '3' (l: 884, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,884,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '3' (l: 495, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,495,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 191, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,191,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '4' (l: 238, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,238,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '1' (l: 927, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,927,9.0
+ql-conditional-without-measurement,"Conditional gate 'y' on qubit '3' (l: 1167, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1167,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 48, c: 5) without preceeding measurement.",simulation_67c48b.py,48,5.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '2' (l: 116, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,116,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '3' (l: 1042, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,1042,9.0
+ql-conditional-without-measurement,"Conditional gate 'y' on qubit '0' (l: 764, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,764,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '0' (l: 233, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,233,9.0
+ql-conditional-without-measurement,"Conditional gate 'y' on qubit '0' (l: 104, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,104,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (142, 13) and (142, 13)",elitzur_vaidman_bomb_minefield_26a862.py,142,13.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (70, 5) and (74, 5)",quantum_e3f4e0.py,74,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (65, 9) and (65, 9)",gcd_45a5bf.py,65,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (21, 1) and (25, 1)
+Two consecutive measurements on qubit '1' at locations: (21, 1) and (25, 1)
+Two consecutive measurements on qubit '2' at locations: (21, 1) and (25, 1)
+Two consecutive measurements on qubit '3' at locations: (21, 1) and (25, 1)",qrpgcg_cd84f9.py,25,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (107, 1) and (108, 1)",02_measurements_and_mixed_states_qiskit_ee25f6.py,108,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (142, 13) and (144, 5)",elitzur_vaidman_bomb_minefield_26a862.py,144,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (821, 9) and (822, 9)",test_structure_aaba85.py,822,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '1' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '2' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '3' at locations: (33, 1) and (37, 1)",qrpgcg_cd84f9.py,37,
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (15, 1) and (23, 1)",qubits_intro_974f92.py,23,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '1' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '2' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '3' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '4' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '5' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '6' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '7' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '8' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '9' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '10' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '11' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '12' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '13' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '14' at locations: (35, 9) and (35, 9)
+Two consecutive measurements on qubit '15' at locations: (35, 9) and (35, 9)",shorbreaker_5299e4.py,35,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (68, 9) and (71, 9)",test_qasm_simulator_edd048.py,71,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (27, 1) and (30, 1)",sandbox_e52934.py,30,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (59, 9) and (62, 9)",test_qasm_simulator_682153.py,62,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '1' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '2' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '3' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '4' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '5' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '6' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '7' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '8' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '9' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '10' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '11' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '12' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '13' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '14' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '15' at locations: (137, 9) and (137, 9)",rsa_breaker_4_bit_cd955a.py,137,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (59, 9) and (62, 9)",test_qasm_simulator_edd048.py,62,9.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:5, 6)  when it has already 129 classical bits.",code_12fb50.py,70,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:23, 10)  when it has already 5 classical bits.",5_6d96db.py,39,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:32, 6)  when it has already 10 classical bits.",ghz_ca5e66.py,35,
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:13, 11)  when it has already 48 classical bits.",qrng_09be03.py,19,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:23, 10)  when it has already 10 classical bits.",n_qubit_grovers_algorithm_ff6131.py,117,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:32, 6)  when it has already 10 classical bits.",ghz_7af332.py,35,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:406, 6)  when it has already 5 classical bits.",qiskit_c50734.py,412,
+ql-operation-after-measurement,"Operation 'ry' on qubit 0 after measurement at location: (125, 1).",measurement_postulate_single_qubit_f_fb7a34.py,126,
+ql-operation-after-measurement,"Operation 'rx' on qubit 0 after measurement at location: (14, 1).",circuit_7c89be.py,15,
+ql-operation-after-measurement,"Operation 'cz' on qubit 1 after measurement at location: (37, 1).",one_qubit_fb6117.py,41,
+ql-operation-after-measurement,"Operation 'x' on qubit 0 after measurement at location: (121, 1).",computaci_c3_b3n_cu_c3_a1ntica_pr_c3_a1ctica_cs2022_cfd1a4.py,122,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (7, 1).",quantumdice_bc7351.py,8,
+ql-operation-after-measurement,"Operation 'ch' on qubit 1 after measurement at location: (19, 1).
+Operation 'ch' on qubit 0 after measurement at location: (18, 1).",task_3_4b4e03.py,20,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (69, 1).",quantum_key_distribution_875841.py,73,
+ql-operation-after-measurement,"Operation 'cz' on qubit 1 after measurement at location: (28, 5).",quantum_pixel_generator_multi_qasm_fractional_complete_5a24d9.py,32,5.0
+ql-operation-after-measurement,"Operation 'cx' on qubit 1 after measurement at location: (16, 1).",qiskitcode_c7825c.py,18,
+ql-operation-after-measurement,"Operation 'ccx' on qubit 0 after measurement at location: (9, 1).
+Operation 'ccx' on qubit 1 after measurement at location: (10, 1).",circuit_1_7229f9.py,11,
+ql-operation-after-measurement,"Operation 'cx' on qubit 4 after measurement at location: (13, 1).",binary_20counter_4e35bf.py,21,
+ql-operation-after-measurement,"Operation 'u' on qubit 0 after measurement at location: (117, 1).",main_20code_20soccer_20quantum_20predicter_a83463.py,135,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (534, 9).",test_stochastic_swap_89a6ef.py,535,9.0
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (69, 1).",quantum_key_distribution_62f76f.py,73,
+ql-operation-after-measurement,"Operation 'z' on qubit 0 after measurement at location: (26, 1).",sandbox_e52934.py,28,
+ql-operation-after-measurement,"Operation 'cx' on qubit 1 after measurement at location: (32, 1).",teleportation_circuit_e3f3c7.py,34,
+ql-operation-after-measurement,"Operation 'cz' on qubit 0 after measurement at location: (25, 5).",quantum_teleportation_1881c2.py,30,5.0
+ql-operation-after-measurement,"Operation 'ch' on qubit 1 after measurement at location: (18, 1).
+Operation 'ch' on qubit 0 after measurement at location: (17, 1).",task_1_bbf4fb.py,19,
+ql-operation-after-measurement,"Operation 'cx' on qubit 0 after measurement at location: (23, 1).
+Operation 'cx' on qubit 1 after measurement at location: (23, 1).",qubits_intro_974f92.py,28,
+ql-operation-after-measurement,"Operation 'u1' on qubit 0 after measurement at location: (33, 1).",teleportation_50c827.py,40,
+ql-operation-after-measurement,"Operation 'swap' on qubit 0 after measurement at location: (74, 1).",spy_hunter_b2cbea.py,80,
+ql-operation-after-measurement,"Operation 'ch' on qubit 2 after measurement at location: (24, 1).",task_3_4b4e03.py,25,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (69, 1).",12_quantum_key_distribution_checkpoint_4165fd.py,73,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (40, 5).",encrpytion_e53b97.py,44,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:2096, c:5) in which some of its qubits are never measured.",qram_f283bf.py,2096,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:239, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,239,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:4282, c:5) in which some of its qubits are never measured.",qram_f283bf.py,4282,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:48, c:13) in which some of its qubits are never measured.",bv_a1384c.py,48,13.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:214, c:1) in which some of its qubits are never measured.",bss_poster_qce21_8d4e7c.py,214,
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:57, c:9) in which some of its qubits are never measured.",ahmed25_7_f6d602.py,57,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:4185, c:9) in which some of its qubits are never measured.",qram_f283bf.py,4185,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:202, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,202,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:2909, c:9) in which some of its qubits are never measured.",qram_f283bf.py,2909,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:4271, c:9) in which some of its qubits are never measured.",qram_f283bf.py,4271,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:505, c:5) in which some of its qubits are never measured.",qram_5907fb.py,505,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:139, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,139,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:69, c:5) in which some of its qubits are never measured.",multiqbitswaptest_task1part3_b38c36.py,69,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:24, c:1) in which some of its qubits are never measured.",366db34e7f419a810cc0871f5a52379f525a7c1e8a9bcb3f6915ab76_45e001.py,24,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:16, c:1) in which some of its qubits are never measured.",366db34e7f419a810cc0871f5a52379f525a7c1e8a9bcb3f6915ab76_45e001.py,16,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:185, c:1) in which some of its qubits are never measured.",bss_poster_qce21_8d4e7c.py,185,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:273, c:1) in which some of its qubits are never measured.",bss_poster_qce21_8d4e7c.py,273,
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:24, c:1) in which some of its qubits are never measured.",qfa_bca6d2.py,24,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:1312, c:9) in which some of its qubits are never measured.",qram_f283bf.py,1312,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:100, c:1) in which some of its qubits are never measured.",0627319cba97ba5211d8c9c8a1be7f46360718006dd385039aaf9a62_44311f.py,100,
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:27, c:9) in which some of its qubits are never measured.",bcd2excess3_8f0662.py,27,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:3752, c:9) in which some of its qubits are never measured.",qram_f283bf.py,3752,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:2328, c:9) in which some of its qubits are never measured.",qram_f283bf.py,2328,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:3426, c:9) in which some of its qubits are never measured.",qram_f283bf.py,3426,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:504, c:5) in which some of its qubits are never measured.",qram_5907fb.py,504,5.0
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:65, c:9) in which some of its qubits are never measured.",mortyteleport_5e6681.py,65,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:198, c:1) in which some of its qubits are never measured.",bss_poster_qce21_8d4e7c.py,198,
+ql-superfluous-op,"The circuit 'Heis3' has an operation (l:600, c:9) in which some of its qubits are never measured.",part2_b6b6f7.py,600,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:1006, c:5) in which some of its qubits are never measured.",qram_f283bf.py,1006,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:16, c:1) in which some of its qubits are never measured.",d476eb0353f0401afd56fbbeab4769d956febaf18a873673e45f59b2_36109c.py,16,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:226, c:9) in which some of its qubits are never measured.",sm_270565.py,226,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:11, c:1) in which some of its qubits are never measured.",visualize_01cb72.py,11,
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:39, c:5) in which some of its qubits are never measured.",quantum_teleportation_4478fd.py,39,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:141, c:9) in which some of its qubits are never measured.",sm_270565.py,141,9.0
+ql-superfluous-op,"The circuit 'mycircuit' has an operation (l:189, c:9) in which some of its qubits are never measured.",b50_superdense_coding_solution_checkpoint_9c0b43.py,189,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:3353, c:5) in which some of its qubits are never measured.",qram_f283bf.py,3353,5.0
+ql-superfluous-op,"The circuit 'qc1' has an operation (l:43, c:1) in which some of its qubits are never measured.",grover_6fe3a0.py,43,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:274, c:5) in which some of its qubits are never measured.",custom_circuits_83ca4f.py,274,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:151, c:13) in which some of its qubits are never measured.",quantummultiplication_f802ed.py,151,13.0
+ql-superfluous-op,"The circuit 'Grover_circuit' has an operation (l:77, c:1) in which some of its qubits are never measured.",grover_47e392.py,77,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:162, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,162,
+ql-superfluous-op,"The circuit 'circuit5' has an operation (l:234, c:1) in which some of its qubits are never measured.",hw2_0ebab1.py,234,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:179, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,179,
+ql-superfluous-op,"The circuit 'circuit' has an operation (l:22, c:9) in which some of its qubits are never measured.",hello_quantum_world_c0ca52.py,22,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:31, c:1) in which some of its qubits are never measured.",tests_a3f14f.py,31,
+ql-superfluous-op,"The circuit 'circuit1' has an operation (l:23, c:1) in which some of its qubits are never measured.",grover_bc3358.py,23,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:1333, c:9) in which some of its qubits are never measured.",qram_f283bf.py,1333,9.0
+ql-superfluous-op,"The circuit 'game' has an operation (l:95, c:5) in which some of its qubits are never measured.",chsh_e87627.py,95,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:180, c:9) in which some of its qubits are never measured.",sm_270565.py,180,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:71, c:1) in which some of its qubits are never measured.",366db34e7f419a810cc0871f5a52379f525a7c1e8a9bcb3f6915ab76_45e001.py,71,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:4030, c:5) in which some of its qubits are never measured.",qram_f283bf.py,4030,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:62, c:5) in which some of its qubits are never measured.",ping_pong_ai_v3_4q_output_copy1_checkpoint_942a27.py,62,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:335, c:5) in which some of its qubits are never measured.",qram_5907fb.py,335,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:24, c:1) in which some of its qubits are never measured.",683219e503be5b8c252d7b6de7897bc938220e8cf631c81f22bb86f4_61858a.py,24,
+ql-superfluous-op,"The circuit 'circuit2' has an operation (l:189, c:1) in which some of its qubits are never measured.",hw2_0ebab1.py,189,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:105, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,105,
+ql-constant-classic-bit,Circuit 'mycircuit1' measures qubit '0' but never uses it.,c04_quantum_gates_with_complex_numbers_checkpoint_293adb.py,282,18.0
+ql-constant-classic-bit,"Circuit 'circ_end' measures qubit '0' but never uses it.
+Circuit 'circ_end' measures qubit '1' but never uses it.
+Circuit 'circ_end' measures qubit '2' but never uses it.
+Circuit 'circ_end' measures qubit '3' but never uses it.",6_deutsch_jozsa_cern_9a3902.py,40,12.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '3' but never uses it.
+Circuit 'qc' measures qubit '4' but never uses it.",q80_multiple_control_constructions_solutions_715445.py,206,10.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '2' but never uses it.,inner_product_1c9da7.py,24,10.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.
+Circuit 'circuit' measures qubit '3' but never uses it.
+Circuit 'circuit' measures qubit '4' but never uses it.",distribution_ac264a.py,75,11.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",bo_hybrid_gate_noise_tunnlingprobability_7bb6e4.py,581,18.0
+ql-constant-classic-bit,"Circuit 'mycircuit' measures qubit '0' but never uses it.
+Circuit 'mycircuit' measures qubit '1' but never uses it.
+Circuit 'mycircuit' measures qubit '2' but never uses it.
+Circuit 'mycircuit' measures qubit '3' but never uses it.",b72_rotation_automata_solutions_d5ca05.py,2234,17.0
+ql-constant-classic-bit,Circuit 'qc2' measures qubit '1' but never uses it.,test_circuit_combine_extend_a76ce4.py,29,15.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.",adaptive_circuits_365dea.py,28,19.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '1' but never uses it.,a00_qiskit_introduction_checkpoint_78fe1f.py,267,11.0
+ql-constant-classic-bit,"Circuit 'qc_output' measures qubit '0' but never uses it.
+Circuit 'qc_output' measures qubit '1' but never uses it.
+Circuit 'qc_output' measures qubit '2' but never uses it.
+Circuit 'qc_output' measures qubit '3' but never uses it.
+Circuit 'qc_output' measures qubit '4' but never uses it.
+Circuit 'qc_output' measures qubit '5' but never uses it.
+Circuit 'qc_output' measures qubit '6' but never uses it.
+Circuit 'qc_output' measures qubit '7' but never uses it.",base_2cb850.py,12,17.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.",implementacion_de_algorimos_e098ce.py,122,11.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '3' but never uses it.
+Circuit 'qc' measures qubit '4' but never uses it.
+Circuit 'qc' measures qubit '5' but never uses it.
+Circuit 'qc' measures qubit '6' but never uses it.
+Circuit 'qc' measures qubit '7' but never uses it.",licentaperformanceuniform_05ae53.py,27,14.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '1' but never uses it.,a00_qiskit_introduction_1ba1af.py,366,11.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '1' but never uses it.,hadamard_b2fac2.py,12,14.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,test_add_37941b.py,16,6.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.",init_e58a9d.py,8,10.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '2' but never uses it.,test_compiler_af868d.py,290,19.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,16_creating_a_provider_1b5ce4.py,214,6.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '1' but never uses it.,ex1_fc0510.py,66,10.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",qubits_d78ad0.py,12,6.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '1' but never uses it.,ex1_a7614b.py,66,10.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,impactonblochspherev2_6f0344.py,62,15.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.
+Circuit 'circuit' measures qubit '3' but never uses it.
+Circuit 'circuit' measures qubit '9' but never uses it.
+Circuit 'circuit' measures qubit '4' but never uses it.
+Circuit 'circuit' measures qubit '5' but never uses it.
+Circuit 'circuit' measures qubit '6' but never uses it.
+Circuit 'circuit' measures qubit '7' but never uses it.
+Circuit 'circuit' measures qubit '8' but never uses it.",quantum_random_632437.py,20,15.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.
+Circuit 'circuit' measures qubit '3' but never uses it.",b76_multiple_rotations_solutions_checkpoint_65db31.py,285,15.0
+ql-constant-classic-bit,Circuit 'c' measures qubit '0' but never uses it.,sandbox_e52934.py,22,5.0
+ql-constant-classic-bit,"Circuit 'circuit4' measures qubit '2' but never uses it.
+Circuit 'circuit4' measures qubit '3' but never uses it.",basics_64c7b2.py,580,12.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.",ref_2q_clifford_908f0c.py,315,15.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.
+Circuit 'circuit' measures qubit '3' but never uses it.",quntum_204_dec_2005_202020_206_2042_20am_16e278.py,28,11.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.",planqk_examples_d7625f.py,7,10.0
+ql-constant-classic-bit,"Circuit 'quantum_circuit' measures qubit '0' but never uses it.
+Circuit 'quantum_circuit' measures qubit '1' but never uses it.
+Circuit 'quantum_circuit' measures qubit '2' but never uses it.
+Circuit 'quantum_circuit' measures qubit '3' but never uses it.
+Circuit 'quantum_circuit' measures qubit '4' but never uses it.
+Circuit 'quantum_circuit' measures qubit '5' but never uses it.
+Circuit 'quantum_circuit' measures qubit '6' but never uses it.
+Circuit 'quantum_circuit' measures qubit '7' but never uses it.",algorithm_geneticv2_8af717.py,130,31.0
+ql-constant-classic-bit,Circuit 'circ' measures qubit '3' but never uses it.,test_mapper_217a32.py,83,16.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,rz_20gate_eff90f.py,15,15.0
+ql-constant-classic-bit,"Circuit 'mycircuit' measures qubit '0' but never uses it.
+Circuit 'mycircuit' measures qubit '1' but never uses it.
+Circuit 'mycircuit' measures qubit '2' but never uses it.",b72_rotation_automata_solutions_2e84b2.py,2169,17.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '3' but never uses it.
+Circuit 'qc' measures qubit '4' but never uses it.",qis_tut_circuit_basic_b9a0b3.py,37,6.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.",ref_2q_clifford_908f0c.py,449,15.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",b50_two_qubits_solutions_1928bb.py,257,10.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,angle_qrom_baseline_6085cf.py,28,10.0
+ql-constant-classic-bit,"Circuit 'mycircuit' measures qubit '0' but never uses it.
+Circuit 'mycircuit' measures qubit '1' but never uses it.
+Circuit 'mycircuit' measures qubit '2' but never uses it.
+Circuit 'mycircuit' measures qubit '3' but never uses it.",b72_rotation_automata_solutions_2e84b2.py,2232,17.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '1' but never uses it.,bitop_0f46d4.py,14,11.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",test_forestbackend_d852a8.py,187,14.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.",ref_2q_clifford_908f0c.py,537,15.0
+ql-constant-classic-bit,Circuit 'quantum_circuit' measures qubit '0' but never uses it.,representingqubitstates_e4aeda.py,15,19.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.",ref_2q_clifford_908f0c.py,229,15.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,polarization_20rotator_20angle_25374b.py,17,10.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",b54_superdense_coding_solutions_5ed6f0.py,164,10.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '3' but never uses it.",exercises_37c6a5.py,257,10.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '3' but never uses it.",ex_1b_en_40c185.py,354,10.0
+ql-constant-classic-bit,"Circuit 'meas' measures qubit '0' but never uses it.
+Circuit 'meas' measures qubit '1' but never uses it.",test_multi_registers_convention_5f68d8.py,35,16.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,samplepassmanager_2a0b6b.py,77,6.0
+ql-oversized-circuit,Circuit 'circ' never manipulates some of its 2qubits.,trotterization_test_804eca.py,47,8.0
+ql-oversized-circuit,Circuit 'circ' never manipulates some of its 2qubits.,circuit_test_867f08.py,328,16.0
+ql-oversized-circuit,Circuit 'circ' never manipulates some of its 8qubits.,2022_20qiskit_20hackathon_20korea_ghkim_checkpoint_beec31.py,182,12.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 3qubits.,measurement_tests_fdc8b4.py,234,14.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,kak_three_stage_demo_bb42ee.py,67,10.0
+ql-oversized-circuit,Circuit 'init' never manipulates some of its 3qubits.,grover_059f44.py,11,8.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 2qubits.,decoding_f24824.py,58,13.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 20qubits.,challenge_8b86e4.py,10,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 8qubits.,utils_6bb18c.py,86,10.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 2qubits.,test_iqm_backend_9dfa5b.py,79,15.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 6qubits.,test_structure_aaba85.py,723,14.0
+ql-oversized-circuit,Circuit 'ts' never manipulates some of its 2qubits.,quantum_checkpoint_243c90.py,208,18.0
+ql-oversized-circuit,Circuit 'qe' never manipulates some of its 3qubits.,3bit_flip_qecc_943e31.py,64,8.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 7qubits.,bug_iswap_d874b3.py,168,15.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,grade_0ca071.py,27,8.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 4qubits.,teleportation_77ba85.py,26,11.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,test_structure_aaba85.py,1341,14.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 17qubits.,366db34e7f419a810cc0871f5a52379f525a7c1e8a9bcb3f6915ab76_45e001.py,8,6.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 3qubits.,test_output_bd6143.py,366,15.0
+ql-oversized-circuit,Circuit 'crot' never manipulates some of its 1qubits.,grover3q_7c8892.py,22,12.0
+ql-oversized-circuit,Circuit 'circ_reciever' never manipulates some of its 3qubits.,reciever_1f53e7.py,7,17.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 6qubits.,test_structure_aaba85.py,708,14.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,measurement_tests_fdc8b4.py,261,14.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 4qubits.,easy_qnn_0305db.py,26,11.0
+ql-oversized-circuit,Circuit 'qc_p' never manipulates some of its 4qubits.,qaoa_133143.py,130,8.0
+ql-oversized-circuit,Circuit 'circuit1' never manipulates some of its 4qubits.,durr_20and_20h_c3_b8yer_20algorithm_20_checkpoint_8ed1fa.py,106,16.0
+ql-oversized-circuit,Circuit 'measureXX' never manipulates some of its 4qubits.,gen_algr_3qubits_d0fffa.py,612,25.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,python_quantum_superposition_distribution_generator_quadratic_7d2848.py,13,4.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,boundaries_2e07c9.py,153,14.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 2qubits.,qiskitwrapper_d60eee.py,21,13.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 7qubits.,bug_iswap_d874b3.py,484,11.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,qiskit_2_4_more_circuit_identities_aa878d.py,95,10.0
+ql-oversized-circuit,Circuit 'qc_p' never manipulates some of its 4qubits.,qaoa_ea07b8.py,107,8.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 4qubits.,main_ad6fd9.py,73,13.0
+ql-oversized-circuit,Circuit 'circuit2' never manipulates some of its 5qubits.,a00_qiskit_introduction_79143b.py,104,12.0
+ql-oversized-circuit,Circuit 'circuit2' never manipulates some of its 6qubits.,runtime_31ba06.py,111,16.0
+ql-oversized-circuit,Circuit 'c' never manipulates some of its 3qubits.,test_gates_7b5f34.py,38,9.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 14qubits.,crosstalk_2f5f04.py,33,11.0
+ql-oversized-circuit,Circuit 'meas' never manipulates some of its 2qubits.,qiskit_visualizations_abef54.py,12,8.0
+ql-oversized-circuit,Circuit 'qc_z' never manipulates some of its 1qubits.,aveiro_part1_a16bd9.py,452,8.0
+ql-oversized-circuit,Circuit 'qcirc2' never manipulates some of its 6qubits.,test_mc_gate_13ba80.py,137,18.0
+ql-oversized-circuit,Circuit 'time_evol_circ' never manipulates some of its 5qubits.,new_time_dom_qc_ab2ea7.py,114,22.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 5qubits.,trainnetwork_d9176f.py,151,10.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 1qubits.,tests_a3f14f.py,66,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 3qubits.,qiskit_a2ec65.py,77,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 4qubits.,final_20question_202_20unitary_20circuit_20building_c0b8db.py,74,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 3qubits.,atoms_of_computation_069ae7.py,163,6.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 2qubits.,untitled_38f806.py,21,11.0
+ql-oversized-circuit,Circuit 'qc_original' never manipulates some of its 1qubits.,hadamard_gate_5b0b05.py,10,15.0
+ql-oversized-circuit,Circuit 'oracle' never manipulates some of its 1qubits.,minimization_b57a20.py,44,18.0
+ql-oversized-circuit,Circuit 'qc_z' never manipulates some of its 1qubits.,aveiro_part1_a16bd9.py,476,8.0
+ql-oversized-circuit,Circuit 'circuit2' never manipulates some of its 2qubits.,ch7_r4_unitary_475c2b.py,29,16.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (24) than classical  bits (1),searchengine_32x32_fd4508.py,65,6.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc3' has more qubits (9) than classical  bits (3)
+Circuit 'opt_qc3' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,889,11.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (3) than classical  bits (0),test_h_gate_204f5a.py,30,14.0
+ql-unmeasurable-qubits,Circuit 'mycircuit' has more qubits (1) than classical  bits (0),ex1_8db247.py,164,13.0
+ql-unmeasurable-qubits,Circuit 'compiled_circuit' has more qubits (5) than classical  bits (4),deutschjozsa_5a9218.py,45,24.0
+ql-unmeasurable-qubits,"Circuit 'nopt_qc' has more qubits (10) than classical  bits (3)
+Circuit 'nopt_qc' has more qubits (12) than classical  bits (3)",benchmark_72ca3d.py,1621,25.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (5) than classical  bits (0),test_dynamics_utils_bdc8d7.py,48,12.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc1' has more qubits (9) than classical  bits (3)
+Circuit 'opt_qc1' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,831,21.0
+ql-unmeasurable-qubits,Circuit 'c' has more qubits (3) than classical  bits (0),test_gates_7b5f34.py,38,9.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (3) than classical  bits (0),qiskit_try_fb8002.py,18,8.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (27) than classical  bits (12),qrmcircuitforfeedback_4ccb8b.py,87,11.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (3) than classical  bits (0),more_circuit_identities_0138c6.py,272,6.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),3_more_circuit_identities_checkpoint_986a09.py,335,6.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),3_more_circuit_identities_checkpoint_986a09.py,165,6.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc' has more qubits (4) than classical  bits (2)
+Circuit 'opt_qc' has more qubits (6) than classical  bits (2)",benchmark_72ca3d.py,234,14.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (2) than classical  bits (1),deutsch_todos_20a_200_7aa879.py,13,11.0
+ql-unmeasurable-qubits,Circuit 'qc0' has more qubits (7) than classical  bits (0),draft_transpiler_629fc4.py,138,7.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (3) than classical  bits (0),qft3q_f2f90e.py,12,15.0
+ql-unmeasurable-qubits,Circuit 'post_ops' has more qubits (4) than classical  bits (0),quantum_communicator_example_66df15.py,64,6.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (2) than classical  bits (0),3_e_e55fab.py,12,11.0
+ql-unmeasurable-qubits,Circuit 'varform' has more qubits (6) than classical  bits (0),qnn_6qubits_zznoise_full_86689d.py,31,11.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),cz_e8a784.py,68,4.0
+ql-unmeasurable-qubits,Circuit 'qc1' has more qubits (1) than classical  bits (0),test_circuit_operations_c5b1ea.py,119,15.0
+ql-unmeasurable-qubits,Circuit 'demo' has more qubits (4) than classical  bits (0),shor_f09da0.py,129,8.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (3) than classical  bits (0),test_8f268e.py,13,12.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (3) than classical  bits (0),qiskit_try_fb8002.py,9,8.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),more_circuit_identities_0138c6.py,70,6.0
+ql-unmeasurable-qubits,Circuit 'compiled_circuit' has more qubits (5) than classical  bits (4),deutschjozabalanceada_d1c3c1.py,57,20.0
+ql-unmeasurable-qubits,Circuit 'grover_circuit' has more qubits (5) than classical  bits (0),noise_delay_largergroover_c20142.py,26,26.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (25) than classical  bits (0),qrealboosting64_ceb7ad.py,975,10.0
+ql-unmeasurable-qubits,Circuit 'five_qc' has more qubits (9) than classical  bits (4),five_qubit_stabilizer_728e76.py,547,15.0
+ql-unmeasurable-qubits,Circuit 'transpiled' has more qubits (1) than classical  bits (0),06_basket_option_pricing_c3aa1f.py,147,14.0
+ql-unmeasurable-qubits,Circuit 'trans_qc' has more qubits (6) than classical  bits (0),test_odd_cases_68c146.py,29,16.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (9) than classical  bits (2),test_trivial_layout_c0edda.py,52,19.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),ch9_r1_kickback_0661af.py,49,10.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),more_circuit_identities_0138c6.py,335,6.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (8) than classical  bits (1),ibm_8qubit_94fd07.py,158,8.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (9) than classical  bits (8),deutsch_74f388.py,8,11.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (3) than classical  bits (0),test_passmanager_2e93dc.py,116,19.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),ibm_2_3_f5c1e1.py,7,6.0
+ql-unmeasurable-qubits,"Circuit 'nopt_qc' has more qubits (9) than classical  bits (3)
+Circuit 'nopt_qc' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,820,11.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc' has more qubits (4) than classical  bits (2)
+Circuit 'opt_qc' has more qubits (6) than classical  bits (2)",benchmark_72ca3d.py,220,14.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),lecture_201_20_20intro_20to_20qc_20for_20the_20physicist_20part3_c31173.py,237,6.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc1' has more qubits (9) than classical  bits (3)
+Circuit 'opt_qc1' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,789,11.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),kvant_799532.py,18,10.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),tutorial03_quantumoperations_061e13.py,167,6.0
+ql-unmeasurable-qubits,Circuit 'Circ' has more qubits (21) than classical  bits (0),icpc_20question_202_20notebook_7f0b9e.py,124,16.0
+ql-unmeasurable-qubits,Circuit 'compcircuit' has more qubits (2) than classical  bits (1),quantum_deutsch_checkpoint_55682c.py,118,15.0
+ql-unmeasurable-qubits,Circuit 'ansatz' has more qubits (4) than classical  bits (0),examples_a159f0.py,370,10.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),test_u3_gate_64b5b9.py,35,14.0
+ql-unmeasurable-qubits,Circuit 'ghz' has more qubits (3) than classical  bits (0),8_tomography_0f3a3b.py,299,7.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (3) than classical  bits (0),test_converter_aef704.py,1024,14.0
+ql-unmeasurable-qubits,Circuit 'qc_p' has more qubits (1) than classical  bits (0),p_gate_ccf46b.py,22,8.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (3) than classical  bits (0),qiskit_hello_86db7e.py,19,8.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc2' has more qubits (10) than classical  bits (3)
+Circuit 'opt_qc2' has more qubits (12) than classical  bits (3)",benchmark_72ca3d.py,1488,21.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),lecture3_85c6b1.py,403,6.0

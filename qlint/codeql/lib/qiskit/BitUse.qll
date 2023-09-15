@@ -486,12 +486,7 @@ class QubitUseViaAppend extends QubitUse {
       // detect qc.append(CXGate(), [0, 1])
       appendCall = circ.getAnAttributeRead("append").getACall() and
       gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
-      gateCall =
-        API::moduleImport("qiskit")
-            .getMember("circuit")
-            .getMember("library")
-            .getMember(gs)
-            .getACall() and
+      checkCallAndSpecLinkedInAPIGraph(gateCall, gs) and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
       // avoid to consider the values defined in the __get_item__() method
       // of the Register class in qiskit
@@ -517,12 +512,7 @@ class QubitUseViaAppend extends QubitUse {
       // detect qc.append(CXGate(), [0, 1])
       appendCall = circ.getAnAttributeRead("append").getACall() and
       gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
-      gateCall =
-        API::moduleImport("qiskit")
-            .getMember("circuit")
-            .getMember("library")
-            .getMember(gs)
-            .getACall() and
+      checkCallAndSpecLinkedInAPIGraph(gateCall, gs) and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
       // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
       if qubitListSource.asExpr() instanceof List
@@ -541,12 +531,7 @@ class QubitUseViaAppend extends QubitUse {
       // detect qc.append(CXGate(), [0, 1])
       appendCall = circ.getAnAttributeRead("append").getACall() and
       gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
-      gateCall =
-        API::moduleImport("qiskit")
-            .getMember("circuit")
-            .getMember("library")
-            .getMember(gs)
-            .getACall() and
+      checkCallAndSpecLinkedInAPIGraph(gateCall, gs) and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
       // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
       if qubitListSource.asExpr() instanceof List
@@ -565,12 +550,7 @@ class QubitUseViaAppend extends QubitUse {
       // detect qc.append(CXGate(), [0, 1])
       appendCall = circ.getAnAttributeRead("append").getACall() and
       gateCall = appendCall.(API::CallNode).getParameter(0, "instruction").getAValueReachingSink() and
-      gateCall =
-        API::moduleImport("qiskit")
-            .getMember("circuit")
-            .getMember("library")
-            .getMember(gs)
-            .getACall() and
+      checkCallAndSpecLinkedInAPIGraph(gateCall, gs) and
       qubitListSource = appendCall.(API::CallNode).getParameter(1, "qargs").getAValueReachingSink() and
       // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
       if qubitListSource.asExpr() instanceof List

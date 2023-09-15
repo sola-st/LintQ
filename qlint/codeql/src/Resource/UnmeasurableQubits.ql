@@ -31,7 +31,9 @@ where
   not exists(QuantumRegisterV2 reg |
     reg = circ.getAQuantumRegister() and
     not reg.hasKnownSize()
-  )
+  ) and
+  // there is no measure_all
+  not exists(MeasurementAll measureAll | measureAll.getQuantumCircuit() = circ)
 // EXTRA IDEA
 // the circuit contains a measurement which has classical argument larger
 // than the size of the circuit

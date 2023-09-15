@@ -20,7 +20,7 @@ import qiskit.Circuit
 import qiskit.Gate
 import qiskit.Backend
 
-from QuantumCircuit qc, Backend bkd, Measurement meas, BackendRun run, Statevector sv
+from QuantumCircuit qc, Backend bkd, Measurement meas, BackendRunViaRunCall run, Statevector sv
 where
   // connect backend and its circuit
   qc = bkd.getACircuitToBeRun() and

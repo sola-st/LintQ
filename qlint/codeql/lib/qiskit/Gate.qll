@@ -12,15 +12,39 @@ private predicate isQuantumOperatorCall(DataFlow::CallCfgNode call) {
   )
 }
 
-private predicate isQuantumOperatorObj(DataFlow::CallCfgNode call) {
-  exists(QuantumCircuit circ, OperatorSpecificationObjectName gate_name_obj |
-    // detect from qiskit.circuit.library import HGate
-    call =
+predicate checkCallAndSpecLinkedInAPIGraph(
+  DataFlow::CallCfgNode opCall, OperatorSpecification opSpec
+) {
+  (
+    // case: from qiskit.circuit.library import CXGate
+    opCall =
       API::moduleImport("qiskit")
           .getMember("circuit")
           .getMember("library")
-          .getMember(gate_name_obj)
-          .getACall() and
+          .getMember(opSpec)
+          .getACall()
+    or
+    // case: from qiskit.extensions import UnitaryGate
+    opCall = API::moduleImport("qiskit").getMember("extensions").getMember(opSpec).getACall()
+    or
+    // case: from qiskit.circuit import Reset
+    opCall = API::moduleImport("qiskit").getMember("circuit").getMember(opSpec).getACall()
+    or
+    // case: from qiskit.circuit.library.standard_gates import IGate
+    opCall =
+      API::moduleImport("qiskit")
+          .getMember("circuit")
+          .getMember("library")
+          .getMember("standard_gates")
+          .getMember(opSpec)
+          .getACall()
+  )
+}
+
+private predicate isQuantumOperatorObj(DataFlow::CallCfgNode call) {
+  exists(QuantumCircuit circ, OperatorSpecificationObjectName gate_name_obj |
+    // detect from qiskit.circuit.library import HGate
+    checkCallAndSpecLinkedInAPIGraph(call, gate_name_obj) and
     // make sure that the gate is used in a circuit using the append()
     circ.getAnAttributeRead("append")
         .getACall()

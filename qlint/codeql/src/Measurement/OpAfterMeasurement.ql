@@ -20,7 +20,9 @@ import qiskit.Qubit
 import qiskit.QuantumDataFlow
 
 from Measurement measure, Gate gate, int shared_qubit
-where mayFollowDirectly(measure, gate, measure.getLocation().getFile(), shared_qubit)
+where
+  mayFollowDirectly(measure, gate, measure.getLocation().getFile(), shared_qubit) and
+  not gate.isConditional()
 // mayFollow(measure, gate, measure.getLocation().getFile(), shared_qubit)
 // and
 // forall(Reset reset |

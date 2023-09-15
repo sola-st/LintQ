@@ -8,10 +8,8 @@ import qiskit.Gate
 
 /** Unknown quantum operator. */
 abstract class UnknownQuantumOperator extends DataFlow::CallCfgNode {
-
   /** Circuit to which unknown quantum operations are applied. */
   abstract QuantumCircuit getQuantumCircuit();
-
 }
 
 class UnknownQuantumOperatorViaUnknownArgument extends UnknownQuantumOperator {
@@ -22,7 +20,6 @@ class UnknownQuantumOperatorViaUnknownArgument extends UnknownQuantumOperator {
     exists(OperatorSpecification spec |
       this.(QuantumOperator).getGateName() = spec and
       count(QubitUse qbu | qbu.getAGate() = this) < spec.getNumberOfQubits()
-
     )
   }
 
@@ -31,21 +28,36 @@ class UnknownQuantumOperatorViaUnknownArgument extends UnknownQuantumOperator {
   }
 }
 
+/** Append calls that append unknown subcircuit (namely not QuantumOperators). */
+class UnknownQuantumOperatorViaAppend extends UnknownQuantumOperator {
+  UnknownQuantumOperatorViaAppend() {
+    exists(QuantumCircuit qc, DataFlow::CallCfgNode actualCall |
+      qc.getAnAttributeRead("append").getACall() = actualCall and
+      // there is not known quantum operator (e.g. gate, measure, etc.) as arument
+      // e.g. qc.append(unknown_op, [qubit1, qubit2, qubit3])
+      not exists(QuantumOperator op |
+        op.flowsTo(this.(API::CallNode).getParameter(0, "instruction").asSink())
+      )
+    |
+      this = actualCall
+    )
+  }
 
-// QUANTUM CIRCUIT EXTENDER FUNCTIONS
+  override QuantumCircuit getQuantumCircuit() {
+    exists(QuantumCircuit qc | qc.getAnAttributeRead("append").getACall() = this | result = qc)
+  }
+}
+
 /** A function call that can extend a specific circuit. */
-abstract class UnknownQuantumOperatorViaFunction extends DataFlow::CallCfgNode {
-  /** Returns the circuit that is extended by the function call. */
-  abstract QuantumCircuit getQuantumCircuit();
-
+abstract class UnknownQuantumOperatorViaFunction extends UnknownQuantumOperator {
   /** Return the name of the function call. */
   string getCallName() {
-      exists(PythonFunctionValue method, string methodName |
+    exists(PythonFunctionValue method, string methodName |
       method.getName() = methodName and
       method.getACall().getNode() = this.asExpr()
-      |
+    |
       result = methodName
-      )
+    )
   }
 }
 
@@ -57,18 +69,18 @@ abstract class UnknownQuantumOperatorViaFunction extends DataFlow::CallCfgNode {
 class CircuitExtenderFunctionViaArg extends UnknownQuantumOperatorViaFunction {
   CircuitExtenderFunctionViaArg() {
     exists(
-    QuantumCircuit qc, DataFlow::CallCfgNode actualCall, Call callNode,
-    PythonFunctionValue method, string methodName
+      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, Call callNode,
+      PythonFunctionValue method, string methodName
     |
-    callNode = actualCall.asExpr() and
-    this = actualCall and
-    qc.flowsTo(this.getArg(_)) and
-    // exclude the well known functions
-    // instanceof, type, transpile, assemble, execute, append, compose, copy
-    method.getName() = methodName and
-    method.getACall().getNode() = this.asExpr() and
-    not methodName in [
-        "isinstance", "type", "transpile", "assemble", "execute", "append", "compose", "copy"
+      callNode = actualCall.asExpr() and
+      this = actualCall and
+      qc.flowsTo(this.getArg(_)) and
+      // exclude the well known functions
+      // instanceof, type, transpile, assemble, execute, append, compose, copy
+      method.getName() = methodName and
+      method.getACall().getNode() = this.asExpr() and
+      not methodName in [
+          "isinstance", "type", "transpile", "assemble", "execute", "append", "compose", "copy"
         ]
     )
   }
@@ -87,47 +99,47 @@ class CircuitExtenderFunctionViaArg extends UnknownQuantumOperatorViaFunction {
 class CircuitExtenderFunctionImplicit extends UnknownQuantumOperatorViaFunction {
   CircuitExtenderFunctionImplicit() {
     exists(
-    QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
-    Variable inFunctionQcVariable
+      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
+      Variable inFunctionQcVariable
     |
-    // they are in the same file
-    qc.getLocation().getFile() = actualCall.getLocation().getFile() and
-    // the variable used in the function def
-    // and variable used to refer to the circuit
-    // point to the same thing (aka: proxy they have the same name)
-    inFunctionQcVariable.getId() = qc.getName() and
-    // the variable is in the body of the function
-    fd.contains(inFunctionQcVariable.getAUse().getNode()) and
-    // make sure that there is no store in the function
-    not fd.contains(inFunctionQcVariable.getAStore()) and
-    // the call is referred to the function def (same name and scope)
-    actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
-    actualCall.getScope() = fd.getScope()
+      // they are in the same file
+      qc.getLocation().getFile() = actualCall.getLocation().getFile() and
+      // the variable used in the function def
+      // and variable used to refer to the circuit
+      // point to the same thing (aka: proxy they have the same name)
+      inFunctionQcVariable.getId() = qc.getName() and
+      // the variable is in the body of the function
+      fd.contains(inFunctionQcVariable.getAUse().getNode()) and
+      // make sure that there is no store in the function
+      not fd.contains(inFunctionQcVariable.getAStore()) and
+      // the call is referred to the function def (same name and scope)
+      actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
+      actualCall.getScope() = fd.getScope()
     |
-    this = actualCall
+      this = actualCall
     )
   }
 
   override QuantumCircuit getQuantumCircuit() {
     exists(
-    QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
-    Variable inFunctionQcVariable
+      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, FunctionDef fd,
+      Variable inFunctionQcVariable
     |
-    // they are in the same file
-    qc.getLocation().getFile() = actualCall.getLocation().getFile() and
-    // the variable used in the function def
-    // and variable used to refer to the circuit
-    // point to the same thing (aka: proxy they have the same name)
-    inFunctionQcVariable.getId() = qc.getName() and
-    // the variable is in the body of the function
-    fd.contains(inFunctionQcVariable.getAUse().getNode()) and
-    // make sure that there is no store in the function
-    not fd.contains(inFunctionQcVariable.getAStore()) and
-    // the call is referred to the function def (same name and scope)
-    actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
-    actualCall.getScope() = fd.getScope()
+      // they are in the same file
+      qc.getLocation().getFile() = actualCall.getLocation().getFile() and
+      // the variable used in the function def
+      // and variable used to refer to the circuit
+      // point to the same thing (aka: proxy they have the same name)
+      inFunctionQcVariable.getId() = qc.getName() and
+      // the variable is in the body of the function
+      fd.contains(inFunctionQcVariable.getAUse().getNode()) and
+      // make sure that there is no store in the function
+      not fd.contains(inFunctionQcVariable.getAStore()) and
+      // the call is referred to the function def (same name and scope)
+      actualCall.getFunction().asExpr().(Name).getId() = fd.getDefinedFunction().getName() and
+      actualCall.getScope() = fd.getScope()
     |
-    result = qc
+      result = qc
     )
   }
 }

@@ -71,6 +71,7 @@ class ToGateCall extends DataFlow::CallCfgNode {
  * Note that it includes:
  * - (actual subcircuit) circuit that are appened and compesed to circuit
  * - (potential subcircuit) circuit that are defined in a function and returned
+ * - (potential subcircuit) circuit that flow to a returned statement
  * - (potential subcircuit) circuit that are called with to_instruction() or to_gate()
  */
 class SubCircuit extends QuantumCircuit {
@@ -127,6 +128,20 @@ class SubCircuit extends QuantumCircuit {
       )
     |
       this = qc
+    )
+    or
+    // hold if the circuit is returned by a function
+    exists(Return ret |
+      (
+        // the return statement returns a QuantumCircuit
+        ret.contains(this.asExpr())
+        or
+        // in the return statement flows an object that is a QuantumCircuit (use local flow)
+        exists(DataFlow::Node objectInReturnStatement |
+          ret.contains(objectInReturnStatement.asExpr()) and
+          this.flowsTo(objectInReturnStatement)
+        )
+      )
     )
     or
     // qc_this.to_gate()

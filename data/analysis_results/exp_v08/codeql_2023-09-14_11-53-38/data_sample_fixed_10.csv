@@ -1,0 +1,144 @@
+rule_id,message,file,line,col
+ql-ghost-composition,"Ghost composition at location: (124, 9)",test_mc_gate_13ba80.py,124,9.0
+ql-ghost-composition,"Ghost composition at location: (249, 1)",error_correction_repetition_code_e94ab1.py,249,
+ql-ghost-composition,"Ghost composition at location: (222, 1)",error_correction_repetition_code_e94ab1.py,222,
+ql-ghost-composition,"Ghost composition at location: (42, 1)",h2evo_6bb46f.py,42,
+ql-ghost-composition,"Ghost composition at location: (303, 1)",error_correction_repetition_code_e94ab1.py,303,
+ql-ghost-composition,"Ghost composition at location: (413, 1)",transpiled_stabilizer_test_7be7ce.py,413,
+ql-ghost-composition,"Ghost composition at location: (76, 1)",neoh2evo_28b965.py,76,
+ql-ghost-composition,"Ghost composition at location: (107, 9)",test_mc_gate_13ba80.py,107,9.0
+ql-ghost-composition,"Ghost composition at location: (90, 9)",test_mc_gate_13ba80.py,90,9.0
+ql-ghost-composition,"Ghost composition at location: (275, 1)",error_correction_repetition_code_e94ab1.py,275,
+ql-incompatible-composition,"The subcircuit 'qc' (qubits=5) at location: (537, 10)  is larger than parent 'qc' (qubits=1) at location: (684, 10). The composition at location: (568, 1) is not possible.
+The subcircuit 'qc' (qubits=5) at location: (537, 10)  is larger than parent 'qc' (qubits=1) at location: (684, 10). The composition at location: (694, 9) is not possible.",challenge_4c_491e0e.py,684,10.0
+ql-incompatible-composition,"The subcircuit 'copy' (qubits=2) at location: (9, 12)  is larger than parent 'q' (qubits=1) at location: (50, 5). The composition at location: (34, 1) is not possible.
+The subcircuit 'copy' (qubits=2) at location: (9, 12)  is larger than parent 'q' (qubits=1) at location: (50, 5). The composition at location: (24, 1) is not possible.
+The subcircuit 'copy' (qubits=2) at location: (9, 12)  is larger than parent 'q' (qubits=1) at location: (50, 5). The composition at location: (64, 5) is not possible.
+The subcircuit 'equal' (qubits=3) at location: (21, 9)  is larger than parent 'q' (qubits=1) at location: (50, 5). The composition at location: (59, 5) is not possible.",max_cc3be1.py,50,5.0
+ql-incompatible-composition,"The subcircuit 'qc' (qubits=12) at location: (79, 10)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (79, 10)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (149, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (85, 14)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (85, 14)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (149, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (92, 14)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (92, 14)  is larger than parent 'qc' (qubits=8) at location: (136, 10). The composition at location: (149, 10) is not possible.",qiskit_test_49241d.py,136,10.0
+ql-incompatible-composition,"The subcircuit 'qc' (qubits=12) at location: (79, 10)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (79, 10)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (149, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (85, 14)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (85, 14)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (149, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (92, 14)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (139, 10) is not possible.
+The subcircuit 'qc' (qubits=12) at location: (92, 14)  is larger than parent 'qc' (qubits=8) at location: (143, 10). The composition at location: (149, 10) is not possible.",qiskit_test_49241d.py,143,10.0
+ql-incompatible-composition,"The subcircuit 'circuit' (qubits=2) at location: (129, 19)  is larger than parent 'circuit' (qubits=1) at location: (47, 19). The composition at location: (96, 13) is not possible.",shor_dce712.py,47,19.0
+ql-incompatible-composition,"The subcircuit 'circuit' (qubits=2) at location: (157, 19)  is larger than parent 'circuit' (qubits=1) at location: (75, 19). The composition at location: (124, 13) is not possible.",shor_independent_ebb6ac.py,75,19.0
+ql-incompatible-composition,"The subcircuit 'qc' (qubits=3) at location: (69, 10)  is larger than parent 'qc' (qubits=2) at location: (122, 10). The composition at location: (134, 9) is not possible.",shors_benchmark_365616.py,122,10.0
+ql-incompatible-composition,"The subcircuit 'qc' (qubits=3) at location: (152, 10)  is larger than parent 'qc' (qubits=1) at location: (234, 14). The composition at location: (212, 13) is not possible.
+The subcircuit 'qc' (qubits=3) at location: (152, 10)  is larger than parent 'qc' (qubits=1) at location: (234, 14). The composition at location: (252, 13) is not possible.",shors_benchmark_365616.py,234,14.0
+ql-ungoverned-composition,"The composition of subcircuit 'grover' (l: 93, c: 29) to the 'grover' (l: 92, c: 14) has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used).",grover_76328c.py,93,14.0
+ql-ungoverned-composition,"The composition of subcircuit 'qc' (l: 63, c: 10) to the 'qc' (l: 122, c: 10) has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used).",rotation_95ca93.py,128,18.0
+ql-ungoverned-composition,"The composition of subcircuit 'qc' (l: 63, c: 10) to the 'qc' (l: 122, c: 10) has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used).",rotation_95ca93.py,138,18.0
+ql-ungoverned-composition,"The composition of subcircuit 'qc_trot' (l: 88, c: 15) to the 'psi0' (l: 59, c: 8) has no specified wiring (parameters 'qubits' and 'clbits' of compose() are not used).",trotter_evolution_2353b1.py,95,26.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '3' (l: 1155, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1155,9.0
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '2' (l: 38, c: 1) without preceeding measurement.",example_qiskit_conditional_67fb51.py,38,
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '4' (l: 238, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,238,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '2' (l: 101, c: 9) without preceeding measurement.",test_qasm_simulator_edd048.py,101,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '-1' (l: 33, c: 9) without preceeding measurement.",cat_entangler_613f65.py,33,9.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '4' (l: 535, c: 9) without preceeding measurement.",seven_qubit_stabilizer_4347a9.py,535,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '-1' (l: 71, c: 9) without preceeding measurement.",stabilizer_testing_alex_c73e0b.py,71,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '2' (l: 1158, c: 9) without preceeding measurement.",five_qubit_stabilizer_728e76.py,1158,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '2' (l: 42, c: 5) without preceeding measurement.",qc_teleportation_a2caf5.py,42,5.0
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 225, c: 13) without preceeding measurement.",shor_7f605e.py,225,13.0
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (15, 1) and (23, 1)",qubits_d78ad0.py,23,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (164, 1) and (165, 1)",measurement_postulate_single_qubit_f_fb7a34.py,165,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (68, 5) and (68, 5)",montgomery_modular_multiplication_593bfe.py,68,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '1' at locations: (69, 9) and (72, 9)",test_qasm_simulator_682153.py,72,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (566, 9) and (567, 9)",test_stochastic_swap_89a6ef.py,567,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '1' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '2' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '3' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '4' at locations: (141, 5) and (141, 5)",n4grover_qx2_064def.py,141,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (25, 1) and (29, 1)
+Two consecutive measurements on qubit '1' at locations: (25, 1) and (29, 1)
+Two consecutive measurements on qubit '2' at locations: (25, 1) and (29, 1)
+Two consecutive measurements on qubit '3' at locations: (25, 1) and (29, 1)",qrpgcg_cd84f9.py,29,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (62, 5) and (63, 13)",inefficientnot_fe6009.py,63,13.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (11, 1) and (12, 1)",qubitstates_903372.py,12,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (29, 1) and (33, 1)
+Two consecutive measurements on qubit '1' at locations: (29, 1) and (33, 1)
+Two consecutive measurements on qubit '2' at locations: (29, 1) and (33, 1)
+Two consecutive measurements on qubit '3' at locations: (29, 1) and (33, 1)",qrpgcg_cd84f9.py,33,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:6, 6)  when it has already 6 classical bits.",example_1_c6d971.py,10,
+ql-measure-all-abuse,"measure_all() on the circuit 'demo' (at location:320, 6)  when it has already 6 classical bits.",matchgate_tools_mudground_checkpoint_a852d9.py,326,
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:17, 15)  when it has already 2 classical bits.",bell_states_example_55fd07.py,20,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:29, 6)  when it has already 5 classical bits.",main_2f60d4.py,30,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:29, 14)  when it has already 3 classical bits.",test_parse_counts_0953d6.py,31,9.0
+ql-measure-all-abuse,"measure_all() on the circuit 'quantum_circuit' (at location:12, 19)  when it has already 2 classical bits.",quantum_entanglement_f902fe.py,23,
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:78, 15)  when it has already 1 classical bits.",interferibmc_c22d6b.py,84,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:7, 15)  when it has already 5 classical bits.",qrng_9498d5.py,10,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:97, 10)  when it has already 31 classical bits.",mnist_dd2c4f.py,110,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:17, 10)  when it has already 1 classical bits.",polarization_20rotator_20angle_25374b.py,20,5.0
+ql-operation-after-measurement,"Operation 'x' on qubit 0 after measurement at location: (65, 9).",gcd_45a5bf.py,72,5.0
+ql-operation-after-measurement,"Operation 'u1' on qubit 0 after measurement at location: (33, 1).",teleportation_50c827.py,40,
+ql-operation-after-measurement,"Operation 'cz' on qubit 0 after measurement at location: (21, 1).",sup_teleport_db51a7.py,26,
+ql-operation-after-measurement,"Operation 'x' on qubit 0 after measurement at location: (80, 9).",test_unroller_f1726c.py,81,9.0
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (14, 1).",ahmed154_73ece9.py,15,
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (473, 9).",test_stochastic_swap_89a6ef.py,474,9.0
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (15, 1).",qubits_d78ad0.py,20,
+ql-operation-after-measurement,"Operation 'x' on qubit 0 after measurement at location: (121, 1).",computaci_c3_b3n_cu_c3_a1ntica_pr_c3_a1ctica_cs2022_cfd1a4.py,122,
+ql-operation-after-measurement,"Operation 'x' on qubit 2 after measurement at location: (140, 5).",example_qiskit_entangle_039085.py,142,5.0
+ql-operation-after-measurement,"Operation 'u' on qubit 0 after measurement at location: (117, 1).",main_20code_20soccer_20quantum_20predicter_a83463.py,135,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:18, c:1) in which some of its qubits are never measured.",0627319cba97ba5211d8c9c8a1be7f46360718006dd385039aaf9a62_44311f.py,18,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:167, c:1) in which some of its qubits are never measured.",bss_poster_qce21_8d4e7c.py,167,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:423, c:5) in which some of its qubits are never measured.",qram_f283bf.py,423,5.0
+ql-superfluous-op,"The circuit 'mycircuit1' has an operation (l:90, c:5) in which some of its qubits are never measured.",b39_controlled_operations_solutions_f4ed8f.py,90,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:251, c:5) in which some of its qubits are never measured.",custom_circuits_83ca4f.py,251,5.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:94, c:1) in which some of its qubits are never measured.",0627319cba97ba5211d8c9c8a1be7f46360718006dd385039aaf9a62_44311f.py,94,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:13, c:9) in which some of its qubits are never measured.",nand_gate_545147.py,13,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:1060, c:9) in which some of its qubits are never measured.",qram_f283bf.py,1060,9.0
+ql-superfluous-op,"The circuit 'qc' has an operation (l:201, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,201,
+ql-superfluous-op,"The circuit 'qc' has an operation (l:166, c:1) in which some of its qubits are never measured.",4_qiskit_64bd71.py,166,
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,groverfuncs_9232ea.py,55,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc1.,real_system_c4c34f.py,40,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc3.,real_system_c4c34f.py,45,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc1.,real_system_c4c34f.py,59,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc3.,real_system_c4c34f.py,64,5.0
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,source_59a0eb956a0d4e6b8720f272136f2799_9b8ba7.py,34,
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,source_948f90de9947418289b220bd2e61caa3_caae3b.py,58,
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.",q72_superdense_coding_solutions_88b113.py,164,10.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '4' but never uses it.,ghz_0564e9.py,36,6.0
+ql-constant-classic-bit,"Circuit 'mycircuit' measures qubit '0' but never uses it.
+Circuit 'mycircuit' measures qubit '1' but never uses it.
+Circuit 'mycircuit' measures qubit '2' but never uses it.",qbronzetask25_20rotation_20automata_4b0155.py,2161,17.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '4' but never uses it.",composite_gates_c1da44.py,89,10.0
+ql-constant-classic-bit,"Circuit 'circuit' measures qubit '1' but never uses it.
+Circuit 'circuit' measures qubit '0' but never uses it.
+Circuit 'circuit' measures qubit '2' but never uses it.
+Circuit 'circuit' measures qubit '3' but never uses it.",unit_tests_ce3112.py,111,15.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '3' but never uses it.,lab5_soln_7e0ca7.py,68,6.0
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.
+Circuit 'qc' measures qubit '4' but never uses it.",qarithmetic_555d49.py,62,6.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '2' but never uses it.,ex1_fc0510.py,147,10.0
+ql-constant-classic-bit,Circuit 'nonHERR' measures qubit '3' but never uses it.,herrtestcomptimetiffoli_cf1dac.py,117,11.0
+ql-constant-classic-bit,Circuit 'circ' measures qubit '0' but never uses it.,measurement_postulate_single_qubit_f_fb7a34.py,76,8.0
+ql-oversized-circuit,Circuit 'circ_t' never manipulates some of its 2qubits.,quantum_checkpoint_243c90.py,172,22.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,hello_qiskit_f32bec.py,1557,10.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,01_conceitos_basicos_ae6b6b.py,583,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 5qubits.,test_target_backend_c2dd5d.py,29,10.0
+ql-oversized-circuit,Circuit 'qc3' never manipulates some of its 1qubits.,test_quantumprogram_6f378f.py,1345,15.0
+ql-oversized-circuit,Circuit 'ddCircuit' never manipulates some of its 5qubits.,two_qubit_2010_2001_20states_20tests_b72337.py,106,17.0
+ql-oversized-circuit,Circuit 'meas' never manipulates some of its 4qubits.,bernaz_035353.py,35,8.0
+ql-oversized-circuit,Circuit 'circuit4' never manipulates some of its 3qubits.,a00_qiskit_introduction_79143b.py,119,12.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 12qubits.,frqi_2cc93f.py,219,14.0
+ql-oversized-circuit,Circuit 'init' never manipulates some of its 3qubits.,3sat_5997be.py,20,8.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),superdense_coding_777744.py,165,6.0
+ql-unmeasurable-qubits,Circuit 'action_qc' has more qubits (1) than classical  bits (0),utility_maximization_356203.py,154,11.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (8) than classical  bits (0),ch05_02_quantum_add_4e40b7.py,25,6.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (2) than classical  bits (0),test_units_2906b6.py,90,10.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),week_1_exercise_4_6ebd34.py,22,6.0
+ql-unmeasurable-qubits,Circuit 'five_qc' has more qubits (9) than classical  bits (4),five_qubit_stabilizer_728e76.py,415,15.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (1) than classical  bits (0),finaliter1_a02e9d.py,51,15.0
+ql-unmeasurable-qubits,Circuit 'grover_circuit' has more qubits (2) than classical  bits (0),2qgrover_c76568.py,10,18.0
+ql-unmeasurable-qubits,Circuit 'mycircuit' has more qubits (2) than classical  bits (0),test_271104.py,63,13.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),base_nb_d4b9ce.py,286,6.0

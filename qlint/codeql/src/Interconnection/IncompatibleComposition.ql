@@ -28,7 +28,11 @@ where
   // INTENDED USAGE PATTERN
   // when the subcircuit has unknown number of qubits, such as when the size is specified
   // by a parameter which is unknon in the current context
-  not motherCircuit.hasUnknonNumberOfQubits()
+  not motherCircuit.hasUnknonNumberOfQubits() and
+  not subCircuit.hasUnknonNumberOfQubits() and
+  // they have both fixed size
+  not motherCircuit.hasUnresolvedSizeRegister() and
+  not subCircuit.hasUnresolvedSizeRegister()
 select motherCircuit,
   "The subcircuit '" + subCircuit.getName() + "' (qubits=" + subCircuit.getNumberOfQubits() +
     ") at location: (" + subCircuit.getLocation().getStartLine() + ", " +

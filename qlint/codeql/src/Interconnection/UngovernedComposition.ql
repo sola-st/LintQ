@@ -25,6 +25,9 @@ where
   composeCall = subCircuit.getCompositionCallWith(motherCircuit) and
   // check that the two circuits are compatible in size and not obvious (becasue they have different size)
   motherCircuit.getNumberOfQubits() > subCircuit.getNumberOfQubits() and
+  // by a parameter which is unknon in the current context
+  not motherCircuit.hasUnknonNumberOfQubits() and
+  not subCircuit.hasUnknonNumberOfQubits() and
   // they have both fixed size
   not motherCircuit.hasUnresolvedSizeRegister() and
   not subCircuit.hasUnresolvedSizeRegister() and
