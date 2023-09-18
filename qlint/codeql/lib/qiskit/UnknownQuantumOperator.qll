@@ -52,11 +52,23 @@ class UnknownQuantumOperatorViaAppend extends UnknownQuantumOperator {
 abstract class UnknownQuantumOperatorViaFunction extends UnknownQuantumOperator {
   /** Return the name of the function call. */
   string getCallName() {
-    exists(PythonFunctionValue method, string methodName |
-      method.getName() = methodName and
-      method.getACall().getNode() = this.asExpr()
-    |
-      result = methodName
+    // exists(PythonFunctionValue method, string methodName |
+    //   method.getName() = methodName and
+    //   method.getACall().getNode() = this.asExpr()
+    // |
+    //   result = methodName
+    // )
+    // or
+    // exists(ImportMember importMember, string importMemberName, Call callNode |
+    //   importMemberName = importMember.getName() and
+    //   callNode = this.asExpr() and
+    //   callNode.getASubExpression().(Name).getId() = importMemberName and
+    //   callNode.getScope() = importMember.getScope()
+    // |
+    //   result = importMemberName
+    // )
+    exists(Value unknVal | unknVal.getACall().getNode() = this.asExpr() |
+      result = unknVal.getName()
     )
   }
 }
@@ -69,17 +81,33 @@ abstract class UnknownQuantumOperatorViaFunction extends UnknownQuantumOperator 
 class CircuitExtenderFunctionViaArg extends UnknownQuantumOperatorViaFunction {
   CircuitExtenderFunctionViaArg() {
     exists(
-      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, Call callNode,
-      PythonFunctionValue method, string methodName
+      QuantumCircuit qc, DataFlow::CallCfgNode actualCall, Call callNode, string functionCallName
     |
       callNode = actualCall.asExpr() and
       this = actualCall and
       qc.flowsTo(this.getArg(_)) and
       // exclude the well known functions
       // instanceof, type, transpile, assemble, execute, append, compose, copy
-      method.getName() = methodName and
-      method.getACall().getNode() = this.asExpr() and
-      not methodName in [
+      (
+        // case:
+        // def my_function(qc):
+        //   qc.measure(0, 1)
+        // my_function(qc)
+        exists(PythonFunctionValue method |
+          method.getName() = functionCallName and
+          method.getACall().getNode() = this.asExpr()
+        )
+        or
+        // case:
+        // from qiskit import my_function
+        // my_function(qc)
+        exists(ImportMember importMember |
+          functionCallName = importMember.getName() and
+          callNode.getASubExpression().(Name).getId() = functionCallName and
+          callNode.getScope() = importMember.getScope()
+        )
+      ) and
+      not functionCallName in [
           "isinstance", "type", "transpile", "assemble", "execute", "append", "compose", "copy"
         ]
     )

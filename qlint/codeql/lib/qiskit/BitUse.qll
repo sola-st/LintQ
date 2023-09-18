@@ -242,55 +242,171 @@ abstract class BitUse extends DataFlow::LocalSourceNode {
   }
 }
 
+/** Resolves both sum and subtraction of integer literals. */
+pragma[inline]
+int resolveBinArithmetic(BinaryExpr binExpr) {
+  // case:
+  // 4 + 2
+  // >> 6
+  // case:
+  // n=1
+  // 4 - n
+  // >> 3
+  exists(
+    IntegerLiteral i, DataFlow::LocalSourceNode source, DataFlow::Node sink, IntegerLiteral iRight,
+    DataFlow::LocalSourceNode sourceRight, DataFlow::Node sinkRight
+  |
+    // LEFT
+    source.asExpr() = i and
+    source.flowsTo(sink) and
+    // source.getLocation().getFile().getAbsolutePath().matches("%concept_bit_expr.py") and
+    // RIGHT
+    sourceRight.asExpr() = iRight and
+    sourceRight.flowsTo(sinkRight) and
+    // sourceRight.getLocation().getFile().getAbsolutePath().matches("%concept_bit_expr.py") and
+    // BOTH PART OF THE TWO SIDES OF THE EXPRESSION
+    binExpr.getLeft() = sink.asExpr() and
+    binExpr.getRight() = sinkRight.asExpr()
+  |
+    binExpr.getOp() instanceof Add and
+    result = i.getValue() + iRight.getValue()
+    or
+    binExpr.getOp() instanceof Sub and
+    result = i.getValue() - iRight.getValue()
+  )
+}
+
+/** Solve only sum of direct integers. */
+int resolveBinArithmeticFast(BinaryExpr binExpr) {
+  // case:
+  // 4 + 2
+  // >> 6
+  binExpr.getOp() instanceof Add and
+  result =
+    binExpr.getLeft().(IntegerLiteral).getValue() + binExpr.getRight().(IntegerLiteral).getValue()
+  or
+  binExpr.getOp() instanceof Sub and
+  result =
+    binExpr.getLeft().(IntegerLiteral).getValue() - binExpr.getRight().(IntegerLiteral).getValue()
+}
+
+/** Resolves ranges of integers. */
+int resolveRange(Call call) {
+  // case:
+  // range(2)
+  // >> [0, 1]
+  // case:
+  // range(2, 4)
+  // >> [2, 3]
+  exists(
+    Value functionValue, DataFlow::CallCfgNode callCfg, IntegerLiteral iEnd,
+    DataFlow::LocalSourceNode sourceEnd, DataFlow::Node sinkEnd, int i, int startValue, int endValue
+  |
+    functionValue.getName() = "range" and
+    functionValue.getACall().getNode() = call and
+    callCfg.asExpr() = call and
+    (
+      exists(
+        IntegerLiteral iStart, DataFlow::LocalSourceNode sourceStart, DataFlow::Node sinkStart
+      |
+        //case: range(2, 4)
+        // START
+        sourceStart.asExpr() = iStart and
+        sourceStart.flowsTo(sinkStart) and
+        // END
+        sourceEnd.asExpr() = iEnd and
+        sourceEnd.flowsTo(sinkEnd) and
+        call.getArg(0) = sinkStart.asExpr() and
+        call.getArg(1) = sinkEnd.asExpr() and
+        startValue = iStart.getValue() and
+        endValue = iEnd.getValue()
+      )
+      or
+      // case: range(2)
+      // END
+      sourceEnd.asExpr() = iEnd and
+      sourceEnd.flowsTo(sinkEnd) and
+      call.getArg(0) = sinkEnd.asExpr() and
+      endValue = iEnd.getValue() and
+      startValue = 0
+    )
+  |
+    i in [startValue .. endValue - 1] and
+    result = i
+  )
+}
+
 /** Use of a qubit. */
 abstract class QubitUse extends BitUse {
+  pragma[inline]
   override int getAnIndexIfAny() {
     // case: qc.h(0)
     // > 0
     // case: qc.h(quantum_register[7])
     // > 7
-    if
-      exists(IntegerLiteral lit, DataFlow::LocalSourceNode litSource |
-        not this.asExpr() instanceof Subscript and
-        litSource.asExpr() = lit and
-        litSource.flowsTo(this)
-      )
-    then
-      exists(IntegerLiteral lit, DataFlow::LocalSourceNode litSource |
-        not this.asExpr() instanceof Subscript and
-        litSource.asExpr() = lit and
-        litSource.flowsTo(this)
-      |
-        result = lit.getValue()
-      )
-    else
-      if exists(QuantumRegisterV2 qreg | qreg = this.getARegister())
-      then
-        // case: qc.h(quantum_register) with quantum_register = QuantumRegister(2)
-        // > [0, 1]
-        if exists(RegisterV2 reg | reg.flowsTo(this))
-        then
-          exists(RegisterV2 reg, int i |
-            reg.flowsTo(this) and
-            i in [0 .. reg.getSize() - 1]
-          |
-            result = i
-          )
-        else
-          exists(
-            QuantumRegisterV2 qreg, IntegerLiteral lit, DataFlow::LocalSourceNode litSource,
-            DataFlow::LocalSourceNode indexDest
-          |
-            qreg = this.getARegister() and
-            litSource.asExpr() = lit and
-            indexDest.asExpr() = this.asExpr().(Subscript).getIndex() and
-            litSource.flowsTo(indexDest)
-          |
-            result = lit.getValue()
-          )
-      else result instanceof EmptySetForInt
+    exists(IntegerLiteral lit, DataFlow::LocalSourceNode litSource |
+      not this.asExpr() instanceof Subscript and
+      litSource.asExpr() = lit and
+      litSource.flowsTo(this)
+    |
+      result = lit.getValue()
+    )
+    or
+    // case: qc.h(quantum_register) with quantum_register = QuantumRegister(2)
+    // > [0, 1]
+    exists(QuantumRegisterV2 qreg, int i |
+      qreg.flowsTo(this) and
+      i in [0 .. qreg.getSize() - 1]
+    |
+      result = i
+    )
+    or
+    // case: a = 0; qc.h(qreg[a])
+    exists(
+      QuantumRegisterV2 qreg, IntegerLiteral lit, DataFlow::LocalSourceNode litSource,
+      DataFlow::LocalSourceNode indexDest
+    |
+      qreg = this.getARegister() and
+      litSource.asExpr() = lit and
+      indexDest.asExpr() = this.asExpr().(Subscript).getIndex() and
+      litSource.flowsTo(indexDest)
+    |
+      result = lit.getValue()
+    )
+    or
+    // case: qc.h(range(2))
+    // case: qc.h(range(4, 2))
+    exists(Value val, Call call, DataFlow::CallCfgNode callCfg |
+      val.getName() = "range" and
+      callCfg.asExpr() = call and
+      callCfg.flowsTo(this)
+    |
+      result = resolveRange(call)
+    )
+    or
+    // case: qc.h(3+1)
+    // case: qc.h(4-1)
+    // case: qc.rx(3.14, n+1) with n=8
+    exists(BinaryExpr binOp |
+      (binOp.getOp() instanceof Add or binOp.getOp() instanceof Sub) and
+      this.asExpr() = binOp
+    |
+      result = resolveBinArithmetic(binOp)
+    )
+    or
+    // case: qc.h(quantum_register[0:2])
+    exists(Slice slice, QuantumRegisterV2 qreg |
+      qreg = this.getARegister() and
+      // connect superscript with its slice
+      this.asExpr().(Subscript).getIndex() = slice
+    |
+      result = qreg.resolveSlice(slice)
+    )
+    // case: qc.h(qreg[3+1])
+    // else result instanceof EmptySetForInt
   }
 
+  pragma[inline]
   override int getAnAbsoluteIndexIfAny() {
     // if this belongs to a no register it is like the relative index
     count(QuantumRegisterV2 qreg | qreg = this.getARegister()) = 0 and
@@ -323,7 +439,7 @@ abstract class QubitUse extends BitUse {
           )
         )
     |
-      result = +this.getAnIndexIfAny()
+      result = sizePreceedingRegs + this.getAnIndexIfAny()
     )
     or
     // if it is not a QuantumCircuitConstructor

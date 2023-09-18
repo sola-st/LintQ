@@ -28,3 +28,14 @@ def create_my_circuit(n):
 
 
 create_my_circuit(3)  # CIRCUIT EXTENDER via GLOBAL
+
+
+# external module
+from external import unkn_function
+
+# Registers and circuit.
+r1 = QuantumRegister(4)
+r2 = QuantumRegister(5)
+qc = QuantumCircuit(r1, r2)
+
+unkn_function(qc, r1, r2, 42)  # CIRCUIT EXTENDER via EXTERNAL MODULE
