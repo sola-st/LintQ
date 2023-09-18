@@ -27,7 +27,8 @@ where
   forall(Measurement followingMeasurement |
     followingMeasurement.getQuantumCircuit() = conditionedGate.getQuantumCircuit()
   |
-    conditionedGate.getNode().strictlyReaches(followingMeasurement.getNode())
+    conditionedGate.getNode().strictlyReaches(followingMeasurement.getNode()) and
+    not followingMeasurement.getNode().strictlyReaches(conditionedGate.getNode())
   ) and
   // EXTRA PRECISION - 11:55 - 14.09.23
   sharedQubit >= 0 and
