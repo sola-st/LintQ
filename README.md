@@ -25,6 +25,7 @@ The current research work contains and shares the following resources:
 1. **QSmell warnings**, as representative existing work:
     - Download: not needed, same downloadable dataset as above.
     - Found at the path: [`<repo_root>/data/datasets/exp_v08/qsmell/`](data/datasets/exp_v08/qsmell/)
+1. **QChecker warnings**: [path](data/datasets/exp_v08/qchecker)
 1. **Manual annotations** of the warnings:
     - Download: not needed, already in this repo.
     - To place at the path: [`<repo_root>/data/annotations/manual_inspection/warnings_until_23_03_29.csv`](data/annotations/manual_inspection/warnings_until_23_03_29.csv)

@@ -273,10 +273,17 @@ int resolveBinArithmetic(BinaryExpr binExpr) {
     or
     binExpr.getOp() instanceof Sub and
     result = i.getValue() - iRight.getValue()
+    or
+    binExpr.getOp() instanceof Mult and
+    result = i.getValue() * iRight.getValue()
   )
 }
 
-/** Solve only sum of direct integers. */
+/**
+ * DEPRECATED - use resolveBinArithmetic instead.
+ *
+ * Solve only sum of direct integers.
+ */
 int resolveBinArithmeticFast(BinaryExpr binExpr) {
   // case:
   // 4 + 2
@@ -288,6 +295,10 @@ int resolveBinArithmeticFast(BinaryExpr binExpr) {
   binExpr.getOp() instanceof Sub and
   result =
     binExpr.getLeft().(IntegerLiteral).getValue() - binExpr.getRight().(IntegerLiteral).getValue()
+  or
+  binExpr.getOp() instanceof Mult and
+  result =
+    binExpr.getLeft().(IntegerLiteral).getValue() * binExpr.getRight().(IntegerLiteral).getValue()
 }
 
 /** Resolves ranges of integers. */
@@ -375,7 +386,7 @@ abstract class QubitUse extends BitUse {
     )
     or
     // case: qc.h(range(2))
-    // case: qc.h(range(4, 2))
+    // case: qc.h(range(2, 4))
     exists(Value val, Call call, DataFlow::CallCfgNode callCfg |
       val.getName() = "range" and
       callCfg.asExpr() = call and
@@ -388,7 +399,11 @@ abstract class QubitUse extends BitUse {
     // case: qc.h(4-1)
     // case: qc.rx(3.14, n+1) with n=8
     exists(BinaryExpr binOp |
-      (binOp.getOp() instanceof Add or binOp.getOp() instanceof Sub) and
+      (
+        binOp.getOp() instanceof Add or
+        binOp.getOp() instanceof Sub or
+        binOp.getOp() instanceof Mult
+      ) and
       this.asExpr() = binOp
     |
       result = resolveBinArithmetic(binOp)
@@ -401,6 +416,22 @@ abstract class QubitUse extends BitUse {
       this.asExpr().(Subscript).getIndex() = slice
     |
       result = qreg.resolveSlice(slice)
+    )
+    or
+    // case: qc.measure([0, 1], [0, 1])
+    // case: qc.measure(qubit=[0, 1], cbit=[0, 1])
+    exists(
+      List list, DataFlow::LocalSourceNode integerSource, DataFlow::LocalSourceNode indexDest,
+      IntegerLiteral integerLiteral
+    |
+      // the current qubit use is expressed as a list
+      this.asExpr() = list and
+      // there is an integer flowing in the integer position
+      integerSource.asExpr() = integerLiteral and
+      list.getAnElt() = indexDest.asExpr() and
+      integerSource.flowsTo(indexDest)
+    |
+      result = integerLiteral.getValue()
     )
     // case: qc.h(qreg[3+1])
     // else result instanceof EmptySetForInt
@@ -513,26 +544,22 @@ class QubitUseViaAttribute extends QubitUse {
     |
       exists(int i | i = gs.getAnArgumentIndexOfQubit() |
         call.(API::CallNode).getParameter(i).getAValueReachingSink() = qubitListSource and
-        (
-          // CASE: qc.h(0)
-          qubitListSource.asExpr() = this.asExpr()
-          or
-          // CASE: qc.measure([0, 1], [0, 1])
-          qubitListSource.asExpr() instanceof List and
-          qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
-        )
+        // CASE: qc.h(0)
+        qubitListSource.asExpr() = this.asExpr()
+        // or
+        // CASE: qc.measure([0, 1], [0, 1])
+        // qubitListSource.asExpr() instanceof List and
+        // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
       )
       or
       exists(string kyw | kyw = gs.getAnArgumentNameOfQubit() |
         call.(API::CallNode).getKeywordParameter(kyw).getAValueReachingSink() = qubitListSource and
-        (
-          // CASE: qc.h(qubit=0)
-          qubitListSource.asExpr() = this.asExpr()
-          or
-          // CASE: qc.measure(qubit=[0, 1], cbit=[0, 1])
-          qubitListSource.asExpr() instanceof List and
-          qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
-        )
+        // CASE: qc.h(qubit=0)
+        qubitListSource.asExpr() = this.asExpr()
+        // or
+        // // CASE: qc.measure(qubit=[0, 1], cbit=[0, 1])
+        // qubitListSource.asExpr() instanceof List and
+        // qubitListSource.asExpr().(List).getAnElt() = this.asExpr()
       )
     )
   }

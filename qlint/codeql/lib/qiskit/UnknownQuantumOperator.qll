@@ -19,7 +19,8 @@ class UnknownQuantumOperatorViaUnknownArgument extends UnknownQuantumOperator {
     // meaning that some bit argument has some "unresolved" qubit use (e.g, qc.measure(0, i))
     exists(OperatorSpecification spec |
       this.(QuantumOperator).getGateName() = spec and
-      count(QubitUse qbu | qbu.getAGate() = this) < spec.getNumberOfQubits()
+      count(QubitUse qbu | qbu.getAGate() = this and qbu.getAnAbsoluteIndex() >= 0) <
+        spec.getNumberOfQubits()
     )
   }
 
