@@ -1,0 +1,3419 @@
+{
+  "$schema" : "https://json.schemastore.org/sarif-2.1.0.json",
+  "version" : "2.1.0",
+  "runs" : [ {
+    "tool" : {
+      "driver" : {
+        "name" : "CodeQL",
+        "organization" : "GitHub",
+        "semanticVersion" : "2.11.2",
+        "rules" : [ {
+          "id" : "ql-init-without-transpilation",
+          "name" : "ql-init-without-transpilation",
+          "shortDescription" : {
+            "text" : "Initialize without transpilation"
+          },
+          "fullDescription" : {
+            "text" : "the circuit with initialize() instruction is directly run on a simulator backend without transpilation."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "the circuit with initialize() instruction is directly run on a simulator backend\n without transpilation.",
+            "id" : "ql-init-without-transpilation",
+            "kind" : "problem",
+            "name" : "Initialize without transpilation",
+            "precision" : "medium",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-meas-with-statevector",
+          "name" : "ql-meas-with-statevector",
+          "shortDescription" : {
+            "text" : "Measurement in a circuit with statevector backend"
+          },
+          "fullDescription" : {
+            "text" : "a circuit with measurement is run on a statevector backend and then the statevector is retrieved. This might lead to unexpected results in case because the measurement will distrupt the statevector and what is observed is only a possible outcome measreument."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "a circuit with measurement is run on a statevector backend and then\n the statevector is retrieved. This might lead to unexpected results in case\n because the measurement will distrupt the statevector and what is observed is only\n a possible outcome measreument.",
+            "id" : "ql-meas-with-statevector",
+            "kind" : "problem",
+            "name" : "Measurement in a circuit with statevector backend",
+            "precision" : "medium",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-ghost-composition",
+          "name" : "ql-ghost-composition",
+          "shortDescription" : {
+            "text" : "Ghost Composition."
+          },
+          "fullDescription" : {
+            "text" : "when two circuits are composed but the inplace=True is not used and the return value of the compose() method is not store, then the composed circuit is lost."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "when two circuits are composed but the inplace=True is not used\n and the return value of the compose() method is not store, then the\n composed circuit is lost.",
+            "id" : "ql-ghost-composition",
+            "kind" : "problem",
+            "name" : "Ghost Composition.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-ghost-from-qasm",
+          "name" : "ql-ghost-from-qasm",
+          "shortDescription" : {
+            "text" : "Ghost from qasm"
+          },
+          "fullDescription" : {
+            "text" : "when a circuit is created from a qasm string and the return value of the from_qasm_str() method is not store, then the circuit is not used"
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "when a circuit is created from a qasm string\n and the return value of the from_qasm_str() method is not store, then the\n circuit is not used",
+            "id" : "ql-ghost-from-qasm",
+            "kind" : "problem",
+            "name" : "Ghost from qasm",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-incompatible-composition",
+          "name" : "ql-incompatible-composition",
+          "shortDescription" : {
+            "text" : "Incompatible Composition."
+          },
+          "fullDescription" : {
+            "text" : "when two circuits are composed, the number of qubits of the sub circuit must be lower thanthe number of qubits of the main circuit, otherwise the composition is not possible. Same for the number of bits. Another option is to specify how the two wires should be connected."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "when two circuits are composed, the number of qubits of the\n sub circuit must be lower thanthe number of qubits of the main circuit,\n otherwise the composition is not possible. Same for the number of bits.\n Another option is to specify how the two wires should be connected.",
+            "id" : "ql-incompatible-composition",
+            "kind" : "problem",
+            "name" : "Incompatible Composition.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-ungoverned-composition",
+          "name" : "ql-ungoverned-composition",
+          "shortDescription" : {
+            "text" : "Ungoverned Composition."
+          },
+          "fullDescription" : {
+            "text" : "when two circuits are composed the wires of the two circuits are connected in a way that is not specified in code but is left to Qiskit based on its defualt. This can lead to unexpected results."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "recommendation", "qiskit" ],
+            "description" : "when two circuits are composed the wires of the two circuits\n are connected in a way that is not specified in code but is left to Qiskit\n based on its defualt. This can lead to unexpected results.",
+            "id" : "ql-ungoverned-composition",
+            "kind" : "problem",
+            "name" : "Ungoverned Composition.",
+            "precision" : "high",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "ql-conditional-without-measurement",
+          "name" : "ql-conditional-without-measurement",
+          "shortDescription" : {
+            "text" : "Conditional gate without preceeding measurement."
+          },
+          "fullDescription" : {
+            "text" : "when a conditional gate is applied on a qubit, there must be a preceeding measurement on that qubit."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "when a conditional gate is applied on a qubit, there must be a preceeding measurement on that qubit.",
+            "id" : "ql-conditional-without-measurement",
+            "kind" : "problem",
+            "name" : "Conditional gate without preceeding measurement.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-double-measurement",
+          "name" : "ql-double-measurement",
+          "shortDescription" : {
+            "text" : "Double measurement on the same qubit."
+          },
+          "fullDescription" : {
+            "text" : "two consecutive measurements on the same qubit of a given circuit."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "two consecutive measurements on the same qubit of a given circuit.",
+            "id" : "ql-double-measurement",
+            "kind" : "problem",
+            "name" : "Double measurement on the same qubit.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-measure-all-abuse",
+          "name" : "ql-measure-all-abuse",
+          "shortDescription" : {
+            "text" : "Measure all abuse."
+          },
+          "fullDescription" : {
+            "text" : "Finds usage of measure_all calls when an initialized classical register should be used instead."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "Finds usage of measure_all calls when an initialized classical\n register should be used instead.",
+            "id" : "ql-measure-all-abuse",
+            "kind" : "problem",
+            "name" : "Measure all abuse.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-operation-after-measurement",
+          "name" : "ql-operation-after-measurement",
+          "shortDescription" : {
+            "text" : "Operation after measurement."
+          },
+          "fullDescription" : {
+            "text" : "Finds usage of measure of a qubit followed by a gate on the same qubit."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "Finds usage of measure of a qubit followed by a gate on the\n same qubit.",
+            "id" : "ql-operation-after-measurement",
+            "kind" : "problem",
+            "name" : "Operation after measurement.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-operation-after-measurement-general",
+          "name" : "ql-operation-after-measurement-general",
+          "shortDescription" : {
+            "text" : "Operation after measurement general."
+          },
+          "fullDescription" : {
+            "text" : "Finds usage of measure of a qubit followed by a gate on the same qubit (there could be other gates in between)."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "Finds usage of measure of a qubit followed by a gate on the\n same qubit (there could be other gates in between).",
+            "id" : "ql-operation-after-measurement-general",
+            "kind" : "problem",
+            "name" : "Operation after measurement general.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-superfluous-op",
+          "name" : "ql-superfluous-op",
+          "shortDescription" : {
+            "text" : "Superfluous operation."
+          },
+          "fullDescription" : {
+            "text" : "gates on qubits that are not measured or that do not affect other qubits which are measured."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "gates on qubits that are not measured or that do not affect other qubits\n which are measured.",
+            "id" : "ql-superfluous-op",
+            "kind" : "problem",
+            "name" : "Superfluous operation.",
+            "precision" : "high",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-op-after-optimization",
+          "name" : "ql-op-after-optimization",
+          "shortDescription" : {
+            "text" : "Operations after optimization."
+          },
+          "fullDescription" : {
+            "text" : "Finds any operation (gate or measurement) is applied to a transpiled circuit has some."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "Finds any operation (gate or measurement) is applied to a transpiled\n circuit has some.",
+            "id" : "ql-op-after-optimization",
+            "kind" : "problem",
+            "name" : "Operations after optimization.",
+            "precision" : "medium",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "qsmell-lpq",
+          "name" : "qsmell-lpq",
+          "shortDescription" : {
+            "text" : "No alignment between logical and physical qubits."
+          },
+          "fullDescription" : {
+            "text" : "Find transpile call without initial_layout parameter."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "efficiency", "qiskit" ],
+            "description" : "Find transpile call without initial_layout parameter.",
+            "id" : "qsmell-lpq",
+            "kind" : "problem",
+            "name" : "No alignment between logical and physical qubits.",
+            "precision" : "medium",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "qsmell-nc",
+          "name" : "qsmell-nc",
+          "shortDescription" : {
+            "text" : "Non-Parametrized Circuit."
+          },
+          "fullDescription" : {
+            "text" : "Finds circuits which are send for execution one at the time, thus increasing the communication payload with the server"
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "efficiency", "qiskit" ],
+            "description" : "Finds circuits which are send for execution one at the time,\n thus increasing the communication payload with the server",
+            "id" : "qsmell-nc",
+            "kind" : "problem",
+            "name" : "Non-Parametrized Circuit.",
+            "precision" : "medium",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "ql-constant-classic-bit",
+          "name" : "ql-constant-classic-bit",
+          "shortDescription" : {
+            "text" : "Constant Classic Bit"
+          },
+          "fullDescription" : {
+            "text" : "Finds circuits where qubits are never used but measured, leading to a constant classic bit."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "efficiency", "qiskit" ],
+            "description" : "Finds circuits where qubits are never used but measured, leading to a constant classic bit.",
+            "id" : "ql-constant-classic-bit",
+            "kind" : "problem",
+            "name" : "Constant Classic Bit",
+            "precision" : "medium",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "ql-oversized-circuit",
+          "name" : "ql-oversized-circuit",
+          "shortDescription" : {
+            "text" : "Oversized circuit."
+          },
+          "fullDescription" : {
+            "text" : "Finds circuits instantiated with a larger number of qubits than the actual number of qubits used."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "efficiency", "qiskit" ],
+            "description" : "Finds circuits instantiated with a larger number of qubits than\n the actual number of qubits used.",
+            "id" : "ql-oversized-circuit",
+            "kind" : "problem",
+            "name" : "Oversized circuit.",
+            "precision" : "medium",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "ql-unmeasurable-qubits",
+          "name" : "ql-unmeasurable-qubits",
+          "shortDescription" : {
+            "text" : "Unmeasurable qubits."
+          },
+          "fullDescription" : {
+            "text" : "Finds circuits instantiated with a lower number of classical bits than the number of qubits, meaning that the full quantum state cannot be measured."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "maintainability", "efficiency", "qiskit" ],
+            "description" : "Finds circuits instantiated with a lower number of classical\n bits than the number of qubits, meaning that the full quantum state cannot\n be measured.",
+            "id" : "ql-unmeasurable-qubits",
+            "kind" : "problem",
+            "name" : "Unmeasurable qubits.",
+            "precision" : "medium",
+            "problem.severity" : "warning"
+          }
+        }, {
+          "id" : "ql-invalid-pauli-size-error",
+          "name" : "ql-invalid-pauli-size-error",
+          "shortDescription" : {
+            "text" : "Invalid Pauli String Noise Model"
+          },
+          "fullDescription" : {
+            "text" : "the pauli string used for the noise model must be of the same length."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "the pauli string used for the noise model must be of\n the same length.",
+            "id" : "ql-invalid-pauli-size-error",
+            "kind" : "problem",
+            "name" : "Invalid Pauli String Noise Model",
+            "precision" : "medium",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-invalid-pauli-string",
+          "name" : "ql-invalid-pauli-string",
+          "shortDescription" : {
+            "text" : "Pauli string syntax error"
+          },
+          "fullDescription" : {
+            "text" : "the pauli string can only be in the format [XYZI]+, whenever they are not a runtime error is raised."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "error"
+          },
+          "properties" : {
+            "tags" : [ "correctness", "reliability", "qiskit" ],
+            "description" : "the pauli string can only be in the format [XYZI]+, whenever\n they are not a runtime error is raised.",
+            "id" : "ql-invalid-pauli-string",
+            "kind" : "problem",
+            "name" : "Pauli string syntax error",
+            "precision" : "medium",
+            "problem.severity" : "error"
+          }
+        }, {
+          "id" : "ql-token-leakage",
+          "name" : "ql-token-leakage",
+          "shortDescription" : {
+            "text" : "Token Leakage"
+          },
+          "fullDescription" : {
+            "text" : "Finds cases when the IBM token is leaked in the code."
+          },
+          "defaultConfiguration" : {
+            "enabled" : true,
+            "level" : "warning"
+          },
+          "properties" : {
+            "tags" : [ "security", "qiskit" ],
+            "description" : "Finds cases when the IBM token is leaked in the code.",
+            "id" : "ql-token-leakage",
+            "kind" : "problem",
+            "name" : "Token Leakage",
+            "precision" : "high",
+            "problem.severity" : "warning"
+          }
+        } ]
+      },
+      "extensions" : [ {
+        "name" : "codeql/python-all",
+        "semanticVersion" : "0.6.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-experimental-atm-lib",
+        "semanticVersion" : "0.3.7+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "csharp-solorigate-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/python-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ql",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-experimental-atm-queries",
+        "semanticVersion" : "0.3.7+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/go-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/swift-all",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ruby-queries",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/cpp-queries",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql-csharp-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ql-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/csharp-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/csharp-queries",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/go-queries",
+        "semanticVersion" : "0.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/csharp-solorigate-queries",
+        "semanticVersion" : "1.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-java",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/java/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/java/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-queries",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-cpp",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/cpp/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/cpp/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-csharp",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/csharp/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/csharp/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ruby-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/csharp-solorigate-all",
+        "semanticVersion" : "1.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/campaigns/Solorigate/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/typos",
+        "semanticVersion" : "0.0.4-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/shared/typos/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/shared/typos/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ql-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/cpp-all",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ssa",
+        "semanticVersion" : "0.0.4-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/shared/ssa/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/shared/ssa/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ruby-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ruby-all",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/csharp-all",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/go-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql-java-consistency-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/consistency-queries/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/consistency-queries/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql-swift-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-python",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/python/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/python/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ruby-consistency-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/consistency-queries/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ruby/ql/consistency-queries/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/cpp-tests-cwe-190-tainted",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/go-all",
+        "semanticVersion" : "0.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/java-all",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-upgrades",
+        "semanticVersion" : "0.0.0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/codeql/legacy-upgrades/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/codeql/legacy-upgrades/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-javascript",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/javascript/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/legacy-support/javascript/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql-csharp-consistency-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/consistency-queries/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/csharp/ql/consistency-queries/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-experimental-atm-model-building",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/ql-consistency-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/consistency-queries/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/ql/ql/consistency-queries/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/java-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/javascript-all",
+        "semanticVersion" : "0.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/lib/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/javascript/ql/lib/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/python-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/cpp-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/swift-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/swift/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/suite-helpers",
+        "semanticVersion" : "0.3.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/suite-helpers/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/misc/suite-helpers/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/python-consistency-queries",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/consistency-queries/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/consistency-queries/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/java-tests",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/test/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/test/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "legacy-libraries-go",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/config/legacy-support/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/go/ql/config/legacy-support/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/java-queries",
+        "semanticVersion" : "0.4.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/java/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/cpp-examples",
+        "semanticVersion" : "0.0.0+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/examples/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/cpp/ql/examples/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "codeql/python-queries",
+        "semanticVersion" : "0.5.3-dev+8502939b65b5d9e595ae59aa9f37cc30d1acb7b0",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/codeql_home/ql/python/ql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      }, {
+        "name" : "mattepalte/qlint",
+        "semanticVersion" : "0.0.1+af387a4810ef8bc27aa1a65a3abb2b7c2cb76a2c",
+        "locations" : [ {
+          "uri" : "file:///home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/",
+          "description" : {
+            "text" : "The QL pack root directory."
+          }
+        }, {
+          "uri" : "file:///home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/qlpack.yml",
+          "description" : {
+            "text" : "The QL pack definition file."
+          }
+        } ]
+      } ]
+    },
+    "artifacts" : [ {
+      "location" : {
+        "uri" : "e2f134.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 0
+      }
+    }, {
+      "location" : {
+        "uri" : "64b6d1.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 1
+      }
+    }, {
+      "location" : {
+        "uri" : "06e5d9.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 2
+      }
+    }, {
+      "location" : {
+        "uri" : "6145c8.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 3
+      }
+    }, {
+      "location" : {
+        "uri" : "18c1a2.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 4
+      }
+    }, {
+      "location" : {
+        "uri" : "239817.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 5
+      }
+    }, {
+      "location" : {
+        "uri" : "511706.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 6
+      }
+    }, {
+      "location" : {
+        "uri" : "9dab52.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 7
+      }
+    }, {
+      "location" : {
+        "uri" : "182aa1.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 8
+      }
+    }, {
+      "location" : {
+        "uri" : "3a713d.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 9
+      }
+    }, {
+      "location" : {
+        "uri" : "0249d3.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 10
+      }
+    }, {
+      "location" : {
+        "uri" : "274e47.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 11
+      }
+    }, {
+      "location" : {
+        "uri" : "855a15.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 12
+      }
+    }, {
+      "location" : {
+        "uri" : "5187c8.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 13
+      }
+    }, {
+      "location" : {
+        "uri" : "c24a3c.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 14
+      }
+    }, {
+      "location" : {
+        "uri" : "2ec23d.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 15
+      }
+    }, {
+      "location" : {
+        "uri" : "3c2149.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 16
+      }
+    }, {
+      "location" : {
+        "uri" : "106459.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 17
+      }
+    }, {
+      "location" : {
+        "uri" : "228b52.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 18
+      }
+    }, {
+      "location" : {
+        "uri" : "24b134.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 19
+      }
+    }, {
+      "location" : {
+        "uri" : "2ca9ce.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 20
+      }
+    }, {
+      "location" : {
+        "uri" : "366ff5.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 21
+      }
+    }, {
+      "location" : {
+        "uri" : "683a66.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 22
+      }
+    }, {
+      "location" : {
+        "uri" : "699fc8.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 23
+      }
+    }, {
+      "location" : {
+        "uri" : "778d92.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 24
+      }
+    }, {
+      "location" : {
+        "uri" : "9c50ed.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 25
+      }
+    }, {
+      "location" : {
+        "uri" : "b6f387.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 26
+      }
+    }, {
+      "location" : {
+        "uri" : "f3174e.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 27
+      }
+    }, {
+      "location" : {
+        "uri" : "fc6f03.py",
+        "uriBaseId" : "%SRCROOT%",
+        "index" : 28
+      }
+    } ],
+    "results" : [ {
+      "ruleId" : "ql-ghost-from-qasm",
+      "ruleIndex" : 3,
+      "rule" : {
+        "id" : "ql-ghost-from-qasm",
+        "index" : 3
+      },
+      "message" : {
+        "text" : "Ghost from_qasm_str at location: (11, 1)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "e2f134.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 0
+          },
+          "region" : {
+            "startLine" : 11,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "a281fecaafcf5432:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-measure-all-abuse",
+      "ruleIndex" : 8,
+      "rule" : {
+        "id" : "ql-measure-all-abuse",
+        "index" : 8
+      },
+      "message" : {
+        "text" : "measure_all() on the circuit 'qc' (at location:5, 6)  when it has already 2 classical bits."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "64b6d1.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 1
+          },
+          "region" : {
+            "startLine" : 7,
+            "endColumn" : 17
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "5639f218d4682016:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement",
+      "ruleIndex" : 9,
+      "rule" : {
+        "id" : "ql-operation-after-measurement",
+        "index" : 9
+      },
+      "message" : {
+        "text" : "Operation 'cx' on qubit 1 after measurement at location: (18, 1)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "06e5d9.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 2
+          },
+          "region" : {
+            "startLine" : 19,
+            "endColumn" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "6e9a5b9bbe6e4185:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement",
+      "ruleIndex" : 9,
+      "rule" : {
+        "id" : "ql-operation-after-measurement",
+        "index" : 9
+      },
+      "message" : {
+        "text" : "Operation 'cz' on qubit 0 after measurement at location: (17, 1)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "06e5d9.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 2
+          },
+          "region" : {
+            "startLine" : 20,
+            "endColumn" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "4e3270f412c5cee3:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cx' on qubit 1 after measurement at location: (18, 1)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "06e5d9.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 2
+          },
+          "region" : {
+            "startLine" : 19,
+            "endColumn" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "6e9a5b9bbe6e4185:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cz' on qubit 0 after measurement at location: (17, 1)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "06e5d9.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 2
+          },
+          "region" : {
+            "startLine" : 20,
+            "endColumn" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "4e3270f412c5cee3:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'x' on qubit 2 after measurement at location: (55, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 20,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "27462060eb70b6ee:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 23,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "f79d661f8d517d0b:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 24,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "cf3b502b5b97982b:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'u1' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 25,
+            "startColumn" : 5,
+            "endColumn" : 21
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "7872d3377834d0e:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'u1' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 26,
+            "startColumn" : 5,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "78c5a1319b83cdf2:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cx' on qubit 1 after measurement at location: (54, 5).\nOperation 'cx' on qubit 2 after measurement at location: (55, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 27,
+            "startColumn" : 5,
+            "endColumn" : 24
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "70f2d822c58c8fdd:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 30,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "be816b127da31d97:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cu1' on qubit 0 after measurement at location: (53, 5).\nOperation 'cu1' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 31,
+            "startColumn" : 5,
+            "endColumn" : 32
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "dd614e3bf55b2694:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 32,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "98b97044c40f0da3:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'x' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 35,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "fd16f3b1bc5a9fce:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cu3' on qubit 0 after measurement at location: (53, 5).\nOperation 'cu3' on qubit 3 after measurement at location: (56, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 36,
+            "startColumn" : 5,
+            "endColumn" : 38
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "e2ca1810a406b552:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cu3' on qubit 3 after measurement at location: (56, 5).\nOperation 'cu3' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 37,
+            "startColumn" : 5,
+            "endColumn" : 37
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "29c4bbf5027781af:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'x' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 40,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "6a3aa756e3033cc6:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 41,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "ad98198b23ad4e72:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cu1' on qubit 0 after measurement at location: (53, 5).\nOperation 'cu1' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 42,
+            "startColumn" : 5,
+            "endColumn" : 31
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "11054d99289edf21:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 43,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "91800ad655f0634b:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'cx' on qubit 1 after measurement at location: (54, 5).\nOperation 'cx' on qubit 2 after measurement at location: (55, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 45,
+            "startColumn" : 5,
+            "endColumn" : 24
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "8c374565c0d1cdb1:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'u1' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 46,
+            "startColumn" : 5,
+            "endColumn" : 24
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "d081be04bafc1aa4:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'u1' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 47,
+            "startColumn" : 5,
+            "endColumn" : 22
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "4e575831d492ad8c:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 1 after measurement at location: (54, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 49,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "a52c03a79048ec1c:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-operation-after-measurement-general",
+      "ruleIndex" : 10,
+      "rule" : {
+        "id" : "ql-operation-after-measurement-general",
+        "index" : 10
+      },
+      "message" : {
+        "text" : "Operation 'h' on qubit 0 after measurement at location: (53, 5)."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "6145c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 3
+          },
+          "region" : {
+            "startLine" : 50,
+            "startColumn" : 5,
+            "endColumn" : 16
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "8ec3fc97f3645d10:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:12, c:1) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 12,
+            "endColumn" : 19
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "250004b2001a28b4:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:13, c:1) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 13,
+            "endColumn" : 19
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "c40e81163d4c5bb:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:30, c:5) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 30,
+            "startColumn" : 5,
+            "endColumn" : 27
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "56d78795771a5846:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:31, c:5) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 31,
+            "startColumn" : 5,
+            "endColumn" : 62
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "24a3fa333e9ac488:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:32, c:5) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 32,
+            "startColumn" : 5,
+            "endColumn" : 27
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "52a22e7a615a8f84:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:33, c:5) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 33,
+            "startColumn" : 5,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "7fa3df4c6b84bcc6:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'circuit' has an operation (l:45, c:5) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 45,
+            "startColumn" : 5,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "a54b0b354d49011c:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'q1' has an operation (l:7, c:1) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "239817.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 5
+          },
+          "region" : {
+            "startLine" : 7,
+            "endColumn" : 8
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "b1b12fbd0d255802:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "ql-superfluous-op",
+      "ruleIndex" : 11,
+      "rule" : {
+        "id" : "ql-superfluous-op",
+        "index" : 11
+      },
+      "message" : {
+        "text" : "The circuit 'q1' has an operation (l:9, c:1) in which some of its qubits are never measured."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "239817.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 5
+          },
+          "region" : {
+            "startLine" : 9,
+            "endColumn" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "54c53e008cc03da4:1",
+        "primaryLocationStartColumnFingerprint" : "0"
+      }
+    }, {
+      "ruleId" : "qsmell-lpq",
+      "ruleIndex" : 13,
+      "rule" : {
+        "id" : "qsmell-lpq",
+        "index" : 13
+      },
+      "message" : {
+        "text" : "transpile call without initial_layout"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "511706.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 6
+          },
+          "region" : {
+            "startLine" : 66,
+            "startColumn" : 8,
+            "endColumn" : 29
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "7973031555fec07d:1",
+        "primaryLocationStartColumnFingerprint" : "7"
+      }
+    }, {
+      "ruleId" : "qsmell-lpq",
+      "ruleIndex" : 13,
+      "rule" : {
+        "id" : "qsmell-lpq",
+        "index" : 13
+      },
+      "message" : {
+        "text" : "transpile call without initial_layout"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "9dab52.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 7
+          },
+          "region" : {
+            "startLine" : 12,
+            "startColumn" : 21,
+            "endColumn" : 47
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "11fa4c071fa96572:1",
+        "primaryLocationStartColumnFingerprint" : "20"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 1 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "9dab52.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 7
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "87cb1ec874673499:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 1 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "182aa1.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 8
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "afba6395d30d7900:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 2 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "3a713d.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 9
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "c2b7f85f7e1e6c5e:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 1 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "0249d3.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 10
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "5ec09fba6187b24b:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 1 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "511706.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 6
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "6ac30a16fba13702:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 2 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "274e47.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 11
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "e9b11d1321b58efd:1"
+      }
+    }, {
+      "ruleId" : "qsmell-nc",
+      "ruleIndex" : 14,
+      "rule" : {
+        "id" : "qsmell-nc",
+        "index" : 14
+      },
+      "message" : {
+        "text" : "The file has 1 execute or run calls, and a lower number of bind_parameters calls."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "855a15.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 12
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "d76896c017dd68b6:1"
+      }
+    }, {
+      "ruleId" : "ql-constant-classic-bit",
+      "ruleIndex" : 15,
+      "rule" : {
+        "id" : "ql-constant-classic-bit",
+        "index" : 15
+      },
+      "message" : {
+        "text" : "Circuit 'measure_Z' measures qubit '0' but never uses it.\nCircuit 'measure_Z' measures qubit '1' but never uses it."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "182aa1.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 8
+          },
+          "region" : {
+            "startLine" : 9,
+            "startColumn" : 13,
+            "endColumn" : 37
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "407d8bf351450655:1",
+        "primaryLocationStartColumnFingerprint" : "12"
+      }
+    }, {
+      "ruleId" : "ql-constant-classic-bit",
+      "ruleIndex" : 15,
+      "rule" : {
+        "id" : "ql-constant-classic-bit",
+        "index" : 15
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' measures qubit '2' but never uses it."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "5187c8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 13
+          },
+          "region" : {
+            "startLine" : 12,
+            "startColumn" : 11,
+            "endColumn" : 31
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "16c486a8cea955e8:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    }, {
+      "ruleId" : "ql-constant-classic-bit",
+      "ruleIndex" : 15,
+      "rule" : {
+        "id" : "ql-constant-classic-bit",
+        "index" : 15
+      },
+      "message" : {
+        "text" : "Circuit 'qc' measures qubit '1' but never uses it.\nCircuit 'qc' measures qubit '2' but never uses it."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "c24a3c.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 14
+          },
+          "region" : {
+            "startLine" : 7,
+            "startColumn" : 6,
+            "endColumn" : 42
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "e8552352d3b85e45:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-oversized-circuit",
+      "ruleIndex" : 16,
+      "rule" : {
+        "id" : "ql-oversized-circuit",
+        "index" : 16
+      },
+      "message" : {
+        "text" : "Circuit 'measure_X' never manipulates some of its 2qubits."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "182aa1.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 8
+          },
+          "region" : {
+            "startLine" : 11,
+            "startColumn" : 13,
+            "endColumn" : 37
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "2325e5d77a2a377a:1",
+        "primaryLocationStartColumnFingerprint" : "12"
+      }
+    }, {
+      "ruleId" : "ql-oversized-circuit",
+      "ruleIndex" : 16,
+      "rule" : {
+        "id" : "ql-oversized-circuit",
+        "index" : 16
+      },
+      "message" : {
+        "text" : "Circuit 'qc' never manipulates some of its 2qubits."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "2ec23d.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 15
+          },
+          "region" : {
+            "startLine" : 6,
+            "startColumn" : 10,
+            "endColumn" : 30
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "77940f8c9c8f1440:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-oversized-circuit",
+      "ruleIndex" : 16,
+      "rule" : {
+        "id" : "ql-oversized-circuit",
+        "index" : 16
+      },
+      "message" : {
+        "text" : "Circuit 'Qc' never manipulates some of its 2qubits."
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "3c2149.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 16
+          },
+          "region" : {
+            "startLine" : 7,
+            "startColumn" : 6,
+            "endColumn" : 27
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "9ed2131785c6738d:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'state' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "106459.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 17
+          },
+          "region" : {
+            "startLine" : 7,
+            "startColumn" : 9,
+            "endColumn" : 26
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "e1f9244b22a91050:1",
+        "primaryLocationStartColumnFingerprint" : "8"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' has more qubits (8) than classical  bits (4)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "18c1a2.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 4
+          },
+          "region" : {
+            "startLine" : 9,
+            "startColumn" : 11,
+            "endColumn" : 81
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "961d896a5e514528:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' has more qubits (1) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "228b52.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 18
+          },
+          "region" : {
+            "startLine" : 12,
+            "startColumn" : 11,
+            "endColumn" : 32
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "e55680ea7d99742c:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'q1' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "239817.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 5
+          },
+          "region" : {
+            "startLine" : 5,
+            "startColumn" : 6,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "bf19700b2ecc5ede:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (1) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "24b134.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 19
+          },
+          "region" : {
+            "startLine" : 3,
+            "startColumn" : 6,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "15bf6751cd7e5fe3:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (3) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "2ca9ce.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 20
+          },
+          "region" : {
+            "startLine" : 4,
+            "startColumn" : 6,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "b761ff638e5b90ab:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' has more qubits (1) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "366ff5.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 21
+          },
+          "region" : {
+            "startLine" : 4,
+            "startColumn" : 11,
+            "endColumn" : 28
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "44a591847cdd10ec:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "511706.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 6
+          },
+          "region" : {
+            "startLine" : 62,
+            "startColumn" : 6,
+            "endColumn" : 72
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "1f4500f1d5a512fb:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qobj' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "511706.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 6
+          },
+          "region" : {
+            "startLine" : 66,
+            "startColumn" : 8,
+            "endColumn" : 29
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "7973031555fec07d:1",
+        "primaryLocationStartColumnFingerprint" : "7"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' has more qubits (1) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "683a66.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 22
+          },
+          "region" : {
+            "startLine" : 4,
+            "startColumn" : 11,
+            "endColumn" : 26
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "633ba6280836ad07:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qpe' has more qubits (4) than classical  bits (3)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "699fc8.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 23
+          },
+          "region" : {
+            "startLine" : 26,
+            "startColumn" : 7,
+            "endColumn" : 30
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "1eca7a2e54f60906:1",
+        "primaryLocationStartColumnFingerprint" : "6"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "778d92.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 24
+          },
+          "region" : {
+            "startLine" : 5,
+            "startColumn" : 6,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "423d279648e97829:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'p' has more qubits (8) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "855a15.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 12
+          },
+          "region" : {
+            "startLine" : 3,
+            "startColumn" : 5,
+            "endColumn" : 22
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "504a88235404b20e:1",
+        "primaryLocationStartColumnFingerprint" : "4"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'q' has more qubits (8) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "855a15.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 12
+          },
+          "region" : {
+            "startLine" : 5,
+            "startColumn" : 5,
+            "endColumn" : 22
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "2ae9d43b05b763f6:1",
+        "primaryLocationStartColumnFingerprint" : "4"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'mycircuit' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "9c50ed.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 25
+          },
+          "region" : {
+            "startLine" : 7,
+            "startColumn" : 13,
+            "endColumn" : 30
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "56663e2d4b116f86:1",
+        "primaryLocationStartColumnFingerprint" : "12"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'job_sim' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "9dab52.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 7
+          },
+          "region" : {
+            "startLine" : 12,
+            "startColumn" : 21,
+            "endColumn" : 47
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "11fa4c071fa96572:1",
+        "primaryLocationStartColumnFingerprint" : "20"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circ' has more qubits (3) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "b6f387.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 26
+          },
+          "region" : {
+            "startLine" : 8,
+            "startColumn" : 8,
+            "endColumn" : 25
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "f038a32e460cefdd:1",
+        "primaryLocationStartColumnFingerprint" : "7"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (4) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "b6f387.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 26
+          },
+          "region" : {
+            "startLine" : 15,
+            "startColumn" : 6,
+            "endColumn" : 31
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "fc8d5c6b7ec08d59:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'qc' has more qubits (3) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "f3174e.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 27
+          },
+          "region" : {
+            "startLine" : 3,
+            "startColumn" : 6,
+            "endColumn" : 23
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "99ef42e865912e91:1",
+        "primaryLocationStartColumnFingerprint" : "5"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'outer_level' has more qubits (2) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "f3174e.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 27
+          },
+          "region" : {
+            "startLine" : 5,
+            "startColumn" : 15,
+            "endColumn" : 46
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "bd1b218a7c129d99:1",
+        "primaryLocationStartColumnFingerprint" : "14"
+      }
+    }, {
+      "ruleId" : "ql-unmeasurable-qubits",
+      "ruleIndex" : 17,
+      "rule" : {
+        "id" : "ql-unmeasurable-qubits",
+        "index" : 17
+      },
+      "message" : {
+        "text" : "Circuit 'circuit' has more qubits (4) than classical  bits (0)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "fc6f03.py",
+            "uriBaseId" : "%SRCROOT%",
+            "index" : 28
+          },
+          "region" : {
+            "startLine" : 14,
+            "startColumn" : 11,
+            "endColumn" : 29
+          }
+        }
+      } ],
+      "partialFingerprints" : {
+        "primaryLocationLineHash" : "ee7963c8e19916c1:1",
+        "primaryLocationStartColumnFingerprint" : "10"
+      }
+    } ],
+    "columnKind" : "unicodeCodePoints",
+    "properties" : {
+      "semmle.formatSpecifier" : "sarifv2.1.0"
+    }
+  } ]
+}

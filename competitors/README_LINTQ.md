@@ -21,3 +21,16 @@ metrics_to_compute:
   - NC
   - LPQ
 ```
+
+
+# PYLint Static Analysis on LintQ
+
+To run the PYLint static analysis tool on the LintQ dataset, you have to run the following command (from the main root):
+```
+python -m competitors.pylint.run_pylint_folder config/competitors/pylint_v08.yaml
+```
+
+Make sure to use the `LintQEnv` conda environment. From the root repo run:
+```
+conda env create -f virtualenv/conda/environment.yml
+```

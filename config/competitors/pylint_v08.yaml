@@ -1,0 +1,72 @@
+# ALL THE SETUP OF THE PYLINT
+
+
+# STATIC ONLY
+
+# Input of the analysis containing parsable python files
+input_folder: data/datasets/exp_v08/files_selected
+# input_folder: data/datasets/sample_dataset/files_selected
+
+
+# output_folder: where to store the individual csv of the metrics
+output_folder: data/datasets/exp_v08/pylint
+# output_folder: data/datasets/sample_dataset/pylint
+
+metrics_to_compute:
+  - all
+
+# analyze only a subset of files
+subset_files_to_analyze:
+  - ahmed154_73ece9.py
+  - test_sdk_352e8e.py
+  - task_0f414b.py
+  - test_circuit_qasm_ae5268.py
+  - test_decompose_78559e.py
+  - test_circuit_load_from_qasm_bf30ab.py
+  - test_structure_aaba85.py
+  - constante_1_00_d02e10.py
+  - plot_histogram_083ab7.py
+  - ex1_a7614b.py
+  - new_guess_function_e73975.py
+  - mgr_11_incrementer_as_instruction_6d53c5.py
+  - fourier_transform_ncb_45a87d.py
+  - qubitstates_903372.py
+  - qrpgcg_cd84f9.py
+  - test_qasm_simulator_edd048.py
+  - quantum_e3f4e0.py
+  - rsa_breaker_4_bit_0f27ff.py
+  - h2evo_6bb46f.py
+  - neoh2evo_28b965.py
+  - test_mc_gate_13ba80.py
+  - transpiled_stabilizer_test_7be7ce.py
+  - example_1_c6d971.py
+  - qrng_9498d5.py
+  - bell_states_example_55fd07.py
+  - polarization_20rotator_20angle_25374b.py
+  - quantum_entanglement_f902fe.py
+  - main_2f60d4.py
+  - test_parse_counts_0953d6.py
+  - interferibmc_c22d6b.py
+  - mnist_dd2c4f.py
+  - matchgate_tools_mudground_checkpoint_a852d9.py
+  - source_59a0eb956a0d4e6b8720f272136f2799_9b8ba7.py
+  - real_system_c4c34f.py
+  - groverfuncs_9232ea.py
+  - source_948f90de9947418289b220bd2e61caa3_caae3b.py
+  - quantumteleportation_2823d6.py
+  - task_3_4b4e03.py
+  - teleportation_07c3ca.py
+  - python_quantum_number_generator_1_6_multi_qasm_76fe84.py
+  - one_qubit_fb6117.py
+  - quantum_random_pixel_generator_multi_qasm_bebc43.py
+  - quantumteleportationprotocol_7da521.py
+  - quantum_key_distribution_e8abe3.py
+  - ch_3_28325b.py
+  - q04_qiskit_installation_and_test_7d0f02.py
+  - a00_qiskit_introduction_79143b.py
+  - 4atoms_of_computation_332679.py
+  - a03_deutsch_algorithm_solutions_checkpoint_cd1511.py
+  - day_203_20universality_69a67f.py
+  - jakoyhtalot_algoritmit_8daaee.py
+  - test_u_gate_940648.py
+  - 3_more_circuit_identities_checkpoint_986a09.py

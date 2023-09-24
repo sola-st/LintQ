@@ -1,0 +1,81 @@
+Tool,Severity,Code,Location,Line
+CodeQL,warning,ql-constant-classic-bit Circuit 'circuit' measures qubit '2' but never uses it.,5187c8.py,12
+CodeQL,warning,"ql-constant-classic-bit Circuit 'measure_Z' measures qubit '0' but never uses it.
+Circuit 'measure_Z' measures qubit '1' but never uses it.",182aa1.py,9
+CodeQL,warning,"ql-constant-classic-bit Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.",c24a3c.py,7
+CodeQL,warning,"ql-ghost-from-qasm Ghost from_qasm_str at location: (11, 1)",e2f134.py,11
+CodeQL,warning,"ql-measure-all-abuse measure_all() on the circuit 'qc' (at location:5, 6)  when it has already 2 classical bits.",64b6d1.py,7
+CodeQL,warning,"ql-operation-after-measurement Operation 'cx' on qubit 1 after measurement at location: (18, 1).",06e5d9.py,19
+CodeQL,warning,"ql-operation-after-measurement Operation 'cz' on qubit 0 after measurement at location: (17, 1).",06e5d9.py,20
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cu1' on qubit 0 after measurement at location: (53, 5).
+Operation 'cu1' on qubit 1 after measurement at location: (54, 5).",6145c8.py,31
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cu1' on qubit 0 after measurement at location: (53, 5).
+Operation 'cu1' on qubit 1 after measurement at location: (54, 5).",6145c8.py,42
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cu3' on qubit 0 after measurement at location: (53, 5).
+Operation 'cu3' on qubit 3 after measurement at location: (56, 5).",6145c8.py,36
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cu3' on qubit 3 after measurement at location: (56, 5).
+Operation 'cu3' on qubit 1 after measurement at location: (54, 5).",6145c8.py,37
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cx' on qubit 1 after measurement at location: (18, 1).",06e5d9.py,19
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cx' on qubit 1 after measurement at location: (54, 5).
+Operation 'cx' on qubit 2 after measurement at location: (55, 5).",6145c8.py,27
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cx' on qubit 1 after measurement at location: (54, 5).
+Operation 'cx' on qubit 2 after measurement at location: (55, 5).",6145c8.py,45
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'cz' on qubit 0 after measurement at location: (17, 1).",06e5d9.py,20
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 0 after measurement at location: (53, 5).",6145c8.py,23
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 0 after measurement at location: (53, 5).",6145c8.py,30
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 0 after measurement at location: (53, 5).",6145c8.py,43
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 0 after measurement at location: (53, 5).",6145c8.py,50
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 1 after measurement at location: (54, 5).",6145c8.py,24
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 1 after measurement at location: (54, 5).",6145c8.py,32
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 1 after measurement at location: (54, 5).",6145c8.py,41
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'h' on qubit 1 after measurement at location: (54, 5).",6145c8.py,49
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'u1' on qubit 0 after measurement at location: (53, 5).",6145c8.py,25
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'u1' on qubit 0 after measurement at location: (53, 5).",6145c8.py,47
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'u1' on qubit 1 after measurement at location: (54, 5).",6145c8.py,26
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'u1' on qubit 1 after measurement at location: (54, 5).",6145c8.py,46
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'x' on qubit 1 after measurement at location: (54, 5).",6145c8.py,35
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'x' on qubit 1 after measurement at location: (54, 5).",6145c8.py,40
+CodeQL,warning,"ql-operation-after-measurement-general Operation 'x' on qubit 2 after measurement at location: (55, 5).",6145c8.py,20
+CodeQL,warning,ql-oversized-circuit Circuit 'Qc' never manipulates some of its 2qubits.,3c2149.py,7
+CodeQL,warning,ql-oversized-circuit Circuit 'measure_X' never manipulates some of its 2qubits.,182aa1.py,11
+CodeQL,warning,ql-oversized-circuit Circuit 'qc' never manipulates some of its 2qubits.,2ec23d.py,6
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:12, c:1) in which some of its qubits are never measured.",18c1a2.py,12
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:13, c:1) in which some of its qubits are never measured.",18c1a2.py,13
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:30, c:5) in which some of its qubits are never measured.",18c1a2.py,30
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:31, c:5) in which some of its qubits are never measured.",18c1a2.py,31
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:32, c:5) in which some of its qubits are never measured.",18c1a2.py,32
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:33, c:5) in which some of its qubits are never measured.",18c1a2.py,33
+CodeQL,warning,"ql-superfluous-op The circuit 'circuit' has an operation (l:45, c:5) in which some of its qubits are never measured.",18c1a2.py,45
+CodeQL,warning,"ql-superfluous-op The circuit 'q1' has an operation (l:7, c:1) in which some of its qubits are never measured.",239817.py,7
+CodeQL,warning,"ql-superfluous-op The circuit 'q1' has an operation (l:9, c:1) in which some of its qubits are never measured.",239817.py,9
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circ' has more qubits (3) than classical  bits (0),b6f387.py,8
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),228b52.py,12
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),366ff5.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),683a66.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (4) than classical  bits (0),fc6f03.py,14
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (8) than classical  bits (4),18c1a2.py,9
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'job_sim' has more qubits (2) than classical  bits (0),9dab52.py,12
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'mycircuit' has more qubits (2) than classical  bits (0),9c50ed.py,7
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'outer_level' has more qubits (2) than classical  bits (0),f3174e.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'p' has more qubits (8) than classical  bits (0),855a15.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'q' has more qubits (8) than classical  bits (0),855a15.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'q1' has more qubits (2) than classical  bits (0),239817.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (1) than classical  bits (0),24b134.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (2) than classical  bits (0),511706.py,62
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (2) than classical  bits (0),778d92.py,5
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),2ca9ce.py,4
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),f3174e.py,3
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qc' has more qubits (4) than classical  bits (0),b6f387.py,15
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qobj' has more qubits (2) than classical  bits (0),511706.py,66
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'qpe' has more qubits (4) than classical  bits (3),699fc8.py,26
+CodeQL,warning,ql-unmeasurable-qubits Circuit 'state' has more qubits (2) than classical  bits (0),106459.py,7
+CodeQL,warning,qsmell-lpq transpile call without initial_layout,511706.py,66
+CodeQL,warning,qsmell-lpq transpile call without initial_layout,9dab52.py,12
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",9dab52.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",182aa1.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",0249d3.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",511706.py,1
+CodeQL,warning,"qsmell-nc The file has 1 execute or run calls, and a lower number of bind_parameters calls.",855a15.py,1
+CodeQL,warning,"qsmell-nc The file has 2 execute or run calls, and a lower number of bind_parameters calls.",3a713d.py,1
+CodeQL,warning,"qsmell-nc The file has 2 execute or run calls, and a lower number of bind_parameters calls.",274e47.py,1
