@@ -11,5 +11,3 @@ Here we describe briefly the important columns of the manual inspection dataset.
 - **intended_behavior**: the intended behavior of the code based on the context.
 - **more_info**: additional info that either justify the triage or give more info on the specific use of the problematic construct/code.
 - **problem_description**: the description of the problem (for true positives) or the reason why LintQ cannot correctly discern this case (for false positives).
-
-
