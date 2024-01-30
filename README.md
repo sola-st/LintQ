@@ -32,6 +32,7 @@ The current research work contains and shares the following resources:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports`](bug_reports)
     - Check [bug_reports/true_positives_found/PAPER_MAPPING.md](bug_reports/true_positives_found/PAPER_MAPPING.md) for the mapping between the issues and the paper.
+    - Check the folder [`<repo_root>/bug_reports/inspection_codeql_2023-09-18_17-17-54`](bug_reports/inspection_codeql_2023-09-18_17-17-54) for the issues reported in our latest inspection.
 
 
 # Reproducibility
