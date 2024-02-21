@@ -1,7 +1,7 @@
 # QChcker Static Analysis on LintQ
 
 To run the QChecker static analysis tool on the LintQ dataset, you have to run the following command (from the main root):
-```
+```shell
 python -m competitors.qchecker_parallel.run_qchecker_folder config/competitors/qchecker_v08.yaml
 ```
 
@@ -28,3 +28,9 @@ metrics_to_compute:
   - DO
   - MI
 ```
+
+The output will create many small sarif files, to condense them use the command:
+```shell
+python -m automation_scripts.merge_sarif_files data/datasets/exp_v08/qchecker
+```
+This will create a single sarif file with all the warnings called `all_detectors.sarif` in the same folder.

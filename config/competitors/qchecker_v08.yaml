@@ -11,6 +11,9 @@ input_folder: data/datasets/exp_v08/files_selected
 output_folder: data/datasets/exp_v08/qchecker
 # output_folder: data/datasets/sample_dataset/qchecker
 
+# path to the single sarif file containing all the results
+sarif_file_all_rules: data/datasets/exp_v08/qchecker/all_detectors.sarif
+
 metrics_to_compute:
   - IIS
   - PE
@@ -21,4 +24,62 @@ metrics_to_compute:
   - IG
   - DO
   - MI
+
+
+rule_name_mapping:
+  CE: CallError
+  CM: CommandMisuse
+  DO: DiscardedOrder
+  IG: IncorrectUseGate
+  IIS: IncorrectInitState
+  MI: MeasurementIssue
+  PE: ParameterError
+  QE: QasmError
+
+sarif_scaffold:
+  runs:
+  - results: []
+    tool:
+      driver:
+        name: QChecker
+        rules:
+        - id: MI
+          name: MI
+          shortDescription:
+            text: Measurement related issue
+        - id: CE
+          name: CE
+          shortDescription:
+            text: Call error
+        - id: CM
+          name: CM
+          shortDescription:
+            text: Command misuse
+        - id: DO
+          name: DO
+          shortDescription:
+            text: Discarded orders
+        - id: IG
+          name: IG
+          shortDescription:
+            text: Incorrect uses of quantum gates
+        - id: IIS
+          name: IIS
+          shortDescription:
+            text: Incorrect initial state
+        - id: IM
+          name: IM
+          shortDescription:
+            text: Incorrect measurement
+        - id: PE
+          name: PE
+          shortDescription:
+            text: Parameters error
+        - id: QE
+          name: QE
+          shortDescription:
+            text: QASM error
+        version: 0.1.0
+  version: 2.1.0
+
 

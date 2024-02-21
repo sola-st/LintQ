@@ -82,3 +82,9 @@ Open and run top to bottom the notebook at the following path:
 5. Select your database
 6. Congrats! The SARIF files with the warnings are now in the folder `data/analysis_results/<your_database_name>/codeql_<date>_<time>/`
 
+## Run Competitors
+To run the competitors on the same dataset see the following [README](competitors/README_LINTQ.md)
+
+
+
+
