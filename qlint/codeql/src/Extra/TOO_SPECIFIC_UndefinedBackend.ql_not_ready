@@ -1,0 +1,25 @@
+/**
+ * @name Undefined Backend.
+ * @description Check if the backend variable is used but never defined
+ * @kind problem
+ * @tags correctness
+ *       reliability
+ *       qiskit
+ * @problem.severity error
+ * @precision high
+ * @id ql-superfluous-op
+ */
+
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
+import qiskit.Circuit
+import qiskit.UnknownQuantumOperator
+import qiskit.Gate
+import qiskit.QuantumDataFlow
+import qiskit.Backend
+
+from Name varNode
+where
+  varNode.getId() = "backend"
+select varNode, "The backend variable is used but never defined."

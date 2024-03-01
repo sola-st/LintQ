@@ -43,11 +43,17 @@ where
   // there are no unresolved operations
   not exists(UnknownQuantumOperator unkOp | unkOp.getQuantumCircuit() = qc) and
   // the circuit is actually executed in a backend (not a statevector/unitary simulator)
-  exists(Backend bkd |
-    bkd.getACircuitToBeRun() = qc and
-    // the backend is not a simulator
-    not bkd.isStatevectorSimulator() and
-    not bkd.isUnitarySimulator()
+  (
+    exists(Backend bkd |
+      bkd.getACircuitToBeRun() = qc and
+      // the backend is not a simulator
+      not bkd.isStatevectorSimulator() and
+      not bkd.isUnitarySimulator()
+    )
+    or
+    not exists(Backend bkd |
+      bkd.getACircuitToBeRun() = qc
+    )
   )
 // not undefined bit
 // targetBit >= 0
