@@ -64,10 +64,12 @@ Open and run top to bottom the notebook at the following path:
 # Extra Details
 
 ## Environment Versions
-- **CodeQL** command-line toolchain release 2.11.2.
+- **CodeQL** command-line toolchain release 2.11.2. Available [here](https://github.com/github/codeql-cli-binaries/releases/tag/v2.11.2)
 - **Ubuntu**: 18.04.6 LTS
 - **Python**: 3.10 (see conda environment)
 - **Qiskit**: 0.44.1 (see conda environment)
+- **Codeql CLI Version**: 2.11.2 :
+- **CodeQL for Visual Studio Code extension**: 1.7.4 (precisely). Available [here](https://github.com/github/vscode-codeql/blob/main/extensions/ql-vscode/CHANGELOG.md#174---29-october-2022).
 
 
 ## Run Analyses on LintQ Dataset
