@@ -30,7 +30,7 @@ The current research work contains and shares the following resources:
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found`](bug_reports/true_positives_found)
 1. **Annotation Protocol**:
     - Download: not needed, already in this repo.
-    - Found at the path: [`<repo_root>/bug_reports/true_positives_found/annotation_protocol.csv`](annotation_protocol)
+    - Found at the path: [`<repo_root>/bug_reports/true_positives_found/annotation_protocol.csv`](/bug_reports/true_positives_found/annotation_protocol.csv)
 
 
 # Reproducibility
