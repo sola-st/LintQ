@@ -1,0 +1,154 @@
+rule_id,message,file,line,col
+ql-deprecated-identity,The deprecated iden() API is called.,01_classical_and_quantum_probability_distributions_411e21.py,192,
+ql-deprecated-identity,The deprecated iden() API is called.,test_extensions_simulator_635eeb.py,96,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,teleportation_aceaa5.py,177,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,test_noise_model_bb93ba.py,549,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,bit_flip_code_f40402.py,47,
+ql-deprecated-identity,The deprecated iden() API is called.,energyrelaxation_230ca7.py,29,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,test_noise_model_bb93ba.py,279,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,t1_f9bfa8.py,42,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,t2_ramsey_2e0f5a.py,31,9.0
+ql-deprecated-identity,The deprecated iden() API is called.,bit_flip_code_f40402.py,48,
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,gate_u3_fe3f3f.py,29,11.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_combine_extend_a76ce4.py,132,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_mapper_217a32.py,69,19.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,quantum_algs_f7fc7e.py,40,14.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_operations_c5b1ea.py,53,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_combine_extend_a76ce4.py,54,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_combine_extend_a76ce4.py,36,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_combine_extend_a76ce4.py,168,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_operations_c5b1ea.py,35,18.0
+ql-execute-with-seed,The execute API is called with a seed parameter that is ignored.,test_circuit_combine_extend_a76ce4.py,114,18.0
+ql-ghost-composition,"Ghost composition at location: (124, 9)",test_mc_gate_13ba80.py,124,9.0
+ql-ghost-composition,"Ghost composition at location: (249, 1)",error_correction_repetition_code_e94ab1.py,249,
+ql-ghost-composition,"Ghost composition at location: (222, 1)",error_correction_repetition_code_e94ab1.py,222,
+ql-ghost-composition,"Ghost composition at location: (42, 1)",h2evo_6bb46f.py,42,
+ql-ghost-composition,"Ghost composition at location: (303, 1)",error_correction_repetition_code_e94ab1.py,303,
+ql-ghost-composition,"Ghost composition at location: (413, 1)",transpiled_stabilizer_test_7be7ce.py,413,
+ql-ghost-composition,"Ghost composition at location: (76, 1)",neoh2evo_28b965.py,76,
+ql-ghost-composition,"Ghost composition at location: (107, 9)",test_mc_gate_13ba80.py,107,9.0
+ql-ghost-composition,"Ghost composition at location: (90, 9)",test_mc_gate_13ba80.py,90,9.0
+ql-ghost-composition,"Ghost composition at location: (275, 1)",error_correction_repetition_code_e94ab1.py,275,
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '0' (l: 11, c: 1) without preceeding measurement.",ahmed154_73ece9.py,11,
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 83, c: 9) without preceeding measurement.",test_decompose_78559e.py,83,9.0
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '0' (l: 75, c: 9) without preceeding measurement.",test_decompose_78559e.py,75,9.0
+ql-conditional-without-measurement,"Conditional gate 'u' on qubit '1' (l: 245, c: 9) without preceeding measurement.",test_structure_aaba85.py,245,9.0
+ql-conditional-without-measurement,"Conditional gate 't' on qubit '0' (l: 38, c: 1) without preceeding measurement.",task_0f414b.py,38,
+ql-conditional-without-measurement,"Conditional gate 't' on qubit '0' (l: 47, c: 1) without preceeding measurement.",task_0f414b.py,47,
+ql-conditional-without-measurement,"Conditional gate 'h' on qubit '2' (l: 34, c: 1) without preceeding measurement.",test_sdk_352e8e.py,34,
+ql-conditional-without-measurement,"Conditional gate 'x' on qubit '0' (l: 114, c: 9) without preceeding measurement.",test_circuit_load_from_qasm_bf30ab.py,114,9.0
+ql-conditional-without-measurement,"Conditional gate 'z' on qubit '0' (l: 47, c: 9) without preceeding measurement.",test_circuit_qasm_ae5268.py,47,9.0
+ql-conditional-without-measurement,"Conditional gate 'tdg' on qubit '1' (l: 39, c: 1) without preceeding measurement.",task_0f414b.py,39,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (11, 1) and (12, 1)",qubitstates_903372.py,12,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '1' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '2' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '3' at locations: (141, 5) and (141, 5)
+Two consecutive measurements on qubit '4' at locations: (141, 5) and (141, 5)",n4grover_qx2_064def.py,141,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (134, 5) and (134, 5)
+Two consecutive measurements on qubit '1' at locations: (134, 5) and (134, 5)
+Two consecutive measurements on qubit '2' at locations: (134, 5) and (134, 5)
+Two consecutive measurements on qubit '3' at locations: (134, 5) and (134, 5)
+Two consecutive measurements on qubit '4' at locations: (134, 5) and (134, 5)",n4grover_qx4_937b86.py,134,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (58, 9) and (61, 9)",test_qasm_simulator_edd048.py,61,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (821, 9) and (822, 9)",test_structure_aaba85.py,822,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '4' at locations: (26, 5) and (41, 9)
+Two consecutive measurements on qubit '4' at locations: (41, 9) and (41, 9)",qiskit_qae_e2636d.py,41,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '1' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '2' at locations: (33, 1) and (37, 1)
+Two consecutive measurements on qubit '3' at locations: (33, 1) and (37, 1)",qrpgcg_cd84f9.py,37,
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (68, 5) and (68, 5)",montgomery_modular_multiplication_593bfe.py,68,5.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '1' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '2' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '3' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '4' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '5' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '6' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '7' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '8' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '9' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '10' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '11' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '12' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '13' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '14' at locations: (137, 9) and (137, 9)
+Two consecutive measurements on qubit '15' at locations: (137, 9) and (137, 9)",rsa_breaker_4_bit_0f27ff.py,137,9.0
+ql-double-measurement,"Two consecutive measurements on qubit '0' at locations: (70, 5) and (74, 5)",quantum_e3f4e0.py,74,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:6, 6)  when it has already 6 classical bits.",example_1_c6d971.py,10,
+ql-measure-all-abuse,"measure_all() on the circuit 'demo' (at location:320, 6)  when it has already 6 classical bits.",matchgate_tools_mudground_checkpoint_a852d9.py,326,
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:17, 15)  when it has already 2 classical bits.",bell_states_example_55fd07.py,20,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:29, 6)  when it has already 5 classical bits.",main_2f60d4.py,30,
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:29, 14)  when it has already 3 classical bits.",test_parse_counts_0953d6.py,31,9.0
+ql-measure-all-abuse,"measure_all() on the circuit 'quantum_circuit' (at location:12, 19)  when it has already 2 classical bits.",quantum_entanglement_f902fe.py,23,
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:78, 15)  when it has already 1 classical bits.",interferibmc_c22d6b.py,84,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'circuit' (at location:7, 15)  when it has already 5 classical bits.",qrng_9498d5.py,10,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:97, 10)  when it has already 31 classical bits.",mnist_dd2c4f.py,110,5.0
+ql-measure-all-abuse,"measure_all() on the circuit 'qc' (at location:17, 10)  when it has already 1 classical bits.",polarization_20rotator_20angle_25374b.py,20,5.0
+ql-operation-after-measurement,"Operation 'cx' on qubit 0 after measurement at location: (36, 1).",one_qubit_fb6117.py,40,
+ql-operation-after-measurement,"Operation 'cz' on qubit 3 after measurement at location: (21, 1).",python_quantum_number_generator_1_6_multi_qasm_76fe84.py,35,
+ql-operation-after-measurement,"Operation 'ch' on qubit 1 after measurement at location: (19, 1).
+Operation 'ch' on qubit 0 after measurement at location: (18, 1).",task_3_4b4e03.py,20,
+ql-operation-after-measurement,"Operation 'cz' on qubit 0 after measurement at location: (14, 2).",quantumteleportation_2823d6.py,16,2.0
+ql-operation-after-measurement,"Operation 'cz' on qubit 5 after measurement at location: (36, 5).",quantum_random_pixel_generator_multi_qasm_bebc43.py,47,5.0
+ql-operation-after-measurement,"Operation 'x' on qubit 4 after measurement at location: (208, 1).",q04_qiskit_installation_and_test_7d0f02.py,226,7.0
+ql-operation-after-measurement,"Operation 'h' on qubit 0 after measurement at location: (69, 1).",quantum_key_distribution_e8abe3.py,73,
+ql-operation-after-measurement,"Operation 'cx' on qubit 1 after measurement at location: (155, 1).",ch_3_28325b.py,157,
+ql-operation-after-measurement,"Operation 'cz' on qubit 0 after measurement at location: (47, 1).",quantumteleportationprotocol_7da521.py,56,
+ql-operation-after-measurement,"Operation 'cz' on qubit 0 after measurement at location: (20, 1).",teleportation_07c3ca.py,25,
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,groverfuncs_9232ea.py,55,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc1.,real_system_c4c34f.py,40,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc3.,real_system_c4c34f.py,45,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc1.,real_system_c4c34f.py,59,5.0
+ql-op-after-optimization,Operation measure_all applied to transpiled circuit: qc3.,real_system_c4c34f.py,64,5.0
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,source_59a0eb956a0d4e6b8720f272136f2799_9b8ba7.py,34,
+ql-op-after-optimization,Operation measure applied to transpiled circuit: qc.,source_948f90de9947418289b220bd2e61caa3_caae3b.py,58,
+ql-constant-classic-bit,"Circuit 'qc' measures qubit '0' but never uses it.
+Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.",mgr_11_incrementer_as_instruction_6d53c5.py,166,10.0
+ql-constant-classic-bit,"Circuit 'meas' measures qubit '0' but never uses it.
+Circuit 'meas' measures qubit '1' but never uses it.
+Circuit 'meas' measures qubit '2' but never uses it.",fourier_transform_ncb_45a87d.py,306,8.0
+ql-constant-classic-bit,"Circuit 'meas' measures qubit '0' but never uses it.
+Circuit 'meas' measures qubit '1' but never uses it.",plot_histogram_083ab7.py,10,8.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,constante_1_00_d02e10.py,8,11.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '0' but never uses it.,utils_e15f70.py,128,10.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,impactonblochspherev2_6f0344.py,62,15.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,new_guess_function_e73975.py,142,15.0
+ql-constant-classic-bit,Circuit 'qc' measures qubit '1' but never uses it.,ex1_a7614b.py,66,10.0
+ql-constant-classic-bit,"Circuit 'measureYY' measures qubit '0' but never uses it.
+Circuit 'measureYY' measures qubit '1' but never uses it.",gen_algr_20c5be.py,504,25.0
+ql-constant-classic-bit,Circuit 'circuit' measures qubit '0' but never uses it.,lab12tests_488d7c.py,34,19.0
+ql-oversized-circuit,Circuit 'mcx_qiskit' never manipulates some of its 6qubits.,test_mcx_gate_065857.py,130,22.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 2qubits.,a03_deutsch_algorithm_solutions_checkpoint_cd1511.py,129,15.0
+ql-oversized-circuit,Circuit 'circuit' never manipulates some of its 1qubits.,jakoyhtalot_algoritmit_8daaee.py,519,11.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 3qubits.,4atoms_of_computation_332679.py,126,6.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 8qubits.,qiskit_test_49241d.py,112,10.0
+ql-oversized-circuit,Circuit 'circuit2' never manipulates some of its 5qubits.,a00_qiskit_introduction_79143b.py,104,12.0
+ql-oversized-circuit,Circuit 'qc3' never manipulates some of its 1qubits.,day_203_20universality_69a67f.py,271,7.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,hello_qiskit_e84c92.py,1486,10.0
+ql-oversized-circuit,Circuit 'qc' never manipulates some of its 2qubits.,grade_0ca071.py,27,8.0
+ql-oversized-circuit,Circuit 'circ' never manipulates some of its 2qubits.,test_cost_3449df.py,320,12.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (1) than classical  bits (0),test_structure_aaba85.py,1504,14.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (3) than classical  bits (0),test_u_gate_940648.py,43,14.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (24) than classical  bits (0),qrealboosting32_ef6327.py,882,10.0
+ql-unmeasurable-qubits,Circuit 'compiled_circuit' has more qubits (5) than classical  bits (4),deutschjozsa_5a9218.py,132,24.0
+ql-unmeasurable-qubits,Circuit 'qctot' has more qubits (2) than classical  bits (0),gate_apply_3a61af.py,104,17.0
+ql-unmeasurable-qubits,Circuit 'qc' has more qubits (2) than classical  bits (0),3_more_circuit_identities_checkpoint_986a09.py,83,6.0
+ql-unmeasurable-qubits,Circuit 'circ' has more qubits (1) than classical  bits (0),kak_0be67d.py,53,20.0
+ql-unmeasurable-qubits,Circuit 'circuit' has more qubits (2) than classical  bits (0),quantumcircuit_20withoutmeasure_e133f5.py,17,11.0
+ql-unmeasurable-qubits,"Circuit 'opt_qc2' has more qubits (9) than classical  bits (3)
+Circuit 'opt_qc2' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,804,11.0
+ql-unmeasurable-qubits,"Circuit 'nopt_qc' has more qubits (9) than classical  bits (3)
+Circuit 'nopt_qc' has more qubits (11) than classical  bits (3)",benchmark_72ca3d.py,806,11.0
+ql-token-leakage,IBMQ secret token leaked in the code.,ucc_h2_70e59a.py,37,19.0
+ql-token-leakage,IBMQ secret token leaked in the code.,distributed_far_shift_1d5a4b.py,12,12.0
+ql-token-leakage,IBMQ secret token leaked in the code.,backend_tools_17563a.py,19,15.0
+ql-token-leakage,IBMQ secret token leaked in the code.,qt_dfdf6f.py,8,19.0
+ql-token-leakage,IBMQ secret token leaked in the code.,distributed_close_shift_2b63af.py,11,12.0
+ql-token-leakage,IBMQ secret token leaked in the code.,oracle_11_e6565d.py,14,19.0
+ql-token-leakage,IBMQ secret token leaked in the code.,first_local_qiskit_62b63a.py,31,19.0
+ql-token-leakage,IBMQ secret token leaked in the code.,gen_algr_3qubits_d0fffa.py,505,32.0
+ql-token-leakage,IBMQ secret token leaked in the code.,calibrated_h_gate_cbd922.py,19,19.0
+ql-token-leakage,IBMQ secret token leaked in the code.,introduction_20to_20qiskit_995fed.py,479,21.0

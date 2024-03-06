@@ -1,0 +1,72 @@
+Rule,Label,Notes
+CE,FP,"CE1: it thinks that the backend variable is not defined, but that is incorrect.
+CE2: it points to a user defined function using backend as argument, but with no obvious mistakes"
+DO,FP,"DO1: they match an API of a different library than Qiskit or a user defined function with ""iden"""
+IG,FP,"IG1: they match some other usage of the ""gate"" keyword other than custom initialization, e.g. to_gate() which is a legit wayto convert the circuit into a gate.
+IG2: pointing to a line unrelated to custom gates, e.g. a list instantitation or a function call.
+IG3: custom gates are created for the goal of printing them"
+IIS,FP,"IIS1: it often matches a measure() API in a normal circumstance.
+IIS2: it matches legit circuit istantiations.
+IIS3: lack of modeling add_register and wrongly thinks that measure() access a non existent classical bit.
+IIS4: confuses bits and qubit in circuit with 2qb and 2cb, uses the size of the classical circuit (2) to raise a warning on the qubit measure(2,0)."
+PE,FP,"PE1: the call to execute has no coupling map, but it is not required in a statevector simulator or a qasm simulator without any noise model, which do not consider coupling maps anyway"
+QE,FP,"QE1: the warning is in a line with no connection to the QASM api
+QE2: it matches qasm api usages from other libraries than qiskit, which are not modelled correctly.
+QE3: it matches a QASM api usage that uses the importer correctly"
+ql-conditional-without-measurement,TP,"RWM1: There is indeed a c_if operation without any preceeding measurement, making it a constant action when the circuit has just been initialized the classical registers will be 0 by default. Thus the gate is either always applied or never. In either case the c_if is useless.
+RWM2: c_if without preceeding measurement, especially for testing, e.g. QASM parsing routines, decomposing a circuit for compilation steps."
+ql-constant-classic-bit,TP,"RCC4: This can happen when the qubit is not used but measured. And the circuit is also never reused later.
+RCC5: An instance is in teaching oriented code, where circuit objects are not actually used.
+RCC6: this can happen when the circuit is used in a test case.
+RCC7: An instance is when an oracle function is developed and there are some outputs that are constants (e.g. deutsch-jozsa algorithm)"
+ql-constant-classic-bit,NW,"RCC8: there could be a condition, for which the operations in the circuits are not added, but that depends on the input values (e.g. a loop condition), we need the dev intent to tell more.
+RCC1: the circuit has an initialize API followed by a measurement, we need the dev intent to tell more, when you initialize you are supposed to know already the state, thus the measurement is useless.
+RCC9: the circuit has no op before the measruement in the current file, but it escapes to another function which might add or not operations before the final measurement."
+ql-constant-classic-bit,FP,"RCC3: This can happen when a gate is not properly modelled in LintQ, thus the preceeding operation gate goes unnoticed (e.g. mcx gate, cswap). (FIXABLE) (IMPROVEMENT IDEA: this might also be due to the wrong mapping of the indices betwen the notation measure(qreg[0]) and the one only with index h(0))
+RCC2: An instance: The circuit has no operation before the measurement because the circuit is used in a larger circuit."
+ql-double-measurement,TP,"RDM1: They measure the same qubit. The intent is not to copy the value in another classical register. There is also no conditional gate operation in between the two measurements.
+RDM6: two measurments are done consecutively on the entire register, because in between there is a c_if that requires some measurment knowledge, but there is still part of the register that is measured twice because if doesn't change between the first and second measurement."
+ql-double-measurement,NW,"RDM2: the circuit is passed to an external function during a loop, which might add some information between a loop and another one, but it is not obvious.
+RDM5: the two measurement are in a loop, and the guarding conditions depend on user input, thus the two could happen together depending on what is the expected user input range."
+ql-double-measurement,FP,"RDM3: there is an external function in between that adds extra steps to the circuits between thet two measurment (e.g. grover diffusion operator)
+RDM4: there are two measurement but they are conditioned on two mutually exclusive c_if thus they never happen together."
+ql-ghost-composition,TP,RGC1: the return value of a compose call is not used.
+ql-ghost-composition,NW,"RGC2: the return value of compose call is not used, but the value is used on the go to draw, thus is not completely lost, although it is not reusable later, thus making it temporary only."
+ql-measure-all-abuse,TP,"RMA1: the circuit has a classical register and a measure_all with default arguments, leading to a doubled sized classical register.
+RMA3: the circuit has class reg and measure_all, but it want to test that a longer string is produced and how to parse it."
+ql-measure-all-abuse,NW,"RMA2: The circuit has already a classical register, but the result cannot be completly stored in the existing classical register. "
+ql-op-after-optimization,TP,"ROAO1: The circuit applies an operation after transpilation
+ROAO2: the circuit has the wrong pattern, but it is generated by an automatic testing tool."
+ql-operation-after-measurement,TP,"ROAM1: the teleportation algo is implemented in the wrong way without conditional c_if cates but with quantum gates.
+ROAM2: The gate and the measurement are applied on the same qubit.
+There is no conditional gate applied by the gate and the measurement.
+ROAM3: the measurement before the gate is introduced by a fictional evesdropper in the teleportation algorithm (the evesdropper destrys the state in the protocol).
+ROAM4: the op after measurement is there to simulate some aspects of error correction
+ROAM5: the op after measurement is used to generate random values"
+ql-oversized-circuit,TP,"ROV4: The qubits are indeed never used. An instance can happen when the entire circuit variable is never reused.
+ROV6: the qubits are never used, because the circuit is used in a testing routine.
+ROV9: empty oracle: the circuit implements an oracle circuits that is supposed to be empty.
+ROV10: the circuit is never used because the goal is to plot a custom named subcircuit."
+ql-oversized-circuit,NW,"ROV1: circuit exposed: The circuit has no operations, but the circuit is made available to other functions via global variable/or object attribute, this might lead to an empty/underused circuit in some executions.
+ROV2: extended via unknown funct call: the circuit is passed to an external function, which might extend it on all qubits or only partially.
+ROV3: extended with unknown circuit via compose: The circuit is extended using compose() with unknown circuits, thus it might be that it is unused."
+ql-oversized-circuit,FP,"ROV7: limtied modelling composition: some qubits are never used, but the circuit is used in a larger circuit later. An instance is when the circuits are added with the ""+"" operator and that is not detected (FIXABLE).
+ROV8: limited modeling gates: An instance is when the circuit is fully used by a gate that is not modeled leading to a wrong detection (e.g. mcx). An instance is when the gates are used with the API h(qc, qreg[3])
+ROV5: extended with known function: the circuit is passed to an external function that adds operation to the quantum register."
+ql-unmeasurable-qubits,TP,"RUN5: the circuit has no classical register and it is used for drawing purposes.
+RUN7: the circuit has no classical registers and it is used in a test.
+RUN9: the circuit has no classical register and is never executed."
+ql-unmeasurable-qubits,NW,"RUN4: The circuit itself has no classical bits, but it may then used in a larger circuit. (an oracle is an example). It is not clear to which circuit it is appened specifically, it that will have enough classical bits to measure all the qubits.
+RUN2: unclear ancillae:The circuit measures only a set of qubit, but there are qubits (which are not specifically mentioned as ancilla) which are not measured (the user might have forgotten to measure them). Often the connection of circuits and subcircuits is too complex or with poor documentation to understand the developer intent."
+ql-unmeasurable-qubits,FP,"RUN8: An instance can be when the circuit has indeed classical registers (e.g. added via the measure_all API with no arguments or added via another subcircuit that has classical register to measure all the qubits).
+RUN3: statevector visualization: An instance can be when the circuit result is extracted via the API: result().get_statevector(). (or get_unitary or snapshot)
+RUN10: An instance can be when we implement error correction code, where only ancilla qubits are measured.
+RUN1: An instance can be when the circuit is used in a quantum neural network that needs no classical registers. Or a QRAM that needs only certain qubits to be measured.
+RUN6: An instance is when the extra unmeasruable qubits are ancillas."
+ql-deprecated-identity,TP,RDI1: the iden() gate is called in quantum circuit. There is no requirement.txt/pyproject.toml or indication in the first level mardown files about the specific version of qiskit to use. If it is a notebook there is no pip instal as well.
+ql-deprecated-identity,NW,RDI2: there is another neighboring file with the specific version mentioned. However the code is not enforced to use the latest version.
+ql-deprecated-identity,FP,"RDI3: there is a requirements.txt which fixes the version to an older compatible version with iden() API.
+RDI4: there is a direct import of the qiskit version locally downloaded.
+RDI5: it is a fork of an old version of Qiskit"
+ql-execute-with-seed,TP,RES1: the seed parameter is present in an execute call and the qiskit version is not fixed in the given repository.
+ql-execute-with-seed,FP,RES2: the seed parameter was stil supported in the past releases using qiskit-sdk-py fork variant of qiskit or a custom version where the seed parameter was available.
