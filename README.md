@@ -21,18 +21,16 @@ The current research work contains and shares the following resources:
     - To place at the path: [`<repo_root>/data/datasets/exp_v08`](data/datasets/exp_v08)
 1. **LintQ warnings** in SARIF format (Static Analysis Results Interchange Format):
     - Download: not needed, already in this repo.
-    - Found at the path: [`<repo_root>/data/analysis_results/exp_v08/codeql_2023-09-18_17-17-54`](data/analysis_results/exp_v08/codeql_2023-09-18_17-17-54/)
+    - Found at the path: [`<repo_root>/data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53`](data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53)
 1. **Manual annotations** of the warnings:
     - Download: not needed, already in this repo.
-    - To place at the path: [`<repo_root>/data/annotations/manual_inspection/manual_inspection_data_sample_fixed_10_codeql_2023-09-18_17-17-54.csv`](data/annotations/manual_inspection/manual_inspection_data_sample_fixed_10_codeql_2023-09-18_17-17-54.csv)
+    - To place at the path: [`<repo_root>/data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53/Annotation_06_data_sample_representative_10.csv`](data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53/Annotation_06_data_sample_representative_10.csv)
 1. **True Positives Issues**:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found`](bug_reports/true_positives_found)
-1. **Issue filed on GitHub** as consequence of some true positive warnings:
+1. **Annotation Protocol**:
     - Download: not needed, already in this repo.
-    - Found at the path: [`<repo_root>/bug_reports`](bug_reports)
-    - Check [bug_reports/true_positives_found/PAPER_MAPPING.md](bug_reports/true_positives_found/PAPER_MAPPING.md) for the mapping between the issues and the paper.
-    - Check the folder [`<repo_root>/bug_reports/inspection_codeql_2023-09-18_17-17-54`](bug_reports/inspection_codeql_2023-09-18_17-17-54) for the issues reported in our latest inspection.
+    - Found at the path: [`<repo_root>/bug_reports/true_positives_found/annotation_protocol.csv`](annotation_protocol)
 
 
 # Reproducibility
@@ -59,7 +57,7 @@ conda env export --file virtualenv/conda/environment.yml
 ## Run the notebook
 
 Open and run top to bottom the notebook at the following path:
-[`<repo_root>/notebooks/RQs_Reproduce_Analysis_Results_LintQ.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ.ipynb)
+[`<repo_root>/notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb)
 
 # Extra Details
 

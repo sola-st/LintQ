@@ -1,5 +1,9 @@
 name: mattepalte/qlint
 version: 0.0.1
+description: |
+  QL pack for linting Qiskit code.
+suites: codeql-suites
+default-suite-file: qiskit-code-scanning.qls
 dependencies:
   codeql/python-all: "0.6.2"
   mattepalte/qiskit: "*"

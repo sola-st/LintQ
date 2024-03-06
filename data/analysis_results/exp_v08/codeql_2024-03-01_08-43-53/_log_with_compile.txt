@@ -1,0 +1,125 @@
+Running queries.
+Did not find any ML models.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Backend/InitWithoutTranspilation.ql.
+[1/30 comp 34.5s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Backend/InitWithoutTranspilation.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Backend/MeasWithStatevector.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/DeprecatedCircuitMethod.ql.
+[2/30 comp 6.2s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/DeprecatedCircuitMethod.ql.
+[3/30 comp 7.1s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Backend/MeasWithStatevector.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/ExecuteWithSeed.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/DeprecatedIdentity.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/GhostQASMImport.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/ImproperDraw.ql.
+[4/30 comp 4.9s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/DeprecatedIdentity.ql.
+[5/30 comp 5.2s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/GhostQASMImport.ql.
+[6/30 comp 5.4s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/ImproperDraw.ql.
+[7/30 comp 5.6s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/ExecuteWithSeed.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SimulatorSizeOverflow.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/MultipleSubmission.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/GhostComposition.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SuperfluousOpPrecise.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/GhostFromQasm.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SuperfluousOp.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/IncompatibleComposition.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/UngovernedComposition.ql.
+[8/30 comp 10.8s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SuperfluousOp.ql.
+WARNING: The @id property should be a valid query identifier. (/home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/MultipleSubmission.ql:1,1-11,4)
+[9/30 comp 7s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/UngovernedComposition.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/ConditionalGateWithoutMeas.ql.
+[10/30 comp 5.4s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/MultipleSubmission.ql.
+[11/30 comp 6.6s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/GhostComposition.ql.
+[12/30 comp 7.5s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/IncompatibleComposition.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/OpAfterMeasurement.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/MeasureAll.ql.
+[13/30 comp 6.4s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SimulatorSizeOverflow.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/DoubleMeasurement.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/OpAfterMeasurementGeneral.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Metrics/CircuitSize.ql.
+[14/30 comp 6.7s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Interconnection/GhostFromQasm.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Optimization/OpAfterOptimization.ql.
+[15/30 comp 10.7s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/ConditionalGateWithoutMeas.ql.
+[16/30 comp 16s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/OpAfterMeasurement.ql.
+[17/30 comp 8.4s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Optimization/OpAfterOptimization.ql.
+[18/30 comp 11.4s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/OpAfterMeasurementGeneral.ql.
+[19/30 comp 8s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/MeasureAll.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/OversizedCircuit.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Qsmell/NonParametrizedCircuit.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/ConstantClassicBit.ql.
+[20/30 comp 16.8s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Measurement/DoubleMeasurement.ql.
+[21/30 comp 6.9s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Metrics/CircuitSize.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Qsmell/NoAlignmentLogicalPhysical.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/UnmeasurableQubits.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Simulation/InvalidPauliErrorSize.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Simulation/InvalidPauliSyntaxError.ql.
+[22/30 comp 6.5s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Qsmell/NonParametrizedCircuit.ql.
+[23/30 comp 10s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/ConstantClassicBit.ql.
+[24/30 comp 9s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/OversizedCircuit.ql.
+[25/30 comp 5.1s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Simulation/InvalidPauliErrorSize.ql.
+[26/30 comp 6.6s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Resource/UnmeasurableQubits.ql.
+Compiling query plan for /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Vulnerability/TokenLeakage.ql.
+[27/30 comp 5.9s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Qsmell/NoAlignmentLogicalPhysical.ql.
+[28/30 comp 5.1s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Simulation/InvalidPauliSyntaxError.ql.
+[29/30 comp 4.2s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Vulnerability/TokenLeakage.ql.
+[30/30 comp 10.7s] Compiled /home/paltenmo/projects/lintq_home/qlint/qlint/codeql/src/Extra/SuperfluousOpPrecise.ql.
+Starting evaluation of mattepalte/qlint/Backend/InitWithoutTranspilation.ql.
+Starting evaluation of mattepalte/qlint/Backend/MeasWithStatevector.ql.
+Starting evaluation of mattepalte/qlint/Extra/DeprecatedCircuitMethod.ql.
+Starting evaluation of mattepalte/qlint/Extra/DeprecatedIdentity.ql.
+Starting evaluation of mattepalte/qlint/Extra/ExecuteWithSeed.ql.
+Starting evaluation of mattepalte/qlint/Extra/GhostQASMImport.ql.
+Starting evaluation of mattepalte/qlint/Extra/ImproperDraw.ql.
+Starting evaluation of mattepalte/qlint/Extra/MultipleSubmission.ql.
+Starting evaluation of mattepalte/qlint/Extra/SuperfluousOp.ql.
+Starting evaluation of mattepalte/qlint/Extra/SimulatorSizeOverflow.ql.
+Starting evaluation of mattepalte/qlint/Extra/SuperfluousOpPrecise.ql.
+Starting evaluation of mattepalte/qlint/Measurement/ConditionalGateWithoutMeas.ql.
+Starting evaluation of mattepalte/qlint/Interconnection/GhostFromQasm.ql.
+Starting evaluation of mattepalte/qlint/Interconnection/GhostComposition.ql.
+Starting evaluation of mattepalte/qlint/Interconnection/UngovernedComposition.ql.
+Starting evaluation of mattepalte/qlint/Interconnection/IncompatibleComposition.ql.
+Starting evaluation of mattepalte/qlint/Measurement/OpAfterMeasurement.ql.
+Starting evaluation of mattepalte/qlint/Measurement/MeasureAll.ql.
+Starting evaluation of mattepalte/qlint/Measurement/DoubleMeasurement.ql.
+Starting evaluation of mattepalte/qlint/Measurement/OpAfterMeasurementGeneral.ql.
+Starting evaluation of mattepalte/qlint/Metrics/CircuitSize.ql.
+Starting evaluation of mattepalte/qlint/Optimization/OpAfterOptimization.ql.
+Starting evaluation of mattepalte/qlint/Qsmell/NoAlignmentLogicalPhysical.ql.
+Starting evaluation of mattepalte/qlint/Resource/OversizedCircuit.ql.
+Starting evaluation of mattepalte/qlint/Resource/UnmeasurableQubits.ql.
+Starting evaluation of mattepalte/qlint/Qsmell/NonParametrizedCircuit.ql.
+Starting evaluation of mattepalte/qlint/Resource/ConstantClassicBit.ql.
+Starting evaluation of mattepalte/qlint/Simulation/InvalidPauliErrorSize.ql.
+Starting evaluation of mattepalte/qlint/Simulation/InvalidPauliSyntaxError.ql.
+Starting evaluation of mattepalte/qlint/Vulnerability/TokenLeakage.ql.
+[1/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Vulnerability/TokenLeakage.bqrs.
+[2/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Simulation/InvalidPauliSyntaxError.bqrs.
+[3/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Simulation/InvalidPauliErrorSize.bqrs.
+[4/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Resource/UnmeasurableQubits.bqrs.
+[5/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Metrics/CircuitSize.bqrs.
+[6/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Measurement/MeasureAll.bqrs.
+[7/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Backend/MeasWithStatevector.bqrs.
+[8/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/SimulatorSizeOverflow.bqrs.
+[9/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Backend/InitWithoutTranspilation.bqrs.
+[10/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/GhostQASMImport.bqrs.
+[11/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Optimization/OpAfterOptimization.bqrs.
+[12/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Interconnection/GhostFromQasm.bqrs.
+[13/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Interconnection/GhostComposition.bqrs.
+[14/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Qsmell/NonParametrizedCircuit.bqrs.
+[15/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/ImproperDraw.bqrs.
+[16/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/DeprecatedCircuitMethod.bqrs.
+[17/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/DeprecatedIdentity.bqrs.
+[18/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Interconnection/IncompatibleComposition.bqrs.
+[19/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Interconnection/UngovernedComposition.bqrs.
+[20/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/MultipleSubmission.bqrs.
+[21/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Qsmell/NoAlignmentLogicalPhysical.bqrs.
+[22/30 eval 6m25s] Evaluation done; writing results to mattepalte/qlint/Extra/ExecuteWithSeed.bqrs.
+[23/30 eval 18m50s] Evaluation done; writing results to mattepalte/qlint/Measurement/ConditionalGateWithoutMeas.bqrs.
+[24/30 eval 18m52s] Evaluation done; writing results to mattepalte/qlint/Extra/SuperfluousOpPrecise.bqrs.
+[25/30 eval 18m52s] Evaluation done; writing results to mattepalte/qlint/Extra/SuperfluousOp.bqrs.
+[26/30 eval 20m1s] Evaluation done; writing results to mattepalte/qlint/Resource/OversizedCircuit.bqrs.
+[27/30 eval 23m40s] Evaluation done; writing results to mattepalte/qlint/Resource/ConstantClassicBit.bqrs.
+[28/30 eval 29m19s] Evaluation done; writing results to mattepalte/qlint/Measurement/OpAfterMeasurementGeneral.bqrs.
+[29/30 eval 29m21s] Evaluation done; writing results to mattepalte/qlint/Measurement/OpAfterMeasurement.bqrs.
+[30/30 eval 38m10s] Evaluation done; writing results to mattepalte/qlint/Measurement/DoubleMeasurement.bqrs.
+Shutting down query evaluator.
+Interpreting results.

@@ -21,8 +21,7 @@ import qiskit.Backend
 from QuantumCircuit qc, DataFlow::CallCfgNode qasmImportCall
 where
   // bind circuit and its call
-  qc.getAnAttributeRead("from_qasm_str").getACall() = qasmImportCall
-  and
+  qc.getAnAttributeRead("from_qasm_str").getACall() = qasmImportCall and
   // the return value of the from_qasm_str() method is not stored
   not exists(AssignStmt a | a.getValue().getASubExpression*() = qasmImportCall.asExpr()) and
   // the return value of the from_qasm_str() is not in a return statement

@@ -21,13 +21,12 @@ import qiskit.Backend
 from TranspileCall transpileCall
 where
   // there is no backend
-  not exists(
-    DataFlow::Node parameterBackend |
+  not exists(DataFlow::Node parameterBackend |
     parameterBackend = transpileCall.getArgByName("backend")
   ) and
   // there is no initial_layout
-  not exists(
-    DataFlow::Node parameterInitialLayout |
+  not exists(DataFlow::Node parameterInitialLayout |
     parameterInitialLayout = transpileCall.getArgByName("initial_layout")
   )
-select transpileCall, "The transpile call had no initial_layout parameter when a non-simulator backend is used."
+select transpileCall,
+  "The transpile call had no initial_layout parameter when a non-simulator backend is used."

@@ -1,6 +1,6 @@
 /**
  * @name Simulator size overflow.
- * @description  Check if the circuit is larger than the supported simulator (e.g.  Aer.get_backend(’qasm_simulator’) supports max 30 qubits,  BasicAer.get_backend(’qasm_simulator’) supports max 24 qubits)
+ * @description Check if the circuit is larger than the supported simulator (e.g.  Aer.get_backend(’qasm_simulator’) supports max 30 qubits,  BasicAer.get_backend(’qasm_simulator’) supports max 24 qubits)
  * @kind problem
  * @tags correctness
  *       reliability
@@ -28,4 +28,6 @@ where
   nQubits = qc.getNumberOfQubits() and
   // the circuit is larger than the supported simulator
   nQubits > 30
-select qc, "The circuit '" + qc.getName() + "' is larger (size: " + nQubits.toString() + " ) than the supported simulator (max is ca 30)."
+select qc,
+  "The circuit '" + qc.getName() + "' is larger (size: " + nQubits.toString() +
+    " ) than the supported simulator (max is ca 30)."

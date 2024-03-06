@@ -19,6 +19,5 @@ import qiskit.QuantumDataFlow
 import qiskit.Backend
 
 from ExecuteCall exec, AstNode seedNode
-where
-  exec.getArgByName("seed").asExpr() = seedNode
+where exec.getArgByName("seed").asExpr() = seedNode
 select exec, "The execute API is called with a seed parameter that is ignored."

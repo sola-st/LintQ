@@ -1,6 +1,6 @@
 /**
  * @name Multiple Submission
- * @description  Backend is repeatedly called in a loop. Consider submitting parametrized circuits.
+ * @description Backend is repeatedly called in a loop. Consider submitting parametrized circuits.
  * @kind problem
  * @tags correctness
  *       reliability
@@ -19,6 +19,5 @@ import qiskit.QuantumDataFlow
 import qiskit.Backend
 
 from BackendRun bkdRun, For loopNode
-where
-  loopNode.getAChildNode().contains(bkdRun.getNode().getNode())
+where loopNode.getAChildNode().contains(bkdRun.getNode().getNode())
 select bkdRun, "Backend is repeatedly called in a loop. Consider submitting parametrized circuits."

@@ -51,9 +51,7 @@ where
       not bkd.isUnitarySimulator()
     )
     or
-    not exists(Backend bkd |
-      bkd.getACircuitToBeRun() = qc
-    )
+    not exists(Backend bkd | bkd.getACircuitToBeRun() = qc)
   )
 // not undefined bit
 // targetBit >= 0

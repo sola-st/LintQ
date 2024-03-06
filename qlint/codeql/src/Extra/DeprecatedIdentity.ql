@@ -19,6 +19,5 @@ import qiskit.QuantumDataFlow
 import qiskit.Backend
 
 from QuantumCircuit qc, DataFlow::CallCfgNode idenCall
-where
-  qc.getAnAttributeRead("iden").getACall() = idenCall
+where qc.getAnAttributeRead("iden").getACall() = idenCall
 select idenCall, "The deprecated iden() API is called."

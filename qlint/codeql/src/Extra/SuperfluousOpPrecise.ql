@@ -43,26 +43,22 @@ where
   // there are no unresolved operations
   not exists(UnknownQuantumOperator unkOp | unkOp.getQuantumCircuit() = qc) and
   // the purpose is not graphical
-  not exists(DataFlow::CallCfgNode drawCall |
-    qc.getAnAttributeRead("draw").getACall() = drawCall
-  ) and
+  not exists(DataFlow::CallCfgNode drawCall | qc.getAnAttributeRead("draw").getACall() = drawCall) and
   // the circuit is actually executed in a backend (not a statevector/unitary simulator)
-  (
-    exists(Backend bkd |
-      bkd.getACircuitToBeRun() = qc and
-      // the backend is not a simulator
-      not bkd.isStatevectorSimulator() and
-      not bkd.isUnitarySimulator()
-    )
+  exists(Backend bkd |
+    bkd.getACircuitToBeRun() = qc and
+    // the backend is not a simulator
+    not bkd.isStatevectorSimulator() and
+    not bkd.isUnitarySimulator()
   )
-  // and
-  // // it does not act on a qubit that is also manipulated by another gate
-  // // together with another qubit index which is then measured
-  // not exists(Gate otherOp, int i, int otherQubit, Measurement m |
-  //   i >= 0 and otherQubit >= 0 and
-  //   mayFollow(op, otherOp, op.getLocation().getFile(), i) and
-  //   mayFollow(otherOp, m, op.getLocation().getFile(), otherQubit)
-  // )
+// and
+// // it does not act on a qubit that is also manipulated by another gate
+// // together with another qubit index which is then measured
+// not exists(Gate otherOp, int i, int otherQubit, Measurement m |
+//   i >= 0 and otherQubit >= 0 and
+//   mayFollow(op, otherOp, op.getLocation().getFile(), i) and
+//   mayFollow(otherOp, m, op.getLocation().getFile(), otherQubit)
+// )
 select op,
   "The circuit '" + qc.getName() + "' has an operation " + "(l:" + op.getLocation().getStartLine() +
     ", c:" + op.getLocation().getStartColumn() + ") " +
