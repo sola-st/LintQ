@@ -6,7 +6,82 @@ It comprises:
 1. **LintQ Core**: a set of quantum-specific concepts that supports the definition of static analysis of quantum programs.
 2. **LintQ Analyses**: a set of analyses build on top of the abstractions offered by the core.
 
-# Artifacts
+
+## Use Cases
+You can run LintQ with two objectives:
+
+- [Replication Package Level 1](#replicate-the-paper-figures-level-1): reproduce the figures and tables from the paper.
+- [Replication Package Level 2](#run-lintq-to-analyze-a-new-dataset-level-2): analyze a new dataset of quantum programs with LintQ.
+
+## Getting Started
+
+- Check that your setup meets the [REQUIREMENTS.md](REQUIREMENTS.md).
+- Follow the installation instructions in [INSTALL.md](INSTALL.md).
+
+
+## Reproduce the Paper Figures (Level 1)
+
+This replication level allows to independently reproduce the results of our paper starting from the experimental data we collected during our empirical evaluation.
+
+Follow these steps:
+
+1. Download the datasets used in our evaluation from [here](https://figshare.com/s/8a120be10fe2292f4520)
+1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
+1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper.
+1. The output will be stored in the folder [`notebooks/paper_figures_revision`](notebooks/paper_figures_revision). To open the Jupyter notebook run:
+    ```
+    conda activate LintQEnv
+    jupyter notebook
+    ```
+    In the jupyter notebook web interface, navigate to and execute top-to-bottom the target notebook.
+
+## Run LintQ to Analyze a new Dataset (Level 2)
+
+This replication level allows to run LintQ queries on any folder containing quantum progams.
+
+Follow these steps:
+
+1. Place your folder containing quantum programs in the [`data/datasets`](data/datasets) folder (e.g. `data/datasets/my_programs`)
+1. Convert the python files in the target folder to a database of facts about the quantum programs, the new database will be store at the given path (e.g. `data/datasets/my_database`):
+    ```bash
+    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq \
+        codeql database create /home/codeql/project/data/datasets/my_database \
+        --language=python \
+        --source-root /home/codeql/project/data/datasets/my_programs
+    ```
+1. Enter in the docker in interactive mode:
+    ```
+    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq
+    ```
+1. Move to the folder with the LintQ package to install:
+    ```bash
+    cd /home/codeql/project/qlint/codeql/src
+    ```
+1. Install the LintQ package dependencies:
+    ```bash
+    codeql pack install
+    ```
+    Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
+1. Go back to the main path of the repo (while staying inside the docker container):
+    ```bash
+    cd /home/codeql/project/
+    ```
+1. Run the queries on the demo dataset and produce an analysis output at the given path (e.g., `data/datasets/my_results.sarif`)
+    ```bash
+    codeql database analyze \
+        --format=sarifv2.1.0 \
+        --threads=10 \
+        --output=/home/codeql/project/data/datasets/my_results.sarif \
+        --rerun \
+        -- /home/codeql/project/data/datasets/my_database \
+        /home/codeql/project/qlint/codeql/src
+    ```
+1. Congratulations you have successfully analyzed your first quantum programs with LintQ and collected some warnings! Your static analysis warnings are store in a file in SARIF format, an interoperable format for warnings, read more [here](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#about-sarif-support)
+
+
+
+
+## Detailed Content of the Repository
 
 The current research work contains and shares the following resources:
 
@@ -33,27 +108,6 @@ The current research work contains and shares the following resources:
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found/annotation_protocol.csv`](/bug_reports/true_positives_found/annotation_protocol.csv)
 
 
-# Reproducibility
-
-To recreate the paper figures and tables  then you need to install the dependencies to run the Python notebook.
-
-## Install dependencies
-
-1. make sure you have conda installed, otherwise install it from [here](https://docs.conda.io/en/latest/miniconda.html)
-2. create a conda virtual environment from our configuration file [here](virtualenv/conda/environment.yml):
-    ```bash
-    conda env create -f virtualenv/conda/environment.yml
-    ```
-3. activate the virtual environment:
-    ```bash
-    conda activate LintQEnv
-    ```
-
-Extra info: the environment was exported using.
-```bash
-conda env export --file virtualenv/conda/environment.yml
-```
-
 ## Run the notebook
 
 Open and run top to bottom the notebook at the following path:
@@ -61,11 +115,15 @@ Open and run top to bottom the notebook at the following path:
 
 # Extra Details
 
+## Advanced
+
+If you want to collect a new dataset on GitHub you can have a look at the [`DATASET.md`](DATASET.md) file.
+
 ## Environment Versions
 - **CodeQL** command-line toolchain release 2.11.2. Available [here](https://github.com/github/codeql-cli-binaries/releases/tag/v2.11.2)
 - **Ubuntu**: 18.04.6 LTS
 - **Python**: 3.10 (see conda environment)
-- **Qiskit**: 0.44.1 (see conda environment)
+- **Qiskit**: 0.45.2 (see conda environment)
 - **Codeql CLI Version**: 2.11.2 :
 - **CodeQL for Visual Studio Code extension**: 1.7.4 (precisely). Available [here](https://github.com/github/vscode-codeql/blob/main/extensions/ql-vscode/CHANGELOG.md#174---29-october-2022).
 
