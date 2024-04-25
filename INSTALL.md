@@ -2,7 +2,7 @@
 
 Table of Contents:
 - Step-by-step instructions for installing LintQ
-- Basic usage example or method to test the installation
+- Installation Check
 
 ### Step-by-step instructions for installing LintQ
 
@@ -23,52 +23,22 @@ Table of Contents:
     ```bash
     python automation_scripts/5_create_docker_image_locally.py
     ```
-    At the end check that the docker image has been build correctly by running: `docker images`, you should see an image named `codeql-for-lintq`.
+    At the end check that the docker image has been build correctly by running: `docker images`, you should see an image named `lintq`.
 
 
-### Basic usage example
+### Installation Check
 
-1. Make sure to be in the be in the root of the repository
-1. Run the following command to check that you can successfully execute the CodeQL in the Docker image.
+1. To check that you set up LintQ correctly run this command:
     ```bash
-    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq codeql version
+    docker run -v "$(pwd)/data:/home/codeql/project/data" -it --rm lintq codeql pack ls /usr/local/codeql-home/
     ```
-1. To prepare your files at [`data/demo_dataset/programs`](data/demo_dataset/programs) for analysis with LintQ run the following command:
-    ```
-    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq codeql database create /home/codeql/project/data/demo_dataset/codeql_database --language=python --source-root /home/codeql/project/data/demo_dataset/programs
-    ```
-
-### Run LintQ on Dataset
-
-1. enter in the docker container by running:
+    That should show you the following:
     ```bash
-    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq
+    Running on packs: mattepalte/qlint-tests, mattepalte/qiskit, mattepalte/qlint.
+    Found mattepalte/qiskit@0.0.1
+    Found mattepalte/qlint@0.0.1
+    Found mattepalte/qlint-tests@0.0.0
     ```
-1. Move to the folder with the LintQ package to install:
-    ```bash
-    cd /home/codeql/project/qlint/codeql/src
-    ```
-1. Install the LintQ package:
-    ```bash
-    codeql pack install
-    ```
-    Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
-1. Go back to the main path of the repo (while staying inside the docker container):
-    ```bash
-    cd /home/codeql/project/
-    ```
-1. Run the queries on the demo dataset and produce a sarif file:
-    ```bash
-    codeql database analyze \
-        --format=sarifv2.1.0 \
-        --threads=10 \
-        --output=/home/codeql/project/data/demo_dataset/demo_results.sarif \
-        --rerun \
-        -- /home/codeql/project/data/demo_dataset/codeql_database \
-        /home/codeql/project/qlint/codeql/src
-    ```
-
-
 
 
 

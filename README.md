@@ -25,8 +25,11 @@ This replication level allows to independently reproduce the results of our pape
 
 Follow these steps:
 
+1. Make sure to have followed the  [INSTALL.md](INSTALL.md) and installed the Python dependencies to run the notebook.
 1. Download the datasets used in our evaluation from [here](https://figshare.com/s/8a120be10fe2292f4520)
 1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
+1. Download the analysis warnings detected by competitor approaches from [here](https://figshare.com/s/4f849781f4b91c44178c).
+1. Unzip it and palce it at the path: [`data/analysis_results/exp_v08_competitors`](data/analysis_results/exp_v08_competitors)
 1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper.
 1. The output will be stored in the folder [`notebooks/paper_figures_revision`](notebooks/paper_figures_revision). To open the Jupyter notebook run:
     ```
@@ -37,46 +40,36 @@ Follow these steps:
 
 ## Run LintQ to Analyze a new Dataset (Level 2)
 
-This replication level allows to run LintQ queries on any folder containing quantum progams.
+This replication level allows to run LintQ queries on any folder containing quantum programs.
 
 Follow these steps:
 
-1. Place your folder containing quantum programs in the [`data/datasets`](data/datasets) folder (e.g. `data/datasets/my_programs`)
+1. Make sure to have followed the  [INSTALL.md](INSTALL.md) and create the LintQ Docker container
+1. Place your folder containing quantum programs in the [`data/datasets`](data/datasets) folder (e.g. `data/datasets/my_programs`).
+    For this demo we focus on some demo files at path [data/datasets/demo/files](data/datasets/demo/files).
 1. Convert the python files in the target folder to a database of facts about the quantum programs, the new database will be store at the given path (e.g. `data/datasets/my_database`):
     ```bash
-    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq \
-        codeql database create /home/codeql/project/data/datasets/my_database \
+    docker run -v "$(pwd)/data:/home/codeql/project/data" -it --rm lintq \
+        codeql database create data/datasets/demo/codeql_db \
         --language=python \
-        --source-root /home/codeql/project/data/datasets/my_programs
+        --source-root data/datasets/demo/files
     ```
-1. Enter in the docker in interactive mode:
-    ```
-    docker run -v $(pwd):/home/codeql/project -it --rm codeql-for-lintq
-    ```
-1. Move to the folder with the LintQ package to install:
+1. Run the queries on the demo dataset and produce an analysis output at the given path (e.g., `data/datasets/demo/my_results.sarif`)
     ```bash
-    cd /home/codeql/project/qlint/codeql/src
-    ```
-1. Install the LintQ package dependencies:
-    ```bash
-    codeql pack install
-    ```
-    Take note of the path where the dependencies are stored (e.g. `/home/<username>/.codeql/packages`).
-1. Go back to the main path of the repo (while staying inside the docker container):
-    ```bash
-    cd /home/codeql/project/
-    ```
-1. Run the queries on the demo dataset and produce an analysis output at the given path (e.g., `data/datasets/my_results.sarif`)
-    ```bash
+    docker run \
+        -v "$(pwd)/data:/home/codeql/project/data" \
+        -v "$(pwd)/LintQ.qls:/home/codeql/project/LintQ.qls" \
+        -it --rm lintq \
     codeql database analyze \
         --format=sarifv2.1.0 \
         --threads=10 \
-        --output=/home/codeql/project/data/datasets/my_results.sarif \
+        --output=/home/codeql/project/data/datasets/demo/my_results.sarif \
         --rerun \
-        -- /home/codeql/project/data/datasets/my_database \
-        /home/codeql/project/qlint/codeql/src
+        -- /home/codeql/project/data/datasets/demo/codeql_db \
+        /home/codeql/project/LintQ.qls
     ```
-1. Congratulations you have successfully analyzed your first quantum programs with LintQ and collected some warnings! Your static analysis warnings are store in a file in SARIF format, an interoperable format for warnings, read more [here](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#about-sarif-support)
+1. Your static analysis warnings are store in a file in SARIF format, an interoperable format for warnings, read more [here](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#about-sarif-support). Click on the generated SARIF file to see the warnings produced by LintQ. We recommend using the VSCode extension ([here](https://marketplace.visualstudio.com/items?itemName=MS-SarifVSCode.sarif-viewer)) to visualize it, when opening the file the first time it will ask to locate the file, but then it will automatically map all the warning to the right file.
+1. Congratulations you have successfully analyzed your first quantum programs with LintQ and collected some warnings!
 
 
 
@@ -143,6 +136,24 @@ If you want to collect a new dataset on GitHub you can have a look at the [`DATA
 ## Run Competitors
 To run the competitors on the same dataset see the following [README](competitors/README_LINTQ.md)
 
+
+## Development Mode
+
+To modify the query files or the library and run the modified version use this command, note to replace the path to codeql database and the output sarif accordingly, the main difference is the `LintQ-dev.qls` and the mounting of the entire content of the main repo.
+
+```bash
+docker run \
+    -v "$(pwd):/home/codeql/project" \
+    -it --rm LintQ \
+codeql database analyze \
+    --format=sarifv2.1.0 \
+    --threads=10 \
+    --output=/home/codeql/project/data/datasets/demo/my_results.sarif \
+    --rerun \
+    -- /home/codeql/project/data/datasets/demo/codeql_db \
+    /home/codeql/project/LintQ-dev.qls
+
+```
 
 
 

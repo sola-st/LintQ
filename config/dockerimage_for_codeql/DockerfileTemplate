@@ -49,7 +49,7 @@ RUN apt-get install -y dotnet-sdk-6.0
 
 # Clone our setup and run scripts
 RUN mkdir -p /usr/local/startup_scripts
-COPY container /usr/local/startup_scripts/
+COPY config/dockerimage_for_codeql/container /usr/local/startup_scripts/
 
 RUN pip3 install -r /usr/local/startup_scripts/requirements.txt
 
@@ -83,13 +83,21 @@ ENV PATH="${CODEQL_HOME}/codeql:${PATH}"
 
 ENV PYTHONIOENCODING=utf-8
 
-# create user
-RUN adduser -u {your-UID} --home ${CODEQL_HOME} ${USERNAME}
-
 # Change ownership of all files and directories within CODEQL_HOME to the codeql user
-RUN chown -R ${USERNAME}:${USERNAME} ${CODEQL_HOME}
+# RUN chown -R ${USERNAME}:${USERNAME} ${CODEQL_HOME}
+
+# Copy LintQ folder to the container
+COPY qlint ${CODEQL_HOME}/LintQ
+
+# Go to qlint/codeql/src and install the dependencies
+RUN cd ${CODEQL_HOME}/LintQ/codeql/src && codeql pack install
+# create a codeql-workspace.yaml
+# this is needed so that the queries know where to find the libraries
+RUN echo "provide:" > ${CODEQL_HOME}/codeql-workspace.yml && \
+    echo "  - \"**/qlpack.yml\"" >> ${CODEQL_HOME}/codeql-workspace.yml && \
+    echo "  - \"/usr/local/codeql-home/LintQ/codeql/lib/qlpack.yml\"" >> ${CODEQL_HOME}/codeql-workspace.yml
 
 
-USER ${USERNAME}
-WORKDIR /opt
+WORKDIR /home/codeql/project
+
 CMD ["/bin/bash"]
