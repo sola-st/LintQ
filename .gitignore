@@ -16,3 +16,6 @@ log*.txt
 
 # canister credential
 automation_scripts/*.canister.io
+
+# any codeql database
+codeql_db
