@@ -36,4 +36,4 @@ print("Content:")
 print(content_of_dockerfile)
 
 print("Building the image...")
-os.system(f"docker build . -f {docker_file_path} -t lintq")
+os.system(f'docker build -f "{docker_file_path}" -t lintq .')
