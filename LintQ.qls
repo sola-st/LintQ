@@ -1,0 +1,4 @@
+- qlpack: mattepalte/qlint
+- include:
+    tags contain: LintQ
+    precision: high

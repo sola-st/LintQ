@@ -1,0 +1,3 @@
+- queries: /home/codeql/project/qlint/codeql/src/
+- include:
+    tags contain: LintQ

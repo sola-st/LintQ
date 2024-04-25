@@ -5,8 +5,9 @@
  * @tags correctness
  *       reliability
  *       qiskit
- * @problem.severity error
- * @precision high
+ *       LintQ
+ * @problem.severity warning
+ * @precision medium
  * @id ql-deprecated-identity
  */
 

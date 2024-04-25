@@ -6,8 +6,9 @@
  * @tags correctness
  *       reliability
  *       qiskit
- * @problem.severity error
- * @precision medium
+ *       LintQ
+ * @problem.severity warning
+ * @precision high
  * @id ql-op-after-optimization
  */
 

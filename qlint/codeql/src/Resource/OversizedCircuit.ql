@@ -6,6 +6,7 @@
  * @tags maintainability
  *       efficiency
  *       qiskit
+ *       LintQ
  * @problem.severity warning
  * @precision medium
  * @id ql-oversized-circuit

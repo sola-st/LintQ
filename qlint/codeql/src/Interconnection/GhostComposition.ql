@@ -7,7 +7,8 @@
  * @tags correctness
  *       reliability
  *       qiskit
- * @problem.severity error
+ *       LintQ
+ * @problem.severity warning
  * @precision high
  * @id ql-ghost-composition
  */

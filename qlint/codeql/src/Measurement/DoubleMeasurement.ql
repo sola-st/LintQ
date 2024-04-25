@@ -5,7 +5,8 @@
  * @tags correctness
  *       reliability
  *       qiskit
- * @problem.severity error
+ *       LintQ
+ * @problem.severity warning
  * @precision high
  * @id ql-double-measurement
  */
