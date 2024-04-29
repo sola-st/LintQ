@@ -44,7 +44,7 @@ Follow these steps:
 1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
 1. Download the analysis warnings detected by competitor approaches from [here](https://doi.org/10.6084/m9.figshare.25690470).
 1. Unzip it and place it at the path: [`data/analysis_results/exp_v08_competitors`](data/analysis_results/exp_v08_competitors)
-1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper. To open the Jupyter notebook run:
+1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ.ipynb) and run it top to bottom to reproduce the figures and tables from the paper. To open the Jupyter notebook run:
     ```
     conda activate LintQEnv
     jupyter notebook
