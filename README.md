@@ -92,13 +92,19 @@ The current research work contains and shares the following resources:
     - Found at the path: [`<repo_root>/data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53`](data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53)
 1. **Manual annotations** of the warnings:
     - Download: not needed, already in this repo.
-    - To place at the path: [`<repo_root>/data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53/Annotation_06_data_sample_representative_10.csv`](data/analysis_results/exp_v08/codeql_2024-03-01_08-43-53/Annotation_06_data_sample_representative_10.csv)
+    - [`<repo_root>/bug_reports/Inspection_LintQ_on_LintQ_dataset.csv`](bug_reports/Inspection_LintQ_on_LintQ_dataset.csv) for LintQ applied to the LintQ dataset
+    - [`<repo_root>/bug_reports/Inspection_LintQ_on_Bugs4Q_dataset.csv`](bug_reports/Inspection_LintQ_on_Bugs4Q_dataset.csv) for LintQ applied to the Bugs4Q dataset
+    - [`<repo_root>/bug_reports/Inspection_QChecker_on_LintQ_dataset.csv`](bug_reports/Inspection_QChecker_on_LintQ_dataset.csv) for QChecker applied to the LintQ dataset
+    - [`<repo_root>/bug_reports/Inspection_QSmell_on_LintQ_dataset.csv`](bug_reports/Inspection_QSmell_on_LintQ_dataset.csv) for QSmell applied to the LintQ dataset.
+
+
+
 1. **True Positives Issues**:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found`](bug_reports/true_positives_found)
 1. **Annotation Protocol**:
     - Download: not needed, already in this repo.
-    - Found at the path: [`<repo_root>/bug_reports/true_positives_found/annotation_protocol.csv`](/bug_reports/true_positives_found/annotation_protocol.csv)
+    - Found at the path: [`<repo_root>/bug_reports/Reason_code_to_text.csv`](/bug_reports/true_positives_found/bug_reports/Reason_code_to_text.csv)
 
 
 ## Run the notebook
