@@ -1,27 +1,33 @@
-# QLint
+# Advanced
+In this section you find extra information, such as:
+- [Run Competitors](#run-competitors)
+- [Development Mode](#development-mode)
+- [Scrape a new Dataset of Quantum Programs](#create-the-dataset-of-programs)
 
-## A. Load the Dependencies
+## Run Competitors
+To run the competitors on the same dataset see the following [README](competitors/README_LINTQ.md)
 
-1. make sure you have the virtualenv installed:
-    ```bash
-    pip install virtualenv
-    ```
-2. create a virtual environment:
-    ```bash
-    virtualenv venv38
-    ```
-3. activate the virtual environment:
-    ```bash
-    source venv38/bin/activate
-    ```
-4. install the requirements:
-    ```bash
-    pip install -r virtualenv/qlint_requirements.txt
-    ```
 
-## B. Create the Dataset of Programs
+## Development Mode
 
-### Github Scrape
+To modify the query files or the library and run the modified version use this command, note to replace the path to codeql database and the output sarif accordingly, the main difference is the `LintQ-dev.qls` and the mounting of the entire content of the main repo.
+
+```bash
+docker run \
+    -v "$(pwd):/home/codeql/project" \
+    -it --rm LintQ \
+codeql database analyze \
+    --format=sarifv2.1.0 \
+    --threads=10 \
+    --output=/home/codeql/project/data/datasets/demo/my_results.sarif \
+    --rerun \
+    -- /home/codeql/project/data/datasets/demo/codeql_db \
+    /home/codeql/project/LintQ-dev.qls
+```
+
+# Create the Dataset of Programs
+
+## Github Scrape
 
 The configuration file defining all the mining details is store at `config/github_download_files.yaml`. The file contains the following fields:
 - `github_token_path`: path to the file containing the github token
@@ -37,7 +43,7 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
 
 
 
-### Dataset Filtering (NEW)
+## Dataset Filtering (NEW)
 1. **Query GitHub**. Prepare a configuration file in the `config` folder (typically called `github_download_files_vXX`). See `github_download_files_v03.yaml` for an example.
 
 1. Run the following command to download the files:
@@ -68,8 +74,9 @@ Note that the prefix `screen -L -Logfile log_long.txt -S first_run` is needed if
     screen -L -Logfile data/datasets/exp_vXX/log.txt -S codeql_database_creation codeql database create --language=python --threads=10 --source-root=data/datasets/exp_vXX/files_selected/ -- data/datasets/exp_vXX/codeql
     ```
 
+# Miscellanea
 
-## D. Run the Test CodeQL Queries
+## Run the Test CodeQL Queries
 
 Follow these steps:
 1. Clone this repository
@@ -87,11 +94,7 @@ Follow these steps:
     This will run the tests of the specific folder `query-tests/Measurement` and will use the dependencies installed in the previous step.
     Note, change path to test the library concept, e.g. `codeql test run qlint/codeql/test/library-test/qiskit/circuit --additional-packs=~/.codeql/packages --threads=10`.
 
-## F. Performance TroubleShooting
-
-
-
-## E. Run the Query on the Full Dataset
+## Run the Query on the Full Dataset
 
 Follow these steps:
 1. Run the queries in the `qlint/codeql/src` folder on the dataset (in the folder `data/datasets/exp_vXX/codeql_db`) with the following command:
@@ -111,7 +114,7 @@ The output will be stored in the folder `data/analysis_results/exp_vXX/codeql_{c
     ```
 
 
-## F. Inspect the Generated Warning
+## Inspect the Generated Warning
 
 To inspect the generated warnings use the following command:
 ```bash
@@ -133,37 +136,3 @@ mkdir lintq_home
 cd lintq_home
 git clone <this repo url>
 ```
-
-# Miscellanea
-
-### Dataset Filtering (OLD) - Scroll down for the new version
-1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset.ipynb` and run the cells until the `Deduplication` section.
-
-2. To run the de-duplication, run the following command to tokenize the files:
-    ```bash
-    python qlint/datautils/tokenizer/tokenizepythoncorpus.py data/03_program_filtered/exp_v01/ data/03_program_filtered/exp_v01/tokenized_files/
-    ```
-    followed by the following command to run the de-duplication:
-    ```bash
-    python qlint/datautils/pythonDedup/deduplicationcli.py data/03_program_filtered/exp_v01/tokenized_files/ data/03_program_filtered/exp_v01/dedup.json.gz
-    ```
-
-3. Go to the target folder and unzip the `dedup.json.gz` file:
-    ```bash
-    cd data/03_program_filtered/exp_v01/
-    gzip -d dedup.json.gz
-    ```
-
-3. Go back to the initial notebook and run it until the end.
-
-
-**Dataset Metadata**
-
-1. Open the notebook `qlint/notebooks/01_Quantum_Program_Dataset_Metadata.ipynb` and run all its cells.
-
-**Run the Analysis Notebooks**
-5. run the notebook:
-    ```bash
-    jupyter notebook
-    ```
-6. open the notebook `qlint/notebooks/XXX.ipynb` and run the cells.

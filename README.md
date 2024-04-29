@@ -40,10 +40,10 @@ This replication level allows to independently reproduce the results of our pape
 Follow these steps:
 
 1. Make sure to have followed the  [INSTALL.md](INSTALL.md) and installed the Python dependencies to run the notebook.
-1. Download the datasets used in our evaluation from [here](https://figshare.com/s/8a120be10fe2292f4520)
+1. Download the datasets used in our evaluation from [here](https://doi.org/10.6084/m9.figshare.22350592)
 1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
-1. Download the analysis warnings detected by competitor approaches from [here](https://figshare.com/s/4f849781f4b91c44178c).
-1. Unzip it and palce it at the path: [`data/analysis_results/exp_v08_competitors`](data/analysis_results/exp_v08_competitors)
+1. Download the analysis warnings detected by competitor approaches from [here](https://doi.org/10.6084/m9.figshare.25690470).
+1. Unzip it and place it at the path: [`data/analysis_results/exp_v08_competitors`](data/analysis_results/exp_v08_competitors)
 1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper. To open the Jupyter notebook run:
     ```
     conda activate LintQEnv
@@ -137,59 +137,11 @@ The current research work contains and shares the following resources:
     - Found at the path: [`<repo_root>/bug_reports/Reason_code_to_text.csv`](/bug_reports/true_positives_found/bug_reports/Reason_code_to_text.csv)
 
 
-## Run the notebook
-
-Open and run top to bottom the notebook at the following path:
-[`<repo_root>/notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb)
-
-# Extra Details
-
-## Advanced
-
-If you want to collect a new dataset on GitHub you can have a look at the [`DATASET.md`](DATASET.md) file.
-
-## Environment Versions
-- **CodeQL** command-line toolchain release 2.11.2. Available [here](https://github.com/github/codeql-cli-binaries/releases/tag/v2.11.2)
-- **Ubuntu**: 18.04.6 LTS
-- **Python**: 3.10 (see conda environment)
-- **Qiskit**: 0.45.2 (see conda environment)
-- **Codeql CLI Version**: 2.11.2 :
-- **CodeQL for Visual Studio Code extension**: 1.7.4 (precisely). Available [here](https://github.com/github/vscode-codeql/blob/main/extensions/ql-vscode/CHANGELOG.md#174---29-october-2022).
+# Advanced
+If you want to use the repository in a way not describe above you can still check the [ADVANCED.md](ADVANCED.md) file for more information, such as the creation of a new dataset of quantum program or how to develop for LintQ.
 
 
-## Run Analyses on LintQ Dataset
 
-1. Place your dataset (downloaded from Figshare) into the folder `/data/datasets/`
-2. Unzip it there and place its content in a folder (e.g. `data/dataset/exp_v08`)
-3. Go to the folder `automation_scripts`
-4. Run the analyses with:
-```bash
-./run_queries_on_quantum_database.sh
-```
-5. Select your database
-6. Congrats! The SARIF files with the warnings are now in the folder `data/analysis_results/<your_database_name>/codeql_<date>_<time>/`
-
-## Run Competitors
-To run the competitors on the same dataset see the following [README](competitors/README_LINTQ.md)
-
-
-## Development Mode
-
-To modify the query files or the library and run the modified version use this command, note to replace the path to codeql database and the output sarif accordingly, the main difference is the `LintQ-dev.qls` and the mounting of the entire content of the main repo.
-
-```bash
-docker run \
-    -v "$(pwd):/home/codeql/project" \
-    -it --rm LintQ \
-codeql database analyze \
-    --format=sarifv2.1.0 \
-    --threads=10 \
-    --output=/home/codeql/project/data/datasets/demo/my_results.sarif \
-    --rerun \
-    -- /home/codeql/project/data/datasets/demo/codeql_db \
-    /home/codeql/project/LintQ-dev.qls
-
-```
 
 
 
