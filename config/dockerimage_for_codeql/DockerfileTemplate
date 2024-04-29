@@ -89,13 +89,14 @@ ENV PYTHONIOENCODING=utf-8
 # Copy LintQ folder to the container
 COPY qlint ${CODEQL_HOME}/LintQ
 
-# Go to qlint/codeql/src and install the dependencies
-RUN cd ${CODEQL_HOME}/LintQ/codeql/src && codeql pack install
 # create a codeql-workspace.yaml
 # this is needed so that the queries know where to find the libraries
 RUN echo "provide:" > ${CODEQL_HOME}/codeql-workspace.yml && \
     echo "  - \"**/qlpack.yml\"" >> ${CODEQL_HOME}/codeql-workspace.yml && \
     echo "  - \"/usr/local/codeql-home/LintQ/codeql/lib/qlpack.yml\"" >> ${CODEQL_HOME}/codeql-workspace.yml
+
+# Go to qlint/codeql/src and install the dependencies
+RUN cd ${CODEQL_HOME}/LintQ/codeql/src && codeql pack install
 
 
 WORKDIR /home/codeql/project
