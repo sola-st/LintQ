@@ -21,7 +21,7 @@ Table of Contents:
     ```
 1. Build the docker image to run LintQ, run this command from the root of the repo:
     ```bash
-    python automation_scripts/5_create_docker_image_locally.py
+    python automation_scripts/create_docker_image_locally.py
     ```
     At the end check that the docker image has been build correctly by running: `docker images`, you should see an image named `lintq`.
 

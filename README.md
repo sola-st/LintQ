@@ -44,14 +44,14 @@ Follow these steps:
 1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
 1. Download the analysis warnings detected by competitor approaches from [here](https://figshare.com/s/4f849781f4b91c44178c).
 1. Unzip it and palce it at the path: [`data/analysis_results/exp_v08_competitors`](data/analysis_results/exp_v08_competitors)
-1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper.
-1. The output will be stored in the folder [`notebooks/paper_figures_revision`](notebooks/paper_figures_revision). To open the Jupyter notebook run:
+1. Open the Jupyter notebook [`notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb`](notebooks/RQs_Reproduce_Analysis_Results_LintQ_REVISION.ipynb) and run it top to bottom to reproduce the figures and tables from the paper. To open the Jupyter notebook run:
     ```
     conda activate LintQEnv
     jupyter notebook
     ```
     In the jupyter notebook web interface, navigate to and execute top-to-bottom the target notebook.
 
+1. The output will be stored in the folder [`notebooks/paper_artifacts`](notebooks/paper_artifacts).
 ## Run LintQ to Analyze a new Dataset (Level 2)
 
 This replication level allows to run LintQ queries on any folder containing quantum programs.
@@ -85,6 +85,25 @@ Follow these steps:
 1. Your static analysis warnings are store in a file in SARIF format, an interoperable format for warnings, read more [here](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#about-sarif-support). Click on the generated SARIF file to see the warnings produced by LintQ. We recommend using the VSCode extension ([here](https://marketplace.visualstudio.com/items?itemName=MS-SarifVSCode.sarif-viewer)) to visualize it, when opening the file the first time it will ask to locate the file, but then it will automatically map all the warning to the right file.
 1. Congratulations you have successfully analyzed your first quantum programs with LintQ and collected some warnings!
 
+## Extra: Run LintQ to Analyze the full LintQ dataset
+This is an in-depth run that takes long time. You can run the LintQ analysis on the entire dataset as to reproduce the entire study.
+
+1. Make sure that your dataset is in the `data/dataset/exp_v08` folder
+1. Run the queries on the LintQ dataset and produce an analysis output at the given path (e.g., `data/datasets/lintq_full_results.sarif`)
+    ```bash
+    docker run \
+        -v "$(pwd)/data:/home/codeql/project/data" \
+        -v "$(pwd)/LintQ-all.qls:/home/codeql/project/LintQ-all.qls" \
+        -it --rm lintq \
+    codeql database analyze \
+        --format=sarifv2.1.0 \
+        --threads=10 \
+        --output=/home/codeql/project/data/datasets/lintq_full_results.sarif \
+        --rerun \
+        -- /home/codeql/project/data/datasets/exp_v08/codeql \
+        /home/codeql/project/LintQ-all.qls
+    ```
+1.  Congratulations you can find the LintQ warnings at the path [`data/datasets/lintq_full_results.sarif`](data/datasets/lintq_full_results.sarif).
 
 
 
@@ -110,9 +129,6 @@ The current research work contains and shares the following resources:
     - [`<repo_root>/bug_reports/Inspection_LintQ_on_Bugs4Q_dataset.csv`](bug_reports/Inspection_LintQ_on_Bugs4Q_dataset.csv) for LintQ applied to the Bugs4Q dataset
     - [`<repo_root>/bug_reports/Inspection_QChecker_on_LintQ_dataset.csv`](bug_reports/Inspection_QChecker_on_LintQ_dataset.csv) for QChecker applied to the LintQ dataset
     - [`<repo_root>/bug_reports/Inspection_QSmell_on_LintQ_dataset.csv`](bug_reports/Inspection_QSmell_on_LintQ_dataset.csv) for QSmell applied to the LintQ dataset.
-
-
-
 1. **True Positives Issues**:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports/true_positives_found`](bug_reports/true_positives_found)
