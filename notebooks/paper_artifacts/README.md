@@ -1,0 +1,1 @@
+This folder contains the paper figures that are based on analysis data.
