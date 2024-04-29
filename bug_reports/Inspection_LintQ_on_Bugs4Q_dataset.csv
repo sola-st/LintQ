@@ -1,0 +1,35 @@
+Annotation Review Day: 01/03/2024,,,,,,,
+Tool,Severity,rule_id,Code,Location,Line,label_resolution,is_bug_for_bugs4q
+CodeQL,warning,ql-constant-classic-bit,"ql-constant-classic-bit Circuit 'qc' measures qubit '1' but never uses it.
+Circuit 'qc' measures qubit '2' but never uses it.",c24a3c.py,7,TP,0
+CodeQL,warning,ql-constant-classic-bit,"ql-constant-classic-bit Circuit 'measure_Z' measures qubit '0' but never uses it.
+Circuit 'measure_Z' measures qubit '1' but never uses it.",182aa1.py,9,TP,0
+CodeQL,warning,ql-constant-classic-bit,ql-constant-classic-bit Circuit 'circuit' measures qubit '2' but never uses it.,5187c8.py,12,TP,0
+CodeQL,warning,ql-measure-all-abuse,"ql-measure-all-abuse measure_all() on the circuit 'qc' (at location:5, 6)  when it has already 2 classical bits.",64b6d1.py,7,TP,1
+CodeQL,warning,ql-operation-after-measurement,"ql-operation-after-measurement Operation 'cx' on qubit 1 after measurement at location: (18, 1).",06e5d9.py,19,TP,1
+CodeQL,warning,ql-operation-after-measurement,"ql-operation-after-measurement Operation 'cz' on qubit 0 after measurement at location: (17, 1).",06e5d9.py,20,TP,1
+CodeQL,warning,ql-deprecated-identity,ql-deprecated-identity Check if the deprecated iden() API is called instead of the identity(),366ff5.py,5,TP,1
+CodeQL,warning,ql-oversized-circuit,ql-oversized-circuit Circuit 'qc' never manipulates some of its 2qubits.,2ec23d.py,6,TP,0
+CodeQL,warning,ql-oversized-circuit,ql-oversized-circuit Circuit 'Qc' never manipulates some of its 2qubits.,3c2149.py,7,TP,0
+CodeQL,warning,ql-oversized-circuit,ql-oversized-circuit Circuit 'measure_X' never manipulates some of its 2qubits.,182aa1.py,11,NW,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'p' has more qubits (8) than classical  bits (0),855a15.py,3,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (1) than classical  bits (0),24b134.py,3,NW,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),f3174e.py,3,NW,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),366ff5.py,4,NW,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),683a66.py,4,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (3) than classical  bits (0),2ca9ce.py,4,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'outer_level' has more qubits (2) than classical  bits (0),f3174e.py,5,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'q' has more qubits (8) than classical  bits (0),855a15.py,5,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'q1' has more qubits (2) than classical  bits (0),239817.py,5,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (2) than classical  bits (0),778d92.py,5,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'mycircuit' has more qubits (2) than classical  bits (0),9c50ed.py,7,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'state' has more qubits (2) than classical  bits (0),106459.py,7,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circ' has more qubits (3) than classical  bits (0),b6f387.py,8,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (8) than classical  bits (4),18c1a2.py,9,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (1) than classical  bits (0),228b52.py,12,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'job_sim' has more qubits (2) than classical  bits (0),9dab52.py,12,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'circuit' has more qubits (4) than classical  bits (0),fc6f03.py,14,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (4) than classical  bits (0),b6f387.py,15,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qpe' has more qubits (4) than classical  bits (3),699fc8.py,26,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qc' has more qubits (2) than classical  bits (0),511706.py,62,FP,0
+CodeQL,warning,ql-unmeasurable-qubits,ql-unmeasurable-qubits Circuit 'qobj' has more qubits (2) than classical  bits (0),511706.py,66,FP,0

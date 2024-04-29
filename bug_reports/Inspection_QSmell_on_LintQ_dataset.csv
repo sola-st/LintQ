@@ -1,0 +1,32 @@
+Annotation Review Day: 20/03/2023,,,,,,
+rule_id,message,file,line,col,label,comment
+qsmell-nc,NC problem,pytorch_20hybrid_20network_cc39a4.py,55,1,FP,They use parameter_binds which is not recognised.
+qsmell-nc,NC problem,simulate_qasm_1ac07d.py,21,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,run_classical_feed_forward_qiskit_local_apcc_f4aa6a.py,35,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,deutsch_jozsacircuito2_8c385a.py,28,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,h2_noise_vqe_425771.py,56,1,FP,"The run is called on a different obkect, not a backend."
+qsmell-nc,NC problem,test_aer_qobj_headers_152d70.py,46,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,qsvm_201_20_20quantum_20svm_20for_20classification_66c18b.py,43,1,FP,The run() belongs to another domain specific API. 
+qsmell-nc,NC problem,single_shot_measurement_7638e1.py,19,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,main_39f294.py,36,1,FP,They use an adhoc library. 
+qsmell-nc,NC problem,declarative_approach_6044f4.py,80,1,FP,The run is on a solver. 
+qsmell-nc,NC problem,bo_gate_puzzle_f9d159.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,hhlattempt9_4b844e.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,test_to_qiskit_15b25c.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,qnncircuitexecutor_e7d8e1.py,0,1,FP,The circuit has parameters but uses a correct parameter assignment via assign_parameters not modelled by the rule.
+qsmell-nc,NC problem,test_visualize_circuit_de3af3.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,teleport_bob_162510.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,shor_s_20algorithm_20qiskit_721cb4.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,testqiskitghzstate_f0529e.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,wave_function_03b3c2.py,0,1,FP,The circuit has a simple run.
+qsmell-nc,NC problem,laurel_or_yanny_4264b6.py,0,1,FP,The circuit has a simple run.
+qsmell-lpq,LPQ problem,02_uploading_program_8bf403.py,0,1,FP,The transpilation has no layout because the circuit is randomly created. It cannot be known a priori.
+qsmell-lpq,LPQ problem,deutschproblem_b43184.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,qiskit_bench_395371.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,newpulsefuncs_cda95f.py,0,1,FP,"Circuit executed as schedule, the code writer has no knowledge about the circuit under execution, thus the layout cannot be properly chosed in general."
+qsmell-lpq,LPQ problem,periodfinding_817aaf.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,tests_3d4c00.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,add_39325b.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,circuit_operations_running_351f3c.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,tic_tac_toe_quantum_056311.py,0,1,FP,"The circuit is run on a simulator, no need for a layout."
+qsmell-lpq,LPQ problem,qiskit_processor_f15a90.py,0,1,FP,"The object has another function which is used as wrapper of the tranpile function, this wrapper calls the qiskit tranpile with initial layout. The detector detects a tranpile non-qiskit."

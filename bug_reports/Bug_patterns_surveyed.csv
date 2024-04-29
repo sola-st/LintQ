@@ -1,0 +1,43 @@
+Analysis Name,Implemented,priority,duplicate,require hardware knowledge,spec required,runtime info,LintQ modeling limitations,not an issue,Too API Specific,Description,Paper
+Incorrect use of quantum gate,,,IncorrectQuantumGate,,x,,,,,The wrong gate is used.,QChecker
+Intermediate measurement,x,,OpAfterMeas,,,,,,,"Measurements affect the state of the entire system, making it prone to more errors. Therefore, measurements should be postponed to be the very last operation on the circuit to avoid error propagation.",QSmell
+Excute without Coupling Map,~,,,x,,,,,,An execute call without a coupling map could lead to an inefficient mapping to HW.,QChecker
+Use of Customized Gates,~,,,x,,,,,,Any customized gate is decomposable into built-in operators of the framework. This decomposition requires a substantial higher number of operators when compared to the equivalent solution made exclusively of built-in operators.,QSmell
+Idle Qubits,~,,,x,,,,,,With current technology it is only possible to ensure the correctness of a state for very short periods of time. Having idle qubits for too long enhance the loss of quantum information that may jeopardize the results of a quantum circuit.,QSmell
+Initialization of Qubits differently from |0>,~,,,x,,,,,,"Keeping the coherence of a quantum excited state is technologically difficult. Hence, initially one should keep it in its ground state (i.e., in state |0i) as long as possible.",QSmell
+No-alignment between the Logical and Physical Qubits,~,,,x,,,,,,"The topology of real qubits impacts the circuit behavior, i.e., the results obtained from the circuit can change according to the physical qubits configuration. Therefore, not aligning the logical qubits to the proper physical qubits may lead to less accurate results.",QSmell
+Long circuit,~,,,,x,,,,,"Unitary gates and measurements are prone to errors (specially due to quantum noise). The higher the depth of the circuit and/or wider the circuit, the higher is the probability of affecting a quantum circuit’s intended behavior.",QSmell
+IncorrectQuantumGate,,,,,x,,,,,use the wrong quantum gate,A Comprehensive Study of Bug Fixes in Quantum Programs
+Incorrect initial state,,,,,x,,,,,"initialize the statevector differently, e.g. replace  Statevector.from_label(’01’) with  Statevector.from_label(’10’)",A Comprehensive Study of Bug Fixes in Quantum Programs
+Wrong endianess,,,,,x,,,,,"measure the values assuming opposite endianess, e.g. replace circuit.measure([0,1,2], [0,1,2]) with circuit.measure([0,1,2], [2,1,0])",A Comprehensive Study of Bug Fixes in Quantum Programs
+Potential all zeros matrix,,,,,,x,,,,"potential all zeros matrix, e.g. .dot(unitary[randnum[0]] - id)",A Comprehensive Study of Bug Fixes in Quantum Programs
+Result bit not used,,,,,,,x,,,The dictionary containing the results of the measurements is not accessed at a specific classical bit position.,Quantum-CPG
+Constant result bit,,,,,,,x,,,The value of a measrued bit is constant and used by some classical function.,Quantum-CPG
+Not-unitary matrix for gate/noise,,,,,,,x,,,"not unitary matrix used in a gate: e.g.  [[[1, 0], [0, 0]], [[0, 0], [0.995004165, 0.099833417]]]",A Comprehensive Study of Bug Fixes in Quantum Programs
+Check reuse of a physical qubit in a coupling map,,,,,,,x,,,Check if a coupling map is assigning two different logical qubits to the same physical qubit,QChecker
+MeasureOutOfBound,,,,,,,x,,,"Insufficient length of classical registers, a measurement is applied and the result is stored into a classical register index which is greater than the max register size.",QChecker
+Repeated set of Operations on Circuit,~,,,,,,,x,,"Due to technological and physical limitations, the number of operations one can pass to a quantum computer is limited, therefore the circuit implementing the whole algorithm should be prepared in such a way that the number of sequential repeated set of operations to be performed is the least possible.",QSmell
+Append circuit without to_gate,,,,,,,,x,,An append call without the to_gate() conversion to an instruction. [NOW it is POSSIBLE],QChecker
+Excute without Transpile,~,,,,,,,x,,A circuit is passed to execute without transpiling it first [NOW it is POSSIBLE],QChecker
+Deprecated Iden() API call,x,,,,,,,,,Check if the deprecated iden() API is called instead of the identity(),QChecker
+Inexistent API - Shiftphase,~,,,,,,,,x,Check the occurrence of shiftphase API in the code,QChecker
+ProcessTomography without PauliMeasurementBasis argument,~,,,,,,,,x,Check when a ProcessTomography API call is called with the specific argument preparation_basis=PauliMeasurementBasis(),QChecker
+The insufficient number of qubits.,~,,,,,,,,x,Check when TwoLocals is called on a circuit of 1 qubit,QChecker
+Check wrong arguments for gates,~,,,,,,,,x,"Check if the gates 'ccx', 'mcx', 'rccx', 'rcccx', 'mcu1', 'cswap' receive a 'label' or 'Label' argument.",QChecker
+ImproperDraw,≈,,,,,,,,x,"The draw function does not return a string, but it has to be used as is: e.g. replace print(qc.draw(output='mpl')) with qc.draw(output='mlp')",A Comprehensive Study of Bug Fixes in Quantum Programs
+UndefinedBackend,~,,,,,,,,x,Check if the backend variable is used but never defined,QChecker
+SuperfluousOp,≈,,,,,,x,,,A gate that does not get measured and does not influence (happens before) any other gate.,Quantum-CPG
+MultipleSubmissions,≈,,,,,,x,,,"Real devices work in a shared policy. To reduce communication payloads and avoid queuing for different initial values, the circuit should be designed parametrically to allow the different initial values to be provided at once. (originally: Non-parameterized Circuit)",QSmell
+ExecuteWithSeed,≈,,,,,,,,x,execute API is called with an old seed parameter,A Comprehensive Study of Bug Fixes in Quantum Programs
+SimulatorSizeOverflow,≈,,,,,,,,x,"Check if the circuit is larger than the supported simulator (e.g.  Aer.get_backend(’qasm_simulator’) supports max 30 qubits,  BasicAer.get_backend(’qasm_simulator’) supports max 24 qubits) ",QChecker
+GhostQASMImport,≈,,,,,,,,x,"Check that the QuantumCircuit.from_qasm_str return value is assigned to a quantum circuit,",QChecker
+DoubleMeas,x,,,,,,,,,Two measurements measure the same qubit state one after the other.,Identifying Bug Patterns in Quantum Programs
+OpAfterMeas,x,,,,,,,,,A gate operates on a qubit after it has been measured,Identifying Bug Patterns in Quantum Programs
+MeasAllAbuse,x,,,,,,,,,"Measurement results are stored in an implicitly created new register, even though another classical register already exists.",Identifying Bug Patterns in Quantum Programs
+CondWoMeas,x,,,,,,,,,Conditional gate without measurement of the associated register.,Quantum-CPG
+ConstClasBit,x,,,,,,,,,A qubit is measured but has not been transformed.,Quantum-CPG
+InsuffClasReg,x,,,,,,,,,Classical bits do not suffice to measure all qubits. ,Identifying Bug Patterns in Quantum Programs
+OversizedCircuit,x,,,,,,,,,The quantum register contains unused qubits.,Dev CS Good Practices
+GhostCompose,x,,,,,,,,,Composing two circuits without using the resulting composed circuit. ,Dev Discussion StackExchange
+OpAfterOpt,x,,,,,,,,,A gate is added after transpilation.,Dev Discussion GitHub
+Operation after measurement,x,,OpAfterMeas,,,,,,,An operation is done after a measurement,QChecker

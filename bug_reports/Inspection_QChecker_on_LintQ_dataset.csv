@@ -1,0 +1,61 @@
+Annotation on 21/02/2024,,,,,,
+rule_id,message,file,line,col,label,comment
+DO,"Trans_13=tensor(vg*va.dag(),qutip.identity(nph))",lindblad2_e6aa3c.py,85.0,1,FP,it matches qutip.identity instead of the qiskit iden() api
+DO,"Trans_13=tensor(vg*va.dag(),qutip.identity(nph))",main_973bb1.py,85.0,1,FP,it matches qutip.identity instead of the qiskit iden() api
+DO,"H_0 = sum([pauli_x(i, -1/2) for i in range(n_qubits)], identity)",qc_env_qs_a852d7.py,69.0,1,FP,it matches a user defined identiy variable
+DO,middle.iden(0),4_qbits_decoherence_9bbc1f.py,67.0,1,TP,the project has no requirements.txt it is a group of notebooks
+DO,return identity(2**qubits_no).toarray(),functions_a90bd8.py,15.0,1,FP,it matches scipy identity API
+DO,"            isinstance(dividend, QuantumRegister) and \",divide_e6ac2b.py,31.0,1,FP,it matched a variable containing the substring but not related even semantically
+DO,"        sub(dividend, divisor, qc)",operationsadvance_899536.py,18.0,1,FP,it matched a variable containing the substring but not related even semantically
+DO,circuit.iden(q[0]),01_classical_and_quantum_probability_distributions_411e21.py,192.0,1,TP,the project has no requirements.txt it is a group of notebooks
+DO,print('Not all keys are identical. This should not happen unless somebody is listening to the communication!'),task_3_4b4e03.py,69.0,1,FP,matches a string literal
+DO,circuit.iden(qr[i]),022_03b_bernstein_vazirani_algorithm_f13ae3.py,39.0,1,TP,the project has no requirements.txt it is a group of notebooks
+IG,"                diff = abs(result_count.get(key, 0) - expected_count.get(key, 0))",test_passmanager_2e93dc.py,42.0,1,FP,"a custom gate is correctly defined, and the warning is on the Circuit"
+IG,b_not_pos = [9],debug_1d97dc.py,147.0,1,FP,pointing to line unrelated to custom gates
+IG,qc = QuantumCircuit(2),anyrotation_5df51b.py,10.0,1,FP,"a custom gate is correctly defined, and the warning is on the Circuit"
+IG,"    iqft = QFT(num_qubits=p, inverse=True).to_gate(label='iQFT')",quantum_counting_c7a899.py,99.0,1,FP,use of the to_gate() API to go from circuit to gate
+IG,counts = result.get_counts(circuit),custom_gate_5fd506.py,66.0,1,FP,"pointing to get_count() of result, the circuit has custom gates but they are used correctly via unitary( with matrix)"
+IG,result = benchmark_random(,main_cacbb9.py,49.0,1,FP,pointing to line unrelated to custom gates
+IG,circuit = QuantumCircuit(1),equivalence_library_7776b7.py,48.0,1,FP,pointing to line unrelated to custom gates
+IG,RESULT = counts,followup_6affda9d44294d46b38188d75ba03fe3_094e0b.py,54.0,1,FP,pointing to line unrelated to custom gates
+IG,"circ = QuantumCircuit(2,2)",circs_c326f1.py,21.0,1,FP,pointing to a circuit with custom gates (correctly) but used to print the circuit to latex
+IG,a = np.asarray(result_matrix),function_evaluate_dj_12432b.py,50.0,1,FP,pointing to line unrelated to custom gates
+IIS,"meas.measure(range(3),range(3))",fourier_transform_ncb_45a87d.py,307.0,1,FP,it could be a measrument issue but the warning reports problems in the initialization which are not present
+IIS,"meas.measure(range(3), range(3))",basic_circuit_ibmq_375cf6.py,32.0,1,FP,simple measurement circuit: probably they do not model the measrue(range(3))
+IIS,"meas.measure(range(3), range(3))",circuit_basics_144252.py,60.0,1,FP,simple measurement circuit: probably they do not model the measrue(range(3))
+IIS,"    circuit.measure(q, c) ",truelyrandombyte_790565.py,23.0,1,FP,legit use of the circuit with 8 qubit and clbit it uses a measruement
+IIS,"qc.measure(q,c)",b24_hadamard_checkpoint_7eaf13.py,85.0,1,FP,legit use of measure in a 1qb 1cl circuit
+IIS,"        qc_p = QuantumCircuit(circuit_p, measure_p)",qiskit_example_32ac6f.py,24.0,1,FP,legit use of measure in a 1qb 1cl circuit
+IIS,"teleportation_circuit.measure(2,2)",teaching_862aff.py,154.0,1,FP,"measure gets index 2, the tool does not model the add_register"
+IIS,"qc_ha.measure(2,0) # extract XOR value",full_adder_e06324.py,20.0,1,FP,"confuses bits and qubit, uses the size of the classical circuit to raise a warning on the qubit measured."
+IIS,"circuit.measure(qr,cr)",helloworldqiskit_a5c53c.py,60.0,1,FP,legit use of measure in a 2qb 2cl circuit
+IIS,"qc.measure(0, 1)",qubitstates_903372.py,12.0,1,FP,confuses bits and qubits
+PE,"        state_0 = execute(pair[0], backend).result().get_statevector(pair[0])",test_8fa99b.py,29.0,1,FP,"no coupling map with statevector simulator, not needed"
+PE,"job = qiskit.execute(circuit, backend, shots=100)",day_24_pre_class_softwareforquantumcomputing_student_722562.py,208.0,1,FP,"no coupling map with statevector simulator, not needed"
+PE,"        result = execute(msg_circ, backend, shots=1).result()",superdensecoding_f85322.py,26.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"job = execute(qc, backend, shots=1)",ch4_r1_coin_toss_51ae89.py,32.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"job_sim = execute(qc1, backend)",groversec_6687fc.py,53.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"    new_job = qk.execute(circ, backend, shots=1)",quant_random_70a510.py,37.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"    job_sim = execute(circuit, backend, shots=shots)",time_evolution_1qbit_1plackett_checkpoint_04f66d.py,43.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"final_state = execute(qc,backend).result().get_statevector()",base_nb_435f75.py,153.0,1,FP,"no coupling map with statevector simulator, not needed"
+PE,"job = execute(circuit, backend, shots=2048)",bell_20test_20_qiskit_be0348.py,17.0,1,FP,"no coupling map with qasm simulator, not needed"
+PE,"job = execute(circuit, backend, shots=20, memory=True)",exercise_206_20_20random_20numbers_20generator_805de9.py,55.0,1,FP,"no coupling map with qasm simulator, not needed"
+QE,"		error_qubits = [cirq.GridQubit(3, 4), cirq.GridQubit(3, 3),\",bv_qiskit_614381.py,45.0,1,FP,pointing to a random line not connected to any QASM
+QE,circuit = self,circuitry_3d3c38.py,42.0,1,FP,pointing to a line with no QASM api used nor connection to it
+QE,qc_out_ = qiskit_circuit_to_zx_circuit(qc_out),evaluations_28e929.py,178.0,1,FP,line has no connection to QASM apis
+QE,"		error_qubits = [cirq.GridQubit(3, 4), cirq.GridQubit(3, 3),\",grover_qiskit_39a57c.py,42.0,1,FP,line has no connection to QASM apis
+QE,"        circ = load_from_file(filename, include_path=include_path)",load_570dd2.py,91.0,1,FP,"a different library is used for the QASM manipulation, not Qiskit"
+QE,qc3 = QuantumCircuit().from_qasm_file('qasm'),openqasm_4e7d77.py,39.0,1,FP,legit use of the QASM importer api
+QE,device = None,provider_859de6.py,62.0,1,FP,line has no connection to QASM apis
+QE,qubit1 = tmp,solve_fe48c1.py,35.0,1,FP,line has no connection to QASM apis
+QE,"    lsqc_solver = OLSQ_qiskit(""swap"", ""transition"")",test_olsq_qiskit_03cdbc.py,41.0,1,FP,legit use of the QASM importer api
+CE,"    result = execute(circ, backend=backend, shots=10).result()",qsiris_api_06ad07.py,18.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,"job_exp = execute(qc, backend=backend, shots=1024, max_credits=3)",entanglement_ee270c.py,21.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,"results = execute(groverCircuit, backend = backend, shots = shots).result()",testalgorithm_87cd1c.py,90.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,counts = result_sim.get_counts(qc),aer_bb9ec1.py,44.0,1,FP,normal get_count API
+CE,"    qkmeans = QuantumKMeans(backend = backend, max_iter=50, init='random', n_clusters=len(cluster_centers), verbose = True, map_type='probability')",test_hardware_f3466e.py,54.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,"state = state = np.array([1,0,1/sqrt(2),1/sqrt(2)])",simulation_qbits_9d646b.py,108.0,1,FP,normal array definition
+CE,"    results = execute(all_qubit_circuits, backend=backend, shots=1).result()",challenge3_bb84_3d7473.py,111.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,circ = run_experiments(,2020_09_13_qaoa3_toffoli_ibmq_toronto_05e9ca.py,30.0,1,FP,it points to a run_experiment user defined call
+CE,"results = execute(circuit, backend=backend, shots=shots).result()",02b_deutsch_jozsa_algorithm_e9a399.py,68.0,1,FP,"it thinks that the backend variable is not defined, but that is incorrect."
+CE,"runtime_vqe = VQEProgram(ansatz=ansatz,",qiskitruntime_421a0a.py,57.0,1,FP,it points to a VQEProgram call from nature that takes backend as parameter
