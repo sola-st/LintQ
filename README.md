@@ -6,6 +6,20 @@ It comprises:
 1. **LintQ Core**: a set of quantum-specific concepts that supports the definition of static analysis of quantum programs.
 2. **LintQ Analyses**: a set of analyses build on top of the abstractions offered by the core.
 
+The following image shows an overview of LintQ. Reading it from bottom to top:
+
+- LintQ takes a quantum programs written in Qiskit as input,
+- it processes the program with the CodeQL framework which extracts regular Python control-flow and data-flow along with other basic information about the Python code;
+- the LintQ core elaborates that basic Python information and exposes quantums-specific abstractions to the checkers or analysis;
+- each analysis then can be designed to look for a specific pattern in a quantum program and return instances of those patterns.
+
+Note that although programming problems are a prevalent use case, LintQ can also be used to find more general patterns or information about the program under analysis (e.g. design patterns).
+
+![LintQ Overview](notebooks/images/BANNER_overview.png)
+
+The following image gives an overview of the abstractions present in the LintQ core and how they are mapped to the Qiskit APIs.
+
+![LintQ Abstractions](notebooks/images/BANNER_abstractions.png)
 
 ## Use Cases
 You can run LintQ with two objectives:
