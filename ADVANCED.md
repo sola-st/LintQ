@@ -1,11 +1,11 @@
 # Advanced
 In this section you find extra information, such as:
-- [Run Competitors](#run-competitors)
+- [Run Baselines](#run-baselines)
 - [Development Mode](#development-mode)
 - [Scrape a new Dataset of Quantum Programs](#create-the-dataset-of-programs)
 
-## Run Competitors
-To run the competitors on the same dataset see the following [README](competitors/README_LINTQ.md)
+## Run Baselines
+To run the baselines on the same dataset see the following [README](competitors/README_LINTQ.md)
 
 
 ## Development Mode

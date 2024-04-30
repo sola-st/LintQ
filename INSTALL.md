@@ -10,7 +10,7 @@ Table of Contents:
     ```bash
     git clone <this-repo-github-url>
     ```
-1. Open the [`REQUIREMENTS.md`](REQUIREMENTS.md) file and check that the hardware and software requirements are met. If not follow the installation guide there to obtain the correct software dependencies.
+1. Open the [`REQUIREMENTS.md`](REQUIREMENTS.md) file and check that your hardware setup satisfies the recommended requirements. Check also that your system has `conda` and `docker` installed. If not, follow the installation guide there to obtain the software you need. We recommend using an environment that is as close as possible to those we used for our experiments, refer to the  [`REQUIREMENTS.md`](REQUIREMENTS.md) file.
 1. install the Python dependencies via Conda virtual environment from our configuration file [here](virtualenv/conda/environment.yml):
     ```bash
     conda env create -f virtualenv/conda/environment.yml

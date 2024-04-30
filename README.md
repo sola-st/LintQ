@@ -39,7 +39,7 @@ This replication level allows to independently reproduce the results of our pape
 
 Follow these steps:
 
-1. Make sure to have followed the  [INSTALL.md](INSTALL.md) and installed the Python dependencies to run the notebook.
+1. Make sure to have followed the  [`INSTALL.md`](INSTALL.md) and installed the Python dependencies to run the notebook.
 1. Download the datasets used in our evaluation from [here](https://doi.org/10.6084/m9.figshare.22350592)
 1. Unzip it and place it at the path: [`data/datasets/exp_v08`](data/datasets/exp_v08)
 1. Download the analysis warnings detected by competitor approaches from [here](https://doi.org/10.6084/m9.figshare.25690470).
@@ -58,7 +58,7 @@ This replication level allows to run LintQ queries on any folder containing quan
 
 Follow these steps:
 
-1. Make sure to have followed the  [INSTALL.md](INSTALL.md) and create the LintQ Docker container
+1. Make sure to have read the  [`REQUIREMENTS.md`](REQUIREMENTS.md) file and followed the [`INSTALL.md`](INSTALL.md) to crate the LintQ Docker container
 1. Place your folder containing quantum programs in the [`data/datasets`](data/datasets) folder (e.g. `data/datasets/my_programs`).
     For this demo we focus on some demo files at path [data/datasets/demo/files](data/datasets/demo/files).
 1. Convert the python files in the target folder to a database of facts about the quantum programs, the new database will be store at the given path (e.g. `data/datasets/my_database`):
@@ -86,7 +86,7 @@ Follow these steps:
 1. Congratulations you have successfully analyzed your first quantum programs with LintQ and collected some warnings!
 
 ## Extra: Run LintQ to Analyze the full LintQ dataset
-This is an in-depth run that takes long time. You can run the LintQ analysis on the entire dataset as to reproduce the entire study.
+This is an in-depth run that takes up to 3h on machine with 32GB RAM and 16 cores. You can run the LintQ analysis on the entire dataset as to reproduce the entire study.
 
 1. Make sure that your dataset is in the `data/dataset/exp_v08` folder
 1. Run the queries on the LintQ dataset and produce an analysis output at the given path (e.g., `data/datasets/lintq_full_results.sarif`)
