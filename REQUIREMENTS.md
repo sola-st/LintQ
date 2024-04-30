@@ -8,7 +8,7 @@ Table of Contents:
 ## Hardware Requirements
 
 LintQ should work on any machine as long as docker can be installed on it.
-LintQ rely on CodeQl which has different computing requirements depending on the size of the dataset of programs under analysis.
+LintQ rely on CodeQL which has different computing requirements depending on the size of the dataset of programs under analysis.
 
 ### Recommended Hardware for Demo
 - **RAM**: 16+ GB
