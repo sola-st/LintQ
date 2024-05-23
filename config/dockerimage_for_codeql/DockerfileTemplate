@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS codeql_base
+FROM --platform=linux/amd64 ubuntu:22.04 AS codeql_base
 LABEL maintainer="Github codeql team"
 
 # tzdata install needs to be non-interactive
