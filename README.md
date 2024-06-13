@@ -21,6 +21,12 @@ The following image gives an overview of the abstractions present in the LintQ c
 
 ![LintQ Abstractions](notebooks/images/BANNER_abstractions.png)
 
+## Paper
+
+[Analyzing Quantum Programs with LintQ: A Static Analysis Framework for Qiskit](https://software-lab.org/publications/fse2024_LintQ.pdf)
+
+Matteo Paltenghi, Michael Pradel. ACM International Conference on the Foundations of Software Engineering (FSE) 2024
+
 ## Use Cases
 You can run LintQ with two objectives:
 
