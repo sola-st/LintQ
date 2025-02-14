@@ -98,6 +98,9 @@ RUN echo "provide:" > ${CODEQL_HOME}/codeql-workspace.yml && \
 # Go to qlint/codeql/src and install the dependencies
 RUN cd ${CODEQL_HOME}/LintQ/codeql/src && codeql pack install
 
+# Copy the Qiskit library that you want to consider for the analysis in the
+# system wide python folder
+RUN cp -r /usr/local/lib/python3.10/dist-packages/* /usr/lib/python3/dist-packages/
 
 WORKDIR /home/codeql/project
 

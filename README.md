@@ -142,10 +142,11 @@ The current research work contains and shares the following resources:
     - Download: not needed, already in this repo.
     - Found at the path: [`<repo_root>/bug_reports/Reason_code_to_text.csv`](/bug_reports/true_positives_found/bug_reports/Reason_code_to_text.csv)
 
+# FAQ on LintQ
+If you have any questions about LintQ, you can check the [FAQ.md](FAQ.md) file.
 
 # Advanced
 If you want to use the repository in a way not describe above you can still check the [ADVANCED.md](ADVANCED.md) file for more information, such as the creation of a new dataset of quantum program or how to develop for LintQ.
-
 
 
 

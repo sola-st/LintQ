@@ -49,3 +49,4 @@ This is recommended for anyone interested in using LintQ on his/her own quantum 
 - **SARIF Viewer Extension for VSCode** (tested with versions: `3.4.4`). Available [here](https://marketplace.visualstudio.com/items?itemName=MS-SarifVSCode.sarif-viewer).
 - [IMPORTANT PRECISE VERSION] **Codeql CLI Version**: 2.11.2 (PRECISELY THIS). Run `codeql version` to check the version. If not present, install [here](https://github.com/github/codeql-cli-binaries/releases/tag/v2.11.2).
 - [IMPORTANT PRECISE VERSION] **CodeQL for Visual Studio Code extension**: 1.7.4 (PRECISELY THIS). Available [here](https://github.com/github/vscode-codeql/blob/main/extensions/ql-vscode/CHANGELOG.md#174---29-october-2022).
+- [IMPORTANT PRECISE VERSION] **Qiskit**: 0.45.2 (PRECISELY THIS). Run `pip show qiskit` to check the version. If not present, install with `pip install qiskit==0.45.2`.
